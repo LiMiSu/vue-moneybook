@@ -1,12 +1,6 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <hr />
-    <div>
-      <router-link to="/money">记账</router-link>|
-      <router-link to="/labels">记一笔</router-link>|
-      <router-link to="/statistics">统计</router-link>
-    </div>
   </div>
 </template>
 
