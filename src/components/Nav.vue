@@ -1,6 +1,6 @@
 <template>
 
-  <div>
+  <div class="nav">
     <router-link to="/money">记账</router-link>|
     <router-link to="/labels">记一笔</router-link>|
     <router-link to="/statistics">统计</router-link>
@@ -15,5 +15,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+  .nav{
+    border: 1px solid red;
+  }
 </style>

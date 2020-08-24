@@ -1,12 +1,13 @@
 <template>
   <div>
-    Statistics.vue
+    <layout>
+      Statistics.vue
+    </layout>
     <Nav />
   </div>
 </template>
 
 <script lang="ts">
-  import Nav from '@/components/Nav.vue';
   export default {
     name: 'Statistics',
   };

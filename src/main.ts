@@ -3,13 +3,12 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
-
-// import Nav from '@/components/Nav.vue';  // 光是这样还不行，这样只是这个文件内能使用这个组件标签
 import Nav from '@/components/Nav.vue';
-
+import Layout from '@/components/Layout.vue';
 Vue.config.productionTip = false
 
-Vue.component('Nav', Nav) //复制一份Nav组件当中全局组件，这样所有的子组件都能用啦
+Vue.component('Nav', Nav)
+Vue.component('Layout', Layout)
 
 new Vue({
   router,
