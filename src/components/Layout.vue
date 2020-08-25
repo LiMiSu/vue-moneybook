@@ -3,7 +3,6 @@
       <div class="content">
         <slot />
       </div>
-
       <Nav/>
     </div>
 </template>
@@ -14,7 +13,7 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .nav-wrapper {
     display: flex;
     flex-direction: column;
