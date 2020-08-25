@@ -3,7 +3,6 @@
     <layout>
       Statistics.vue
     </layout>
-    <Nav />
   </div>
 </template>
 

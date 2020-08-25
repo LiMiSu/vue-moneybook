@@ -3,7 +3,6 @@
     <layout>
       Labels.vue
     </layout>
-    <Nav />
   </div>
 </template>
 
