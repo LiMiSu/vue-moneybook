@@ -2,7 +2,7 @@
   <layout class-prefix="layout">
     <tags/>
     <note/>
-    <types/>
+    <types :prop-a="'333'"/>
     <input-number/>
     <number-pad/>
   </layout>
