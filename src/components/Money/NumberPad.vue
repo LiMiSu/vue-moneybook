@@ -5,15 +5,15 @@
       <button @click="inputContent">1</button>
       <button @click="inputContent">2</button>
       <button @click="inputContent">3</button>
-      <button>删除</button>
+      <button @click="remove">删除</button>
       <button @click="inputContent">4</button>
       <button @click="inputContent">5</button>
       <button @click="inputContent">6</button>
-      <button>清空</button>
+      <button @click="clear">清空</button>
       <button @click="inputContent">7</button>
       <button @click="inputContent">8</button>
       <button @click="inputContent">9</button>
-      <button class="ok">OK</button>
+      <button class="ok" @click="ok">OK</button>
       <button class="zero" @click="inputContent">0</button>
       <button @click="inputContent">.</button>
     </div>
@@ -32,7 +32,10 @@
     inputContent(event: MouseEvent) {
       const button = (event.target as HTMLButtonElement);
       const input = button.textContent!;
-      // if (this.output.length === 16) {return;}
+      if (this.output.length === 16) {
+        alert('输入太多屏幕都放不下啦');
+        return;
+      }
       if (this.output === '0') {
         if ('0123456789'.indexOf(input) >= 0) {
           this.output = input;
@@ -41,8 +44,26 @@
         }
         return;
       }
-      if (this.output.indexOf('.') >= 0 && input === '.') {return;}
+      if (this.output.indexOf('.') >= 0 && input === '.') {
+        return;
+      }
       this.output += input;
+    }
+
+    remove() {
+      if (this.output.length === 1) {
+        this.output = '0';
+      } else {
+        this.output = this.output.slice(0, -1);
+      }
+    }
+
+    clear() {
+      this.output = '0';
+    }
+
+    ok() {
+      console.log('ok');
     }
   }
 </script>
@@ -52,18 +73,15 @@
 
   .inputNumber {
     @extend %innerShadow;
-    border: 1px solid red;
     font-size: 36px;
     font-family: Consolas, monospace;
-    padding: 2px 2px;
-    height: 0;
+    padding: 7px;
+    height: 72px;
     display: flex;
-    /*width: 0;*/
     justify-content: flex-end;
-    align-items: flex-end;
-    flex-shrink: 0;
-    overflow: auto;
+    align-items: center;
     word-break: break-all;
+    overflow: hidden;
   }
 
   .numberPad {
