@@ -2,21 +2,19 @@
   <layout class-prefix="layout">
     <tags/>
     <note/>
-    <types :prop-a="'333'"/>
-    <input-number/>
+    <types />
     <number-pad/>
   </layout>
 </template>
 
 <script lang="ts">
   import NumberPad from '@/components/Money/NumberPad.vue';
-  import InputNumber from '@/components/Money/InputNumber.vue';
   import Types from '@/components/Money/Types.vue';
   import Note from '@/components/Money/Note.vue';
   import Tags from '@/components/Money/Tags.vue';
   export default {
     name: 'Money',
-    components: {Tags, Note, Types, InputNumber, NumberPad},
+    components: {Tags, Note, Types, NumberPad},
   };
 </script>
 <style lang="scss">
