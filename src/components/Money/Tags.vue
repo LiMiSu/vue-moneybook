@@ -4,7 +4,7 @@
       <li
         v-for="tag in dataSource"
         :key="tag"
-        :class="{selected: selectedTags.indexOf(tag)>=0}"
+        :class="{selected: value.indexOf(tag)>=0}"
         @click="toggle(tag)">
         {{ tag }}
       </li>
@@ -22,15 +22,16 @@
   @Component
   export default class Note extends Vue {
     @Prop() readonly dataSource: string[] | undefined;
-    selectedTags: string[] = [];
+    @Prop() readonly value!: string[]
 
     toggle(tag: string) {
-      const index = this.selectedTags.indexOf(tag);
+      const index = this.value.indexOf(tag);
       if (index >= 0) {
-        this.selectedTags.splice(index, 1);
+        this.value.splice(index, 1);
       } else {
-        this.selectedTags.push(tag);
+        this.value.push(tag);
       }
+      this.$emit('update:value', this.value)
     }
 
     create() {

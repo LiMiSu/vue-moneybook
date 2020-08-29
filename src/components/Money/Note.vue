@@ -1,20 +1,24 @@
 <template>
   <div>
-    <label class="note">{{value}}
+    <label class="note">
       <span class="name">备注</span>
-      <input type="text" placeholder="在这里输入备注"
-      v-model="value">
+      <input
+        type="text"
+        placeholder="在这里输入备注"
+        @input="$emit('update:value', $event.target.value)"
+      >
     </label>
   </div>
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component} from 'vue-property-decorator';
+  import {Component, Watch,Prop} from 'vue-property-decorator';
 
   @Component
   export default class Note extends Vue {
-    value = '';
+    @Prop() readonly value!: string
+
   }
 </script>
 
