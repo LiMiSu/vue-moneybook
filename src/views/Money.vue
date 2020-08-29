@@ -22,6 +22,7 @@
     notes: string;
     type: string;
     amount: number;
+    createDat?: Date;
   }
 
   @Component({
@@ -29,12 +30,13 @@
   })
   export default class Money extends Vue {
     tages = ['衣', '食', '住', '行'];
-    recordList: Record[] = [];
+    recordList: Record[] = JSON.parse(window.localStorage.getItem('recordList') || '[]');
     record: Record = {tags: [], notes: '', type: '-', amount: 0};
 
 
     saveRecord() {
-      const recordDeep = JSON.parse(JSON.stringify(this.record));
+      const recordDeep: Record = JSON.parse(JSON.stringify(this.record));
+      recordDeep.createDat = new Date();
       this.recordList.push(recordDeep);
     }
 
