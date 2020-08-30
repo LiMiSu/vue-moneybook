@@ -1,7 +1,7 @@
 <template>
   <layout class-prefix="layout">
     <tags :data-source.sync="tages" :value.sync="record.tags"/>
-    <note :value.sync="record.notes"/>
+    <note :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>
     <types :value.sync="record.type"/>
     <number-pad :value.sync="record.amount" @submit="saveRecord"/>
   </layout>

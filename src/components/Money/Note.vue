@@ -1,10 +1,10 @@
 <template>
   <div>
     <label class="note">
-      <span class="name">备注</span>
+      <span class="name">{{fieldName}}</span>
       <input
         type="text"
-        placeholder="在这里输入备注"
+        :placeholder="placeholder"
         @input="$emit('update:value', $event.target.value)"
       >
     </label>
@@ -13,11 +13,13 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component, Watch,Prop} from 'vue-property-decorator';
+  import {Component, Watch, Prop} from 'vue-property-decorator';
 
   @Component
   export default class Note extends Vue {
-    @Prop() readonly value!: string
+    @Prop() readonly value!: string;
+    @Prop({required: true}) fieldName!: string;
+    @Prop() placeholder?: string
 
   }
 </script>
