@@ -1,7 +1,7 @@
 <template>
   <layout class-prefix="layout">
     <tags :data-source.sync="tages" :value.sync="record.tags"/>
-    <note :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>
+    <form-item :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>
     <types :value.sync="record.type"/>
     <number-pad :value.sync="record.amount" @submit="saveRecord"/>
   </layout>
@@ -13,7 +13,7 @@
 
   import NumberPad from '@/components/Money/NumberPad.vue';
   import Types from '@/components/Money/Types.vue';
-  import Note from '@/components/Money/Note.vue';
+  import FormItem from '@/components/Money/FormItem.vue';
   import Tags from '@/components/Money/Tags.vue';
   import recordListModel from '@/models/recordListModel';
   import tagListModel from '@/models/tagListModel';
@@ -24,7 +24,7 @@
 
 
   @Component({
-    components: {Tags, Note, Types, NumberPad},
+    components: {Tags, FormItem, Types, NumberPad},
   })
   export default class Money extends Vue {
     tages = tagList;
