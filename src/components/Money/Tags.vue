@@ -45,7 +45,6 @@
           return
         }
         this.$emit('update:dataSource', [...this.dataSource, name]);
-        console.log(this.dataSource);
       }
     }
   }
