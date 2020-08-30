@@ -1,7 +1,9 @@
 <template>
   <layout class-prefix="layout">
     <tags :data-source.sync="tages" :value.sync="record.tags"/>
-    <form-item :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>
+    <div class="notes">
+      <FormItem :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>
+    </div>
     <types :value.sync="record.type"/>
     <number-pad :value.sync="record.amount" @submit="saveRecord"/>
   </layout>
@@ -49,5 +51,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+  }
+  .notes{
+    padding: 12px 0;
   }
 </style>
