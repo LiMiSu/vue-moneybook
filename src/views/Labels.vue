@@ -20,7 +20,6 @@
   import tagListModel from '@/models/tagListModel';
 
   tagListModel.fetch();
-  console.log(tagListModel.data);
   @Component
   export default class Note extends Vue {
     tags = tagListModel.data;
@@ -34,6 +33,8 @@
         }else if (message==='success'){
           window.alert('标签添加成功')
         }
+      }else {
+        window.alert('标签名不能为空')
       }
     }
   }
