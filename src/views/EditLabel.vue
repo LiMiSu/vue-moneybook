@@ -49,6 +49,7 @@
         const changeMessage = tagListModel.update(this.tag.id, this.tag.name);
         if (changeMessage) {
           window.alert('更改成功');
+          this.$router.back();
         } else {
           window.alert('更新失败');
         }
@@ -60,6 +61,7 @@
         const removeMessage = tagListModel.remove(this.tag.id);
         if (removeMessage) {
           window.alert('删除成功');
+          this.$router.back();
         } else {
           window.alert('删除失败');
         }
