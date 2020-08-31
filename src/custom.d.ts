@@ -5,3 +5,7 @@ type RecordItem = {
   amount: number;
   createDat?: Date;
 }
+type Tag = {
+  id: string;
+  name: string;
+}
