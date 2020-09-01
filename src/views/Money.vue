@@ -20,10 +20,8 @@
   import recordListModel from '@/models/recordListModel';
   import tagListModel from '@/models/tagListModel';
 
-
   const recordList = recordListModel.fetch();
   const tagList = tagListModel.fetch();
-
 
   @Component({
     components: {Tags, FormItem, Types, NumberPad},
@@ -33,16 +31,18 @@
     recordList = recordList;
     record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
 
-
     saveRecord() {
-      const recordDeep: RecordItem = recordListModel.clone(this.record);
-      recordDeep.createDat = new Date();
-      this.recordList.push(recordDeep);
+     recordListModel.create(this.record)
     }
 
+    @Watch('tages')
+    onTagesCang(){
+      tagListModel.create(this.tages.slice(-1)[0].name)
+      tagListModel.save()
+    }
     @Watch('recordList')
     onRecordListChang() {
-      recordListModel.save(this.recordList);
+      recordListModel.save();
     }
   }
 </script>

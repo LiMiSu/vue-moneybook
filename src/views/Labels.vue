@@ -39,8 +39,10 @@
         }else if (message==='success'){
           window.alert('标签添加成功')
         }
-      }else {
+      }else if (name===''){
         window.alert('标签名不能为空')
+      }else {
+        return
       }
     }
   }

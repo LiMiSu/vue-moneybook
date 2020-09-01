@@ -22,7 +22,7 @@
   @Component
   export default class Note extends Vue {
     @Prop() readonly dataSource: string[] | undefined;
-    @Prop() readonly value!: string[]
+    @Prop() readonly value!: string[];
 
     toggle(tag: string) {
       const index = this.value.indexOf(tag);
@@ -31,20 +31,24 @@
       } else {
         this.value.push(tag);
       }
-      this.$emit('update:value', this.value)
+      this.$emit('update:value', this.value);
     }
 
     create() {
       const name = window.prompt('请输入标签名');
+      if (name === null) {
+        return;
+      }
       if (name === '') {
         window.alert('标签名不能为空');
+        return;
       }
       if (this.dataSource) {
         if (this.dataSource.indexOf(name!) >= 0) {
           window.alert('该标签已经存在');
-          return
+          return;
         }
-        this.$emit('update:dataSource', [...this.dataSource, name]);
+        this.$emit('update:dataSource', [...this.dataSource, {id: name, name: name}]);
       }
     }
   }
