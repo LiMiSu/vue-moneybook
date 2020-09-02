@@ -25,13 +25,14 @@
   import {Component} from 'vue-property-decorator';
   import FormItem from '@/components/Money/FormItem.vue';
   import Button from '@/components/Button.vue';
+  import store from '@/store/tagStore';
 
   @Component({
     components: {Button, FormItem}
   })
 
   export default class EditLabel extends Vue {
-    tag = window.findTag(this.$route.params.id);
+    tag = store.findTag(this.$route.params.id);
     valueDat!: string;
 
     created() {
@@ -44,7 +45,7 @@
 
     updateTag() {
       if (this.tag) {
-        const changeMessage = window.updateTag(this.tag.id, this.valueDat);
+        const changeMessage = store.updateTag(this.tag.id, this.valueDat);
         if (changeMessage === 'success') {
           this.$router.back();
         }
@@ -53,7 +54,7 @@
 
     removeTag() {
       if (this.tag) {
-        if (window.removeTag(this.tag.id) === 'success') {
+        if (store.removeTag(this.tag.id) === 'success') {
           this.goBack();
         }
       }

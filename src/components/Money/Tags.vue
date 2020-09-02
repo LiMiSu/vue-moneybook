@@ -2,9 +2,9 @@
   <div class="tags">
     <ul class="current">
       <li
-        v-for="tag in dataSource"
+        v-for="tag in tagList"
         :key="tag.id"
-        :class="{selected: value.indexOf(tag)>=0}"
+        :class="{selected: selectedLists.indexOf(tag)>=0}"
         @click="toggle(tag)">
         {{ tag.name }}
       </li>
@@ -17,25 +17,31 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component, Prop} from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
+  import store from '@/store/tagStore';
 
-  @Component
+  @Component({
+    computed: {
+      tagList() {
+        return store.tagList;
+      }
+    }
+  })
   export default class Note extends Vue {
-    @Prop() readonly dataSource: string[] | undefined;
-    @Prop() readonly value!: string[];
+    selectedLists: string[] = [];
 
     toggle(tag: string) {
-      const index = this.value.indexOf(tag);
+      const index = this.selectedLists.indexOf(tag);
       if (index >= 0) {
-        this.value.splice(index, 1);
+        this.selectedLists.splice(index, 1);
       } else {
-        this.value.push(tag);
+        this.selectedLists.push(tag);
       }
-      this.$emit('update:value', this.value);
+      this.$emit('update:value', this.selectedLists);
     }
 
     create() {
-      window.createTag(name)
+      store.createTag(name);
     }
   }
 </script>

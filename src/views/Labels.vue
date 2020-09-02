@@ -19,17 +19,18 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component, Watch, Prop} from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
   import Button from '@/components/Button.vue';
+  import store from '@/store/tagStore';
 
   @Component({
     components: {Button}
   })
   export default class Note extends Vue {
-    tags = window.tagList;
+    tags = store.tagList;
 
     createTag() {
-      window.createTag(name);
+      store.createTag(name);
     }
   }
 
