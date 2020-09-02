@@ -12,6 +12,7 @@ const recordListModel = {
     const recordDeep: RecordItem =clone(record);
     recordDeep.createDat = new Date();
     this.data.push(recordDeep);
+    this.save()
   },
   save() {
     window.localStorage.setItem(localStorageKeyName, JSON.stringify(this.data));

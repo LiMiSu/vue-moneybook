@@ -7,6 +7,7 @@ import Nav from '@/components/Nav.vue';
 import Layout from '@/components/Layout.vue';
 import Icon from '@/components/Icon.vue';
 import tagListModel from '@/models/tagListModel';
+import recordListModel from '@/models/recordListModel';
 
 Vue.config.productionTip = false;
 
@@ -14,6 +15,13 @@ Vue.component('Nav', Nav);
 Vue.component('Layout', Layout);
 Vue.component('Icon', Icon);
 
+
+//record store
+window.recordList = recordListModel.fetch();
+window.createRecord = (record: RecordItem) => recordListModel.create(record);
+
+
+//tag store
 window.tagList = tagListModel.fetch();
 window.createTag = (nameData: string) => {
   const name = window.prompt('请输入标签名');
@@ -41,28 +49,28 @@ window.removeTag = (id: string) => {
   }
 };
 window.updateTag = (id: string, name: string) => {
-  const result = tagListModel.update(id, name)
+  const result = tagListModel.update(id, name);
   console.log(result);
-  if ( result=== 'success') {
+  if (result === 'success') {
     window.alert('更改成功');
     return 'success';
-  } else if ( result=== 'duplicated'){
+  } else if (result === 'duplicated') {
     window.alert('标签名未作修改');
-    return 'duplicated'
-  }else if (result=== 'defeated'){
+    return 'duplicated';
+  } else if (result === 'defeated') {
     window.alert('标签名不能为空，请重新编辑');
 
-    return 'defeated'
-  }else {
-    return 'not found'
+    return 'defeated';
+  } else {
+    return 'not found';
   }
 };
-window.saveTag = ()=>{
-  tagListModel.save()
-}
-window.findTag = (id: string)=>{
+window.saveTag = () => {
+  tagListModel.save();
+};
+window.findTag = (id: string) => {
   return window.tagList.filter(t => t.id === id)[0];
-}
+};
 
 new Vue({
   router,
