@@ -25,4 +25,5 @@ interface Window {
   removeTag: (id: string) => 'success' | 'defeated';
   updateTag: (id: string, name: string) => 'success' | 'not found' | 'duplicated' | 'defeated';
   saveTag: () => void;
+  findTag: (id: string) => Tag | undefined;
 }

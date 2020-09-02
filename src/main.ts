@@ -60,6 +60,9 @@ window.updateTag = (id: string, name: string) => {
 window.saveTag = ()=>{
   tagListModel.save()
 }
+window.findTag = (id: string)=>{
+  return window.tagList.filter(t => t.id === id)[0];
+}
 
 new Vue({
   router,

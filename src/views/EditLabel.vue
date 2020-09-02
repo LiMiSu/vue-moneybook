@@ -31,17 +31,13 @@
   })
 
   export default class EditLabel extends Vue {
-    tag?: Tag = undefined;
+    tag = window.findTag(this.$route.params.id);
     valueDat!: string;
 
     created() {
-      const id = this.$route.params.id;
-      const tags = window.tagList;
-      const tag = tags.filter(t => t.id === id)[0];
-      if (tag) {
-        this.tag = tag;
+      if (this.tag) {
         this.valueDat = this.tag.name;
-      } else {
+      }else{
         this.$router.replace('/404');
       }
     }
