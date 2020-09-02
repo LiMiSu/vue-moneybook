@@ -4,10 +4,9 @@
       <span class="name">{{fieldName}}</span>
       <input
         type="text"
-        :value="value"
+        :value="tagName"
         :placeholder="placeholder"
         @input="$emit('update:value', $event.target.value)"
-        @click="$emit('change', $event)"
       >
     </label>
   </div>
@@ -22,7 +21,7 @@
     @Prop({default: ''}) readonly value!: string;
     @Prop({required: true}) fieldName!: string;
     @Prop() placeholder?: string
-
+    @Prop({default: ''}) readonly tagName!: string;
   }
 </script>
 

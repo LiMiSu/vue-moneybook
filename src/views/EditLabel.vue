@@ -7,13 +7,15 @@
     </div>
     <div class="form-wrapper">
       <form-item
-        :value.sync="tag.name"
-        @change="updateTag"
+        ref="dom"
+        :tagName="this.tag.name"
+        :value.sync="valueDat"
         field-name="标签名"
         placeholder="请输入标签名"/>
     </div>
     <div class="button-wrapper">
       <Button @click="removeTag">删除标签</Button>
+      <Button @click.native="updateTag">确认更改</Button>
     </div>
   </Layout>
 </template>
@@ -21,7 +23,6 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
-  import tagListModel from '@/models/tagListModel';
   import FormItem from '@/components/Money/FormItem.vue';
   import Button from '@/components/Button.vue';
 
@@ -31,14 +32,15 @@
 
   export default class EditLabel extends Vue {
     tag?: Tag = undefined;
+    valueDat!: string;
 
     created() {
       const id = this.$route.params.id;
-      tagListModel.fetch();
-      const tags = tagListModel.data;
+      const tags = window.tagList;
       const tag = tags.filter(t => t.id === id)[0];
       if (tag) {
         this.tag = tag;
+        this.valueDat = this.tag.name;
       } else {
         this.$router.replace('/404');
       }
@@ -46,26 +48,18 @@
 
     updateTag() {
       if (this.tag) {
-        const changeMessage = tagListModel.update(this.tag.id, this.tag.name);
-        if (changeMessage) {
-          window.alert('更改成功');
+        const changeMessage = window.updateTag(this.tag.id, this.valueDat);
+        if (changeMessage === 'success') {
           this.$router.back();
-        } else {
-          window.alert('更新失败');
         }
       }
     }
 
     removeTag() {
       if (this.tag) {
-        const removeMessage = tagListModel.remove(this.tag.id);
-        if (removeMessage) {
-          window.alert('删除成功');
-          this.$router.back();
-        } else {
-          window.alert('删除失败');
+        if (window.removeTag(this.tag.id) === 'success') {
+          this.goBack();
         }
-
       }
     }
 

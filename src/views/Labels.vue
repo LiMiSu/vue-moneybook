@@ -3,9 +3,9 @@
     <layout>
       <div class="tags">
         <router-link class="tag"
-          :to="`/labels/edit/${tag.id}`"
-          v-for="tag in tags"
-          :key="tag.id">
+                     :to="`/labels/edit/${tag.id}`"
+                     v-for="tag in tags"
+                     :key="tag.id">
           <span>{{tag.name}}</span>
           <Icon name="right"/>
         </router-link>
@@ -20,7 +20,6 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Watch, Prop} from 'vue-property-decorator';
-  import tagListModel from '@/models/tagListModel';
   import Button from '@/components/Button.vue';
 
   @Component({
@@ -30,10 +29,7 @@
     tags = window.tagList;
 
     createTag() {
-      const name = window.prompt('请输入标签名');
-      if (name) {
-      window.createTag(name)
-      }
+      window.createTag(name);
     }
   }
 
@@ -59,10 +55,11 @@
       }
     }
   }
-    .createTag-wrapper {
-      text-align: center;
-      line-height: 40px;
-      padding: 16px;
-      margin-top: 44-16px;
-    }
+
+  .createTag-wrapper {
+    text-align: center;
+    line-height: 40px;
+    padding: 16px;
+    margin-top: 44-16px;
+  }
 </style>

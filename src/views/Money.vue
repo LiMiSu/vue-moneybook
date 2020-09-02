@@ -1,6 +1,6 @@
 <template>
   <layout class-prefix="layout">
-    <tags :data-source.sync="tages" :value.sync="record.tags"/>
+    <tags :data-source="tages" :value.sync="record.tags"/>
     <div class="notes">
       <FormItem :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>
     </div>
@@ -34,11 +34,6 @@
      recordListModel.create(this.record)
     }
 
-    @Watch('tages')
-    onTagesCang(){
-      tagListModel.create(this.tages.slice(-1)[0].name)
-      tagListModel.save()
-    }
     @Watch('recordList')
     onRecordListChang() {
       recordListModel.save();

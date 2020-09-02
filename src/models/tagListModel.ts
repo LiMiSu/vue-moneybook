@@ -21,12 +21,17 @@ const tagListModel: TagListModel = {
   update(id, name) {
     const tag = this.data.filter(item => item.id === id)[0];
     if (tag) {
-      tag.name = name;
-      tag.id = name;
-      this.save();
-      return true;
+      if (tag.name===name){
+        return 'duplicated'
+      }else if (name===''){
+        return 'defeated'
+      }else {
+        tag.name = name;
+        this.save();
+        return 'success';
+      }
     } else {
-      return false;
+      return 'not found';
     }
   },
   remove(id) {

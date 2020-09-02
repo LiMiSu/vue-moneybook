@@ -14,7 +14,7 @@ type TagListModel = {
   data: Tag[];
   fetch: () => Tag[];
   create: (name: string) => 'success' | 'duplicated';
-  update: (id: string, name: string) => boolean;
+  update: (id: string, name: string) => 'success' | 'not found' | 'duplicated' | 'defeated';
   remove: (id: string) => boolean;
   save: () => void;
 }
@@ -22,4 +22,7 @@ type TagListModel = {
 interface Window {
   tagList: Tag[];
   createTag: (arg: string) => void;
+  removeTag: (id: string) => 'success' | 'defeated';
+  updateTag: (id: string, name: string) => 'success' | 'not found' | 'duplicated' | 'defeated';
+  saveTag: () => void;
 }

@@ -35,21 +35,7 @@
     }
 
     create() {
-      const name = window.prompt('请输入标签名');
-      if (name === null) {
-        return;
-      }
-      if (name === '') {
-        window.alert('标签名不能为空');
-        return;
-      }
-      if (this.dataSource) {
-        if (this.dataSource.indexOf(name!) >= 0) {
-          window.alert('该标签已经存在');
-          return;
-        }
-        this.$emit('update:dataSource', [...this.dataSource, {id: name, name: name}]);
-      }
+      window.createTag(name)
     }
   }
 </script>
