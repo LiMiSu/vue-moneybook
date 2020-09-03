@@ -1,14 +1,14 @@
 <template>
   <Layout>
     <div class="navBar">
-      <Icon class="leftIcon" name="left" @click="goBack"/>
+      <Icon class="leftIcon" name="left" @click="$router.back()"/>
       <span class="title">编辑标签</span>
       <span class="rightIcon"></span>
     </div>
     <div class="form-wrapper">
       <form-item
         ref="dom"
-        :tagName="this.tag.name"
+        :tagName="this.currentTag.name"
         :value.sync="valueDat"
         field-name="标签名"
         placeholder="请输入标签名"/>
@@ -32,39 +32,32 @@
 
   export default class EditLabel extends Vue {
     valueDat!: string;
-    get tag(){
+
+    get currentTag() {
       return this.$store.state.currentTag;
     }
+
     created() {
       const id = this.$route.params.id;
+      this.$store.commit('fetchTags');
       this.$store.commit('setCurrentTag', id);
-      if (this.tag) {
-        this.valueDat = this.tag.name;
-      } else {
+      this.valueDat = this.currentTag.name;
+      if (!this.currentTag) {
         this.$router.replace('/404');
       }
     }
 
     updateTag() {
-      if (this.tag) {
-        // const changeMessage = store.updateTag(this.tag.id, this.valueDat);
-        // if (changeMessage === 'success') {
-        //   this.$router.back();
-        }
+      if (this.currentTag) {
+        this.$store.commit('updateTag', {id: this.currentTag.id, name: this.valueDat});
       }
-    // }
+    }
 
-    // removeTag() {
-    //   if (this.tag) {
-    //     if (store.removeTag(this.tag.id) === 'success') {
-    //       this.goBack();
-    //     }
-    //   }
-    // }
-
-    // goBack() {
-    //   this.$router.back();
-    // }
+    removeTag() {
+      if (this.currentTag) {
+        this.$store.commit('removeTag', this.currentTag.id);
+      }
+    }
   }
 
 </script>
