@@ -1,7 +1,5 @@
 <template>
   <layout class-prefix="layout">
-    {{count}}
-    <button @click="$store.commit('increment', 1)">+1</button>
     <tags :value.sync="record.tags"/>
     <div class="notes">
       <FormItem :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>
@@ -19,23 +17,27 @@
   import Types from '@/components/Money/Types.vue';
   import FormItem from '@/components/Money/FormItem.vue';
   import Tags from '@/components/Money/Tags.vue';
-  import oldStore from '@/store/index2';
   import Button from '@/components/Button.vue';
 
 
   @Component({
     components: {Button, Tags, FormItem, Types, NumberPad},
     computed: {
-      count() {
-        return this.$store.state.count;
+      recordList(){
+        return this.$store.state.recordList;
       }
     }
   })
   export default class Money extends Vue {
     record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
 
+    created(){
+      this.$store.commit('fetchRecords')
+    }
+
+
     saveRecord() {
-      oldStore.createRecord(this.record);
+      this.$store.commit('createRecord', this.record);
     }
   }
 </script>
