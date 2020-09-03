@@ -25,44 +25,46 @@
   import {Component} from 'vue-property-decorator';
   import FormItem from '@/components/Money/FormItem.vue';
   import Button from '@/components/Button.vue';
-  import store from '@/store/tagStore';
 
   @Component({
-    components: {Button, FormItem}
+    components: {Button, FormItem},
   })
 
   export default class EditLabel extends Vue {
-    tag = store.findTag(this.$route.params.id);
     valueDat!: string;
-
+    get tag(){
+      return this.$store.state.currentTag;
+    }
     created() {
+      const id = this.$route.params.id;
+      this.$store.commit('setCurrentTag', id);
       if (this.tag) {
         this.valueDat = this.tag.name;
-      }else{
+      } else {
         this.$router.replace('/404');
       }
     }
 
     updateTag() {
       if (this.tag) {
-        const changeMessage = store.updateTag(this.tag.id, this.valueDat);
-        if (changeMessage === 'success') {
-          this.$router.back();
+        // const changeMessage = store.updateTag(this.tag.id, this.valueDat);
+        // if (changeMessage === 'success') {
+        //   this.$router.back();
         }
       }
-    }
+    // }
 
-    removeTag() {
-      if (this.tag) {
-        if (store.removeTag(this.tag.id) === 'success') {
-          this.goBack();
-        }
-      }
-    }
+    // removeTag() {
+    //   if (this.tag) {
+    //     if (store.removeTag(this.tag.id) === 'success') {
+    //       this.goBack();
+    //     }
+    //   }
+    // }
 
-    goBack() {
-      this.$router.back();
-    }
+    // goBack() {
+    //   this.$router.back();
+    // }
   }
 
 </script>

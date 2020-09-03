@@ -8,33 +8,35 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    recordList: [] as RecordItem[],
-    tagList: [] as Tag[],
-  },
+    recordList: [],
+    tagList: [],
+    currentTag: undefined
+  } as RootState,
+
   mutations: {
 
     fetchRecords(state) {
-      return state.recordList = JSON.parse(window.localStorage.getItem('recordList') || '[]') as RecordItem[];
+      state.recordList = JSON.parse(window.localStorage.getItem('recordList') || '[]') as RecordItem[];
     },
-    createRecord(state, record: RecordItem){
+    createRecord(state, record: RecordItem) {
       const recordDeep: RecordItem = clone(record);
       recordDeep.createDat = new Date();
-      if (recordDeep.tags[0]){
+      if (recordDeep.tags[0]) {
         state.recordList.push(recordDeep);
-      }else {
-        window.alert('选择一项标签会更好分类哦')
+      } else {
+        window.alert('选择一项标签会更好分类哦');
       }
-      store.commit('saveRecords')
+      store.commit('saveRecords');
     },
     saveRecords(state) {
-      window.localStorage.setItem('recordList', JSON.stringify( state.recordList));
+      window.localStorage.setItem('recordList', JSON.stringify(state.recordList));
     },
 
-    fetchTags(state) {
-      return state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
+    setCurrentTag(state, id: string) {
+      state.currentTag = state.tagList.filter(t => t.id === id)[0];
     },
-    findTag(state, id: string) {
-      return state.tagList.filter(t => t.id === id)[0];
+    fetchTags(state) {
+      state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
     },
     createTag(state, tagName: string) {
       const name = window.prompt('请输入标签名');
