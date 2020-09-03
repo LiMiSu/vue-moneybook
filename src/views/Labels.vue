@@ -20,17 +20,21 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
+  import { mixins } from 'vue-class-component'
   import Button from '@/components/Button.vue';
-  import store from '@/store/tagStore';
+  import TagHelper from '@/mixins/TagHelper';
 
   @Component({
-    components: {Button}
+    components: {Button},
+    computed: {
+      tags() {
+        return this.$store.state.tagList;
+      }
+    }
   })
-  export default class Note extends Vue {
-    tags = store.tagList;
-
-    createTag() {
-      store.createTag(name);
+  export default class Labels extends mixins(TagHelper) {
+    created() {
+      this.$store.commit('fetchTags');
     }
   }
 

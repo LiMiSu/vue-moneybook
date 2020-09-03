@@ -10,7 +10,7 @@
       </li>
     </ul>
     <div class="new">
-      <button @click="create">新增标签</button>
+      <button @click="createTag">新增标签</button>
     </div>
   </div>
 </template>
@@ -18,18 +18,21 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
-  import store from '@/store/tagStore';
+  import {mixins} from 'vue-class-component';
+  import TagHelper from '@/mixins/TagHelper';
 
   @Component({
     computed: {
       tagList() {
-        return store.tagList;
+        return this.$store.state.tagList;
       }
     }
   })
-  export default class Note extends Vue {
+  export default class Note extends mixins(TagHelper) {
     selectedLists: string[] = [];
-
+    created() {
+      this.$store.commit('fetchTags');
+    }
     toggle(tag: string) {
       const index = this.selectedLists.indexOf(tag);
       if (index >= 0) {
@@ -38,10 +41,6 @@
         this.selectedLists.push(tag);
       }
       this.$emit('update:value', this.selectedLists);
-    }
-
-    create() {
-      store.createTag(name);
     }
   }
 </script>
