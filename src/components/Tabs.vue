@@ -6,6 +6,7 @@
       class="tabs-type"
       :class="liClass(tab)"
       @click="select(tab)"
+      :style="{height: height}"
     >{{ tab.text }}
     </li>
   </ul>
@@ -25,6 +26,8 @@
     readonly value!: string;
     @Prop(String)
     classPrefix?: string;
+    @Prop({type: String, default: '64px'})
+    height!: string;
 
     liClass(tab: DataSourceItem) {
       return {
@@ -46,7 +49,7 @@
 
     &-type {
       width: 50%;
-      height: 64px;
+      /*height: 64px;*/
       display: flex;
       justify-content: center;
       align-items: center;

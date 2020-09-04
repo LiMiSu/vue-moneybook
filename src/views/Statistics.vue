@@ -1,7 +1,7 @@
 <template>
   <layout>
     <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"/>
-    <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>
+    <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval" height="48px"/>
   </layout>
 </template>
 
@@ -24,27 +24,29 @@
 </script>
 
 <style lang="scss" scoped>
-  ::v-deep .type-type {
-    background-color: white;
+  ::v-deep {
+    .type-type {
+      background-color: white;
 
-    &.selected {
-      background: #c4c4c4;
+      &.selected {
+        background: #c4c4c4;
 
-      &::after {
-        display: none;
+        &::after {
+          display: none;
+        }
       }
     }
-  }
 
-  ::v-deep .interval-type {
-    background-color: white;
-    height: 48px;
+    .interval-type {
+      background-color: white;
+      /*height: 48px;*/
 
-    &.selected {
-      background: #c4c4c4;
+      &.selected {
+        background: #c4c4c4;
 
-      &::after {
-        display: none;
+        &::after {
+          display: none;
+        }
       }
     }
   }
