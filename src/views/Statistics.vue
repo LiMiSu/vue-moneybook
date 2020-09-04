@@ -19,7 +19,7 @@
     type = '-';
     interval = 'day';
     intervalList = intervalList;
-    typeList = typeList
+    typeList = typeList;
   }
 </script>
 
@@ -38,6 +38,7 @@
 
   ::v-deep .interval-type {
     background-color: white;
+    height: 48px;
 
     &.selected {
       background: #c4c4c4;
