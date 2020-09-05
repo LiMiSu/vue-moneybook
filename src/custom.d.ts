@@ -3,7 +3,7 @@ type RecordItem = {
   notes: string;
   type: string;
   amount: number;
-  createDat?: Date;
+  createdAt?: string;
 }
 type Tag = {
   id: string;

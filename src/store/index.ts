@@ -21,12 +21,8 @@ const store = new Vuex.Store({
     },
     createRecord(state, record: RecordItem) {
       const recordDeep: RecordItem = clone(record);
-      recordDeep.createDat = new Date();
-      if (recordDeep.tags[0]) {
-        state.recordList.push(recordDeep);
-      } else {
-        window.alert('选择一项标签会更好分类哦');
-      }
+      recordDeep.createdAt = new Date().toISOString();
+      state.recordList.push(recordDeep);
       store.commit('saveRecords');
     },
     saveRecords(state) {
