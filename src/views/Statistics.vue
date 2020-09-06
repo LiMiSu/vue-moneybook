@@ -1,10 +1,10 @@
 <template>
   <layout>
     <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"/>
-    <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>
+    <!--    <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>-->
     <ol>
-      <li v-for="(group,index) in result" :key="index">
-        <h3 class="title">{{titleChange(group.title)}}</h3>
+      <li v-for="(group,index) in groupedList" :key="index">
+        <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
         <ol>
           <li v-for="item in group.items" :key="item.id"
               class="record">
@@ -24,15 +24,19 @@
   import Tabs from '@/components/Tabs.vue';
   import typeList from '@/constants/typeList';
   import intervalList from '@/constants/intervalList';
+  import dayjs from 'dayjs';
+  import clone from '@/lib/clone';
+
 
   @Component({
     components: {Tabs},
   })
   export default class Statistics extends Vue {
     type = '-';
-    interval = 'day';
-    intervalList = intervalList;
+    // interval = 'day';
+    // intervalList = intervalList;
     typeList = typeList;
+
 
     get recordList() {
       return this.$store.state.recordList;
@@ -42,31 +46,57 @@
       this.$store.commit('fetchRecords');
     }
 
-    get result() {
+    get groupedList() {
       const {recordList} = this;
+      const newRecordList = clone(recordList)
+        .filter((item: RecordItem) => item.type === this.type)
+        .sort((a: RecordItem, b: RecordItem) =>
+          dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
+        );
 
-      type HashTableValue = { title: string; items: RecordItem[] }
-
-      const hashTable: { [key: string]: HashTableValue } = {};
-
-      for (let i = 0; i < recordList.length; i++) {
-        const [data, time] = recordList[i].createdAt.split('T');
-        hashTable[data] = hashTable[data] || {title: data, items: []};
-        hashTable[data].items.push(recordList[i]);
+      if (recordList.length === 0) {
+        return [];
       }
-      return hashTable;
+      type Result = { title: string;total?: number; items: RecordItem[] }[]
+      const result: Result = [{title: dayjs(newRecordList[0].createdAt).format('YYYY-M-D'), items: [newRecordList[0]]}];
+      for (let i = 1; i < newRecordList.length; i++) {
+        const current = newRecordList[i];
+        const last = result[result.length - 1];
+        if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {
+          last.items.push(current);
+        } else {
+          result.push({title: dayjs(current.createdAt).format('YYYY-M-D'), items: [current]});
+        }
+      }
+      result.forEach(group => {
+        group.total = group.items.reduce((sum, item) => {
+          return sum + item.amount}, 0);
+      });
+      return result;
     }
 
     tagString(tags: Tag[]) {
-      const nameArr=[]
+      const nameArr = [];
       for (let i = 0; i < tags.length; i++) {
-        nameArr.push(tags[i].name)
+        nameArr.push(tags[i].name);
       }
-      return nameArr.join(" ") || '未分类'
+      return nameArr.join(' ') || '未分类';
     }
-    titleChange(title: string){
-      console.log(title);
-      return;
+
+    beautify(title: string) {
+      const dayValue = dayjs(title);
+      const now = dayjs();
+      if (dayValue.isSame(now, 'day')) {
+        return '今天';
+      } else if (dayValue.isSame(now.subtract(1, 'day'), 'day')) {
+        return '昨天';
+      } else if (dayValue.isSame(now.subtract(2, 'day'), 'day')) {
+        return '前天';
+      } else if (dayValue.isSame(now, 'year')) {
+        return dayValue.format('M月D日');
+      } else {
+        return dayValue.format('YYYY年M月D日');
+      }
     }
   }
 </script>
@@ -74,10 +104,10 @@
 <style lang="scss" scoped>
   ::v-deep {
     .type-type {
-      background-color: white;
+      background-color: #c4c4c4;
 
       &.selected {
-        background: #c4c4c4;
+        background: white;
 
         &::after {
           display: none;
@@ -115,7 +145,8 @@
   .record {
     @extend %item;
     background: white;
-    .notes{
+
+    .notes {
       margin-right: auto;
       margin-left: 16px;
       color: #999;
