@@ -4,7 +4,7 @@
       <span class="name">{{fieldName}}</span>
       <input
         type="text"
-        :value="tagName"
+        :value="tagName||value"
         :placeholder="placeholder"
         @input="$emit('update:value', $event.target.value)"
       >

@@ -25,7 +25,7 @@ const store = new Vuex.Store({
       if (!recordDeep.tags || recordDeep.tags.length === 0) {
         return window.alert('选择一项标签会更好分类哦');
       }
-      if (!recordDeep.amount||recordDeep.amount===0){
+      if (!recordDeep.amount || recordDeep.amount === 0) {
         return window.alert('请输入金额');
       }
       state.recordList.push(recordDeep);
