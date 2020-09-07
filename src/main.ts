@@ -26,6 +26,7 @@ new Vue({
 // };
 
 if (document.documentElement.clientWidth >= 500) {
+  console.log('二维码')
   window.alert('请使用手机打开本页面以保证预览效果');
   const img = document.createElement('img');
   img.src = 'qrcode.png';
