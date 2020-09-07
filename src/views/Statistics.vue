@@ -23,7 +23,6 @@
   import {Component} from 'vue-property-decorator';
   import Tabs from '@/components/Tabs.vue';
   import typeList from '@/constants/typeList';
-  import intervalList from '@/constants/intervalList';
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
 
