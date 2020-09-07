@@ -24,7 +24,7 @@ const store = new Vuex.Store({
       recordDeep.createdAt = new Date().toISOString();
       state.recordList.push(recordDeep);
       store.commit('saveRecords');
-      window.alert('记账成功')
+
     },
     saveRecords(state) {
       window.localStorage.setItem('recordList', JSON.stringify(state.recordList));
@@ -35,22 +35,22 @@ const store = new Vuex.Store({
     },
     fetchTags(state) {
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
+      if (!state.tagList || state.tagList.length===0){
+        store.commit('createTag', '衣')
+        store.commit('createTag', '食')
+        store.commit('createTag', '住')
+        store.commit('createTag', '行')
+      }
     },
     createTag(state, tagName: string) {
-      const name = window.prompt('请输入标签名');
-      if (name) {
         const names = state.tagList.map(item => item.name);
-        if (names.indexOf(name) >= 0) {
+        if (names.indexOf(tagName) >= 0) {
           window.alert('该标签已存在');
         } else {
           const id = createId().toString();
-          state.tagList.push({id, name: name});
+          state.tagList.push({id, name: tagName});
           store.commit('saveTags');
-          window.alert('标签添加成功');
         }
-      } else if (name === '') {
-        window.alert('标签名不能为空');
-      }
     },
     removeTag(state, id: string) {
       const tag = state.tagList.filter(item => item.id === id)[0];

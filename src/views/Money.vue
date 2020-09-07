@@ -40,6 +40,7 @@
 
     saveRecord() {
       this.$store.commit('createRecord', this.record);
+        window.alert('记账成功')
     }
   }
 </script>

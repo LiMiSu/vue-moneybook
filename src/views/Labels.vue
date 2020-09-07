@@ -20,7 +20,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
-  import { mixins } from 'vue-class-component'
+  import {mixins} from 'vue-class-component';
   import Button from '@/components/Button.vue';
   import TagHelper from '@/mixins/TagHelper';
 
@@ -36,7 +36,17 @@
     created() {
       this.$store.commit('fetchTags');
     }
-  }
+
+    createTag() {
+      const name = window.prompt('请输入标签名');
+      if (name) {
+        this.$store.commit('createTag',name);
+          window.alert('标签添加成功');
+      }else if (name === '') {
+        window.alert('标签名不能为空');
+      }
+      }
+    }
 
 </script>
 <style lang="scss" scoped>
