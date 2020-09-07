@@ -53,7 +53,7 @@
           dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
         );
 
-      if (recordList.length === 0) {
+      if (newRecordList.length === 0) {
         return [];
       }
       type Result = { title: string;total?: number; items: RecordItem[] }[]
