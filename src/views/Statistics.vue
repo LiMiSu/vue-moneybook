@@ -16,6 +16,7 @@
       </li>
     </ol>
     <div class="noResult" v-else>目前没有相关记录</div>
+    <Echarts :option="option"/>
   </layout>
 </template>
 
@@ -26,10 +27,11 @@
   import typeList from '@/constants/typeList';
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
-
+  import Button from '@/components/Button.vue';
+  import Echarts from '@/components/Echarts.vue';
 
   @Component({
-    components: {Tabs},
+    components: {Button, Echarts, Tabs},
   })
   export default class Statistics extends Vue {
     type = '-';
@@ -37,6 +39,21 @@
     // intervalList = intervalList;
     typeList = typeList;
 
+    get option() {
+      return {
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [{
+          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          type: 'line'
+        }]
+      };
+    }
 
     get recordList() {
       return this.$store.state.recordList;
@@ -57,7 +74,7 @@
       if (newRecordList.length === 0) {
         return [];
       }
-      type Result = { title: string;total?: number; items: RecordItem[] }[]
+      type Result = { title: string; total?: number; items: RecordItem[] }[]
       const result: Result = [{title: dayjs(newRecordList[0].createdAt).format('YYYY-M-D'), items: [newRecordList[0]]}];
       for (let i = 1; i < newRecordList.length; i++) {
         const current = newRecordList[i];
@@ -70,7 +87,8 @@
       }
       result.forEach(group => {
         group.total = group.items.reduce((sum, item) => {
-          return sum + item.amount}, 0);
+          return sum + item.amount;
+        }, 0);
       });
       return result;
     }
@@ -102,10 +120,11 @@
 </script>
 
 <style lang="scss" scoped>
-  .noResult{
+  .noResult {
     padding: 16px;
     text-align: center;
   }
+
   ::v-deep {
     .type-type {
       background-color: #c4c4c4;
@@ -156,4 +175,6 @@
       color: #999;
     }
   }
+
+
 </style>
