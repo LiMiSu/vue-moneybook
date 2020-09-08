@@ -11,7 +11,8 @@ const store = new Vuex.Store({
   state: {
     recordList: [],
     tagList: [],
-    currentTag: undefined
+    currentTag: undefined,
+    isHave:true
   } as RootState,
 
   mutations: {
@@ -49,9 +50,10 @@ const store = new Vuex.Store({
       }
     },
     createTag(state, tagName: string) {
+      state.isHave=true
       const names = state.tagList.map(item => item.name);
       if (names.indexOf(tagName) >= 0) {
-        window.alert('该标签已存在');
+        state.isHave=false
       } else {
         const id = createId().toString();
         state.tagList.push({id, name: tagName});

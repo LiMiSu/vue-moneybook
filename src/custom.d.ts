@@ -13,5 +13,6 @@ type RootState = {
   recordList: RecordItem[];
   tagList: Tag[];
   currentTag?: Tag;
+  isHave: boolean;
 }
 

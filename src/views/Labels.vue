@@ -24,6 +24,7 @@
   import Button from '@/components/Button.vue';
   import TagHelper from '@/mixins/TagHelper';
 
+
   @Component({
     components: {Button},
     computed: {
@@ -40,13 +41,17 @@
     createTag() {
       const name = window.prompt('请输入标签名');
       if (name) {
-        this.$store.commit('createTag',name);
-          window.alert('标签添加成功');
-      }else if (name === '') {
+        this.$store.commit('createTag', name);
+        if (!this.$store.state.isHave) {
+          window.alert('该标签已存在');
+          return;
+        }
+        window.alert('标签添加成功');
+      } else if (name === '') {
         window.alert('标签名不能为空');
       }
-      }
     }
+  }
 
 </script>
 <style lang="scss" scoped>
