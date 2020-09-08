@@ -50,7 +50,6 @@
     updateTag() {
       if (this.currentTag) {
         this.$store.commit('updateTag', {id: this.currentTag.id, name: this.valueDat});
-        this.currentTag.name=''
       }
     }
 
