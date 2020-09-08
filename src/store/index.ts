@@ -12,7 +12,7 @@ const store = new Vuex.Store({
     recordList: [],
     tagList: [],
     currentTag: undefined,
-    isHave:true
+    isHave: true
   } as RootState,
 
   mutations: {
@@ -22,7 +22,8 @@ const store = new Vuex.Store({
     },
     createRecord(state, record: RecordItem) {
       const recordDeep: RecordItem = clone(record);
-      recordDeep.createdAt = new Date().toISOString();
+      // recordDeep.createdAt = new Date().toISOString();
+      recordDeep.createdAt = recordDeep.createdAt || new Date().toISOString();
       if (!recordDeep.tags || recordDeep.tags.length === 0) {
         return window.alert('选择一项标签会更好分类哦');
       }
@@ -50,10 +51,10 @@ const store = new Vuex.Store({
       }
     },
     createTag(state, tagName: string) {
-      state.isHave=true
+      state.isHave = true;
       const names = state.tagList.map(item => item.name);
       if (names.indexOf(tagName) >= 0) {
-        state.isHave=false
+        state.isHave = false;
       } else {
         const id = createId().toString();
         state.tagList.push({id, name: tagName});
@@ -78,7 +79,7 @@ const store = new Vuex.Store({
       if (idList.indexOf(id) >= 0) {
         const names = state.tagList.map(item => item.name);
         if (names.indexOf(name) >= 0) {
-          window.alert('标签名重复了');
+          window.alert('标签名未作修改');
         } else if (name === '') {
           window.alert('标签名不能为空，请重新编辑');
         } else {

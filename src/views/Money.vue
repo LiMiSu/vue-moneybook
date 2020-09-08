@@ -4,6 +4,9 @@
     <div class="notes">
       <FormItem :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>
     </div>
+    <div class="createdAt">
+      <FormItem type='date' :value.sync="dayValu" field-name="日期" placeholder="在这里输入日期"/>
+    </div>
     <Tabs class-prefix="type" :data-source="typeList" :value.sync="record.type"/>
     <number-pad :value.sync="record.amount" @submit="saveRecord"/>
   </layout>
@@ -19,6 +22,7 @@
   import Button from '@/components/Button.vue';
   import typeList from '@/constants/typeList';
   import Tabs from '@/components/Tabs.vue';
+  import dayjs from 'dayjs';
 
 
   @Component({
@@ -30,8 +34,17 @@
     }
   })
   export default class Money extends Vue {
-    record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
+    record: RecordItem = {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()};
     typeList = typeList;
+
+    get dayValu() {
+      return dayjs(this.record.createdAt).format('YYYY-MM-DD');
+    }
+
+    set dayValu(value) {
+      this.record.createdAt = value;
+    }
+
 
     created() {
       this.$store.commit('fetchRecords');
@@ -40,7 +53,7 @@
 
     saveRecord() {
       this.$store.commit('createRecord', this.record);
-      this.record.notes=''
+      this.record.notes = '';
     }
   }
 </script>

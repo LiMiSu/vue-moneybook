@@ -49,8 +49,20 @@
           type: 'value'
         },
         series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
-          type: 'line'
+          data: [120, 200, 150, 80, 70, 110, 130],
+          type: 'line',
+          symbol: 'triangle',
+          symbolSize: 20,
+          lineStyle: {
+            color: 'green',
+            width: 4,
+            type: 'dashed'
+          },
+          itemStyle: {
+            borderWidth: 3,
+            borderColor: 'yellow',
+            color: 'blue'
+          }
         }]
       };
     }

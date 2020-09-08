@@ -3,7 +3,7 @@
     <label class="formItem">
       <span class="name">{{fieldName}}</span>
       <input
-        type="text"
+        :type="type || 'text'"
         :value="tagName||value"
         :placeholder="placeholder"
         @input="$emit('update:value', $event.target.value)"
@@ -22,6 +22,7 @@
     @Prop({required: true}) fieldName!: string;
     @Prop() placeholder?: string
     @Prop({default: ''}) readonly tagName!: string;
+    @Prop() type?: string;
   }
 </script>
 
