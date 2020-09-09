@@ -14,9 +14,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: $font-heiti;
-    color: #333;
+    /*color: rgb(255,255,255);*/
+    color: red;
     font-size: 16px;
-    background: #f5f5f5;
+    background: rgb(21,27,35);
   }
 
 
