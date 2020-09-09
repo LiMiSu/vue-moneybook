@@ -27,11 +27,11 @@
 
   @Component({
     components: {Tabs, Button, Tags, FormItem, NumberPad},
-    computed: {
-      recordList() {
-        return this.$store.state.recordList;
-      }
-    }
+    // computed: {
+    //   recordList() {
+    //     return this.$store.state.recordList;
+    //   }
+    // }
   })
   export default class Money extends Vue {
     record: RecordItem = {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()};
@@ -40,6 +40,7 @@
     get dayValu() {
       return dayjs(this.record.createdAt).format('YYYY-MM-DD');
     }
+
 
     set dayValu(value) {
       this.record.createdAt = value;

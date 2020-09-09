@@ -30,18 +30,21 @@
   })
   export default class Note extends mixins(TagHelper) {
     selectedLists: string[] = [];
+
     created() {
-      this.$store.commit('fetchTags');
+      const tagList = this.$store.commit('fetchTags');
+      this.toggle(this.$store.state.tagList[0]);
     }
+
     toggle(tag: string) {
+      this.selectedLists.push(tag);
       const index = this.selectedLists.indexOf(tag);
-      if (index >= 0) {
-        this.selectedLists.splice(index, 1);
-      } else {
-        this.selectedLists.push(tag);
+      if (index >= 0 && this.selectedLists.length > 1) {
+        this.selectedLists.splice(0, 1);
       }
       this.$emit('update:value', this.selectedLists);
     }
+
     createTag() {
       const name = window.prompt('请输入标签名');
       if (name) {

@@ -29,7 +29,9 @@
   export default class NumberPad extends Vue {
     @Prop() readonly value!: number;
     output = this.value.toString();
-
+    get recordList() {
+      return this.$store.state.recordList;
+    }
     inputContent(event: MouseEvent) {
       const button = (event.target as HTMLButtonElement);
       const input = button.textContent!;
@@ -67,6 +69,9 @@
       this.$emit('update:value', parseFloat(this.output));
       this.$emit('submit', parseFloat(this.output));
       this.output='0';
+      // if (!this.recordList.tags || this.recordList.tags.length === 0) {
+      //   return window.alert('选择一项标签会更好分类哦');
+      // }
     }
   }
 </script>

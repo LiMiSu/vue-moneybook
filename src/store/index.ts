@@ -24,9 +24,9 @@ const store = new Vuex.Store({
       const recordDeep: RecordItem = clone(record);
       // recordDeep.createdAt = new Date().toISOString();
       recordDeep.createdAt = recordDeep.createdAt || new Date().toISOString();
-      if (!recordDeep.tags || recordDeep.tags.length === 0) {
-        return window.alert('选择一项标签会更好分类哦');
-      }
+      // if (!recordDeep.tags || recordDeep.tags.length === 0) {
+      //   return window.alert('选择一项标签会更好分类哦');
+      // }
       if (!recordDeep.amount || recordDeep.amount === 0) {
         return window.alert('请输入金额');
       }
@@ -43,7 +43,6 @@ const store = new Vuex.Store({
     },
     fetchTags(state) {
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
-      console.log(state.tagList);
       if (!state.tagList || state.tagList.length === 0) {
         store.commit('createTag', '衣');
         store.commit('createTag', '食');
