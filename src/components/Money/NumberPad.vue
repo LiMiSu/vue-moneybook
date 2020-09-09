@@ -38,32 +38,36 @@
   export default class NumberPad extends Vue {
     @Prop() readonly value!: number;
     output = this.value.toString();
-    isOver = false;
+    isOver = true;
 
     get recordList() {
       return this.$store.state.recordList;
     }
 
+    get dotLast() {
+      return this.output.charAt(this.output.length - 1) === '.';
+    }
+
+    get operatorLast() {
+      return this.output.charAt(this.output.length - 1) === '÷' || this.output.charAt(this.output.length - 1) === '×' || this.output.charAt(this.output.length - 1) === '+' || this.output.charAt(this.output.length - 1) === '-';
+    }
+
+    get isHaveOperator() {
+      return this.output.indexOf('÷') >= 0 || this.output.indexOf('+') >= 0 || this.output.indexOf('×') >= 0 || this.output.indexOf('-') >= 0;
+    }
+
     get isCount() {
-      //判断是否输入了加减乘除号
-      return this.output.indexOf('÷') >= 0 || this.output.indexOf('×') >= 0 || this.output.indexOf('+') >= 0 || this.output.indexOf('-') >= 0||this.output.charAt(this.output.length-1)==='.';
+      return this.isHaveOperator || this.dotLast;
     }
 
     inputContent(event: MouseEvent) {
       const button = (event.target as HTMLButtonElement);
       const input = button.textContent!;
-      if (this.isOver) {
-        if ('÷×+-'.indexOf(input) >= 0){
-          this.output +=input;
-        }else {
-          this.output = '';
-        }
-        this.isOver = false;
-      }
+
       if (this.output.length === 16) {
         alert('输入太多屏幕都放不下啦');
         return;
-      }
+      }    //输入过长
 
       if (this.output === '0') {
         if ('0123456789'.indexOf(input) >= 0) {
@@ -72,37 +76,44 @@
           this.output += input;
         }
         return;
-      }
+      }     //0时输入
+
+      if (this.isHaveOperator) {
+        if (this.operatorLast && '÷×+-'.indexOf(input) >= 0) {
+          this.output = this.output.slice(0, this.output.length - 1) + input;
+          return;
+        } else if ('÷×+-'.indexOf(input) >= 0) {
+          this.count();
+        }
+      }  //输入运算符：最后一个替换
+
 
       if (this.output.indexOf('.') >= 0 && input === '.') {
-        return;
-      }
-
-      //已经输入过加减乘除号就不能在重复输入
-      if (this.isCount&&this.output.charAt(this.output.length-1)!=='.') {
-        if ('÷×+-'.indexOf(input) >= 0) {
+        if (this.isHaveOperator) {
+          if (this.output.split('.').length === 3) {
+            return;
+          }
+        } else {
           return;
         }
+      }   //符号两边只能有一个小数点
+
+      if (this.dotLast && '÷×+-'.indexOf(input) >= 0) {
+        this.output += 0;
+        if (this.output === '0.0') {
+          this.output = '0';
+        }
+      }    //当在【.】后面直接输入加减乘除号时，点后加0或者把点取消
+
+      if (this.operatorLast && input === '.') {
+        this.output += 0; //这个试出来的
+      }   // //在加减乘除号后面输入【.】时
+
+      if (!this.isOver) {
+        this.output=''
+        this.isOver=true
       }
 
-      //当在【.】后面直接输入加减乘除号时，点后加0或者把点取消
-      //逛其他平台的计算器这个是不解决啊
-      if (this.output.charAt(this.output.length - 1) === '.') {
-        if ('÷×+-'.indexOf(input) >= 0) {
-          // this.output += 0; //这个0.的时候不好看
-          this.output=this.output.slice(0,this.output.length-1)
-          if (this.output === '0.0') {
-            this.output = '0';
-          }
-        }
-      }
-
-      //在加减乘除号后面输入【.】时
-      if ('÷×+-'.indexOf(this.output.charAt(this.output.length - 1)) >= 0) {
-        if (input === '.') {
-          this.output += 0; //这个试出来的
-        }
-      }
       this.output += input;
     }
 
@@ -151,7 +162,14 @@
     }
 
     equal() {
-      this.isOver = true;
+      this.count();
+      if (this.dotLast) {
+        this.output = this.output.slice(0, this.output.length - 1);
+      }
+      this.isOver=false
+    }
+
+    count() {
       if (this.output.indexOf('÷') >= 0) {
         this.division();
       } else if (this.output.indexOf('×') >= 0) {
@@ -160,15 +178,14 @@
         this.add();
       } else if (this.output.indexOf('-') >= 0) {
         this.minus();
-      }else if (this.output.indexOf('.') >= 0){
-        this.output=this.output.slice(0,this.output.length-1)
       }
     }
 
 
     ok() {
-      this.$emit('update:value', parseFloat(this.output));//把输入的字符串变成数字记入账单
-      this.$emit('submit', parseFloat(this.output));
+      const moneyValue = parseFloat(parseFloat(this.output).toFixed(2));
+      this.$emit('update:value', moneyValue);//把输入的字符串变成数字记入账单
+      this.$emit('submit', moneyValue);
       this.output = '0';
     }
   }
