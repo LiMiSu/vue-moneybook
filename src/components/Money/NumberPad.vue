@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="inputNumber">{{output}}</div>
+    <div class="inputNumber" :class="[{first:one},{second:two}]">{{output}}</div>
     <div class="numberPad">
       <button @click="inputContent">÷</button>
       <button @click="inputContent">×</button>
@@ -39,6 +39,9 @@
     @Prop() readonly value!: number;
     output = this.value.toString();
     isOver = true;
+    one = false;
+    two = false;
+
 
     get recordList() {
       return this.$store.state.recordList;
@@ -64,10 +67,14 @@
       const button = (event.target as HTMLButtonElement);
       const input = button.textContent!;
 
-      if (this.output.length === 16) {
-        alert('输入太多屏幕都放不下啦');
+      if (this.output.length === 12) {
+        this.one = true;
+      } else if (this.output.length === 16) {
+        this.two = true;
+      } else if (this.output.length === 22) {
+        window.alert('输入金额过长');
         return;
-      }    //输入过长
+      }  //输入过长
 
       if (this.output === '0') {
         if ('0123456789'.indexOf(input) >= 0) {
@@ -110,8 +117,8 @@
       }   // //在加减乘除号后面输入【.】时
 
       if (!this.isOver) {
-        this.output=''
-        this.isOver=true
+        this.output = '';
+        this.isOver = true;
       }
 
       this.output += input;
@@ -123,10 +130,18 @@
       } else {
         this.output = this.output.slice(0, -1);
       }
+      if (this.output.length < 16) {
+        this.two = false;
+      }
+      if (this.output.length < 12) {
+        this.one = false;
+      }
     }
 
     clear() {
       this.output = '0';
+      this.one = false;
+      this.two = false;
     }
 
     division() {
@@ -166,7 +181,7 @@
       if (this.dotLast) {
         this.output = this.output.slice(0, this.output.length - 1);
       }
-      this.isOver=false
+      this.isOver = false;
     }
 
     count() {
@@ -213,6 +228,14 @@
     align-items: center;
     word-break: break-all;
     overflow: hidden;
+
+    &.first {
+      font-size: 30px;
+    }
+
+    &.second {
+      font-size: 24px;
+    }
   }
 
   .numberPad {
