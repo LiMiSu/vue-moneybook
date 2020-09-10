@@ -12,7 +12,8 @@ const store = new Vuex.Store({
     recordList: [],
     tagList: [],
     currentTag: undefined,
-    isHave: true
+    isHave: true,
+    changeShow:false,
   } as RootState,
 
   mutations: {

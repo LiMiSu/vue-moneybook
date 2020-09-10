@@ -1,14 +1,15 @@
 <template>
+<!--  记账组件-->
   <layout class-prefix="layout">
     <tags :value.sync="record.tags"/>
     <div class="notes">
       <FormItem :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>
     </div>
     <div class="createdAt">
-      <FormItem type='date' :value.sync="dayValu" field-name="日期" placeholder="在这里输入日期"/>
+      <Days field-name="日期" placeholder="在这里输入日期"/>
     </div>
     <Tabs class-prefix="type" :data-source="typeList" :value.sync="record.type"/>
-    <number-pad :value.sync="record.amount" @submit="saveRecord"/>
+    <number-pad v-if="$store.state.changeShow"   :value.sync="record.amount" @submit="saveRecord" />
   </layout>
 </template>
 
@@ -23,15 +24,12 @@
   import typeList from '@/constants/typeList';
   import Tabs from '@/components/Tabs.vue';
   import dayjs from 'dayjs';
+  import Days from '@/components/Days.vue';
 
 
   @Component({
-    components: {Tabs, Button, Tags, FormItem, NumberPad},
-    // computed: {
-    //   recordList() {
-    //     return this.$store.state.recordList;
-    //   }
-    // }
+    components: {Days, Tabs, Button, Tags, FormItem, NumberPad},
+
   })
   export default class Money extends Vue {
     record: RecordItem = {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()};
@@ -56,6 +54,7 @@
       this.$store.commit('createRecord', this.record);
       this.record.notes = '';
     }
+
   }
 </script>
 <style lang="scss" scoped>

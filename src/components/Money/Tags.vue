@@ -1,4 +1,5 @@
 <template>
+<!--  新增标签组件-->
   <div class="tags">
     <ul class="current">
       <li

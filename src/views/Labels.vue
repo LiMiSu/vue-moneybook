@@ -1,4 +1,5 @@
 <template>
+<!--  新建标签组件-->
   <div>
     <layout>
       <div class="tags">
@@ -23,10 +24,11 @@
   import {mixins} from 'vue-class-component';
   import Button from '@/components/Button.vue';
   import TagHelper from '@/mixins/TagHelper';
+  import Days from '@/components/Days.vue';
 
 
   @Component({
-    components: {Button},
+    components: {Days, Button},
     computed: {
       tags() {
         return this.$store.state.tagList;
@@ -34,6 +36,10 @@
     }
   })
   export default class Labels extends mixins(TagHelper) {
+
+
+
+
     created() {
       this.$store.commit('fetchTags');
     }

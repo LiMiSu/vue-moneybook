@@ -1,4 +1,5 @@
 <template>
+<!--  编辑标签组件-->
   <Layout>
     <div class="navBar">
       <Icon class="leftIcon" name="left" @click="$router.back()"/>

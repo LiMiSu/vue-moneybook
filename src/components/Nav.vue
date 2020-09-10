@@ -1,27 +1,44 @@
 <template>
   <nav>
+    <!--  导航组件-->
     <router-link to="/labels" class="item" active-class="selected">
       <Icon name="label"/>
-      标签
+      钱包
+    </router-link>
+    <router-link to="/labels" class="item" active-class="selected">
+      <Icon name="label"/>
+      钱包
     </router-link>
     <router-link to="/money" class="item" active-class="selected">
-      <Icon name="add" class="addMoney"/>
-      记一笔
+      <Icon name="add" class="addMoney" @click="h"/>
+      记账
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
       <Icon name="statistics"/>
-      统计
+      报表
+    </router-link>
+    <router-link to="/statistics" class="item" active-class="selected">
+      <Icon name="statistics"/>
+      明细
     </router-link>
   </nav>
 </template>
+
 <script lang="ts">
-  export default {
-    name: 'Nav'
-  };
+  import Vue from 'vue';
+  import {Component} from 'vue-property-decorator';
+
+  @Component
+  export default class Nav extends Vue {
+    h() {
+      this.$store.state.changeShow = !this.$store.state.changeShow;
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
   @import "~@/assets/style/helper.scss";
+
   nav {
     @extend %outerShadow;
     display: flex;
@@ -39,7 +56,8 @@
       .icon {
         width: 32px;
         height: 32px;
-        .addMoney{
+
+        .addMoney {
           float: left;
         }
       }
@@ -47,6 +65,10 @@
 
     > .item.selected {
       color: $color-highlight;
+    }
+
+    .addMoneyTable .icon {
+      color: red;
     }
   }
 </style>

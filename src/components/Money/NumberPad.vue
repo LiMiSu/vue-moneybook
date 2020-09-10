@@ -1,4 +1,5 @@
 <template>
+  <!--  计算器组件-->
   <div>
     <div class="inputNumber" :class="[{first:one},{second:two}]">{{output}}</div>
     <div class="numberPad">

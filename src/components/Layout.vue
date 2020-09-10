@@ -1,4 +1,5 @@
 <template>
+<!--  导航样式组件-->
     <div class="layout-wrapper">
       <div class="content" :class=" classPrefix && `${classPrefix}-content` ">
         <slot />
@@ -10,7 +11,7 @@
 <script lang="ts">
   export default {
     name: 'Layout',
-    props: ['classPrefix']
+    props: ['classPrefix','value'],
   };
 </script>
 

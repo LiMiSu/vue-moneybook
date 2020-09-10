@@ -1,4 +1,5 @@
 <template>
+<!--  数据图形化组件-->
   <div ref="container" class="content">
 
   </div>

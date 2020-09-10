@@ -1,4 +1,5 @@
 <template>
+<!--  标签展示选择组件-->
   <ul class="tabs" :class="{[classPrefix+'-tabs']:classPrefix}">
     <li
       v-for="tab in dataSource"
