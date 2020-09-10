@@ -1,13 +1,12 @@
 <template>
   <!--  图标统计组件-->
   <layout>
-    <template #header class="statisticsTabs">
+    <template #header>
       <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"/>
       <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>
     </template>
-    <template #main class="statisticsAll">
+    <template #main>
       <Echarts :option="option"/>
-
       <div class="statisticsList">
         <ol v-if="groupedList.length>0">
           <li v-for="(group,index) in groupedList" :key="index">
@@ -169,21 +168,19 @@
     }
   }
 
+
+  /*相同样式*/
+  %item {
+    padding: 0 16px;
+    min-height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .statisticsList {
-
-    /*相同样式*/
-    %item {
-      padding: 0 16px;
-      min-height: 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    height: 500px;
     overflow: auto;
     background: fuchsia;
-
     .title {
       @extend %item;
     }

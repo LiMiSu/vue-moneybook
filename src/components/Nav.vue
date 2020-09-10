@@ -10,8 +10,14 @@
       钱包
     </router-link>
     <router-link to="/money" class="item" active-class="selected">
-      <Icon name="add" class="addMoney" @click="h"/>
-      记账
+      <div v-if="addMoneyShow">
+        <Icon name="add" class="addMoney" @click="addMoneyPad"/>
+      </div>
+      <div v-else>
+        <Icon name="label"/>
+        明细
+      </div>
+
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
       <Icon name="statistics"/>
@@ -30,9 +36,16 @@
 
   @Component
   export default class Nav extends Vue {
-    h() {
+
+
+    get addMoneyShow() {
+      return (this.$router as any).history.current.fullPath==='/money';
+    }
+
+    addMoneyPad() {
       this.$store.state.changeShow = !this.$store.state.changeShow;
     }
+
   }
 </script>
 
