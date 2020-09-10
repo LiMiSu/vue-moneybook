@@ -2,30 +2,24 @@
   <nav>
     <!--  导航组件-->
     <router-link to="/labels" class="item" active-class="selected">
-      <Icon name="label"/>
-      钱包
+      <Icon name="label"/>钱包
     </router-link>
     <router-link to="/labels" class="item" active-class="selected">
-      <Icon name="label"/>
-      钱包
+      <Icon name="label"/>钱包
     </router-link>
     <router-link to="/money" class="item" active-class="selected">
       <div v-if="addMoneyShow">
         <Icon name="add" class="addMoney" @click="addMoneyPad"/>
       </div>
-      <div v-else>
-        <Icon name="label"/>
-        明细
+      <div v-else class="tis">
+        <Icon name="label"/>明细
       </div>
-
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
-      <Icon name="statistics"/>
-      报表
+      <Icon name="statistics"/>报表
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
-      <Icon name="statistics"/>
-      明细
+      <Icon name="statistics"/>明细
     </router-link>
   </nav>
 </template>
@@ -57,8 +51,8 @@
     display: flex;
     flex-direction: row;
     font-size: 12px;
-
-    > .item {
+    position: relative;
+    > .item,.tis {
       padding: 2px 0;
       width: 33.33333%;
       display: flex;
@@ -70,8 +64,12 @@
         width: 32px;
         height: 32px;
 
-        .addMoney {
-          float: left;
+        &.addMoney {
+          position: absolute;
+          left: calc(50vw - 30px);
+          bottom: 0;
+          width: 90px;
+          height: 90px;
         }
       }
     }
