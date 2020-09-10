@@ -24,13 +24,25 @@
   .layout-wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    min-height: 100vh;
+    /*justify-content: space-between;*/
+    /*min-height: 100vh;*/
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 
-  .main,.header{
+  .main{
     display: flex;
     flex-direction: column;
     overflow: auto;
+    flex: 1;
+    /*flex-grow: 1;*/
+  }
+  .header,.footer{
+    /*flex: 0 0 0;*/
+  /*  同学为什么要设置这个？不设置目前看来没什么影响*/
   }
 </style>

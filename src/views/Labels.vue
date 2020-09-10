@@ -1,7 +1,7 @@
 <template>
   <!--  新建标签组件-->
   <layout>
-    <template #header>
+    <template #main>
       <div class="tags">
         <router-link class="tag"
                      :to="`/labels/edit/${tag.id}`"
@@ -11,8 +11,6 @@
           <Icon name="right"/>
         </router-link>
       </div>
-    </template>
-    <template #main>
       <div class="createTag-wrapper">
         <Button @click.native="createTag">新建标签</Button>
       </div>
@@ -21,7 +19,6 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import {mixins} from 'vue-class-component';
   import Button from '@/components/Button.vue';
