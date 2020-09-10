@@ -25,6 +25,6 @@
 <style lang="scss" scoped>
   .content {
     max-width: 100%;
-    min-height: 50vh;
+    min-height: 40vh;
   }
 </style>

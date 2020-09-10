@@ -1,7 +1,7 @@
 <template>
-<!--  新建标签组件-->
-  <div>
-    <layout>
+  <!--  新建标签组件-->
+  <layout>
+    <template #header>
       <div class="tags">
         <router-link class="tag"
                      :to="`/labels/edit/${tag.id}`"
@@ -11,11 +11,13 @@
           <Icon name="right"/>
         </router-link>
       </div>
+    </template>
+    <template #main>
       <div class="createTag-wrapper">
         <Button @click.native="createTag">新建标签</Button>
       </div>
-    </layout>
-  </div>
+    </template>
+  </layout>
 </template>
 
 <script lang="ts">
@@ -36,8 +38,6 @@
     }
   })
   export default class Labels extends mixins(TagHelper) {
-
-
 
 
     created() {

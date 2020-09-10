@@ -1,15 +1,18 @@
 <template>
-<!--  记账组件-->
+  <!--  记账组件-->
   <layout class-prefix="layout">
-    <tags :value.sync="record.tags"/>
-    <div class="notes">
-      <FormItem :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>
-    </div>
-    <div class="createdAt">
-      <Days field-name="日期" placeholder="在这里输入日期"/>
-    </div>
-    <Tabs class-prefix="type" :data-source="typeList" :value.sync="record.type"/>
-    <number-pad v-if="$store.state.changeShow"   :value.sync="record.amount" @submit="saveRecord" />
+    <template #main>
+      <div v-if="$store.state.changeShow">
+        <tags :value.sync="record.tags"/>
+        <div class="notes">
+          <FormItem :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>
+        </div>
+        <Days field-name="日期" placeholder="在这里输入日期"/>
+        <Tabs class-prefix="type" :data-source="typeList" :value.sync="record.type"/>
+        <number-pad  :value.sync="record.amount" @submit="saveRecord"/>
+      </div>
+    </template>
+
   </layout>
 </template>
 
@@ -34,16 +37,6 @@
   export default class Money extends Vue {
     record: RecordItem = {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()};
     typeList = typeList;
-
-    get dayValu() {
-      return dayjs(this.record.createdAt).format('YYYY-MM-DD');
-    }
-
-
-    set dayValu(value) {
-      this.record.createdAt = value;
-    }
-
 
     created() {
       this.$store.commit('fetchRecords');

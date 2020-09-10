@@ -1,23 +1,26 @@
 <template>
 <!--  编辑标签组件-->
   <Layout>
-    <div class="navBar">
-      <Icon class="leftIcon" name="left" @click="$router.back()"/>
-      <span class="title">编辑标签</span>
-      <span class="rightIcon"></span>
-    </div>
-    <div class="form-wrapper">
-      <form-item
-        ref="dom"
-        :tagName="this.currentTag.name"
-        :value.sync="valueDat"
-        field-name="标签名"
-        placeholder="请输入标签名"/>
-    </div>
-    <div class="button-wrapper">
-      <Button @click="removeTag">删除标签</Button>
-      <Button @click.native="updateTag">确认更改</Button>
-    </div>
+    <template #header>
+      <div class="navBar">
+        <Icon class="leftIcon" name="left" @click="$router.back()"/>
+        <span class="title">编辑标签</span>
+        <span class="rightIcon"></span>
+      </div>
+    </template>
+    <template #main>
+      <div class="form-wrapper">
+        <form-item
+          :tagName="this.currentTag.name"
+          :value.sync="valueDat"
+          field-name="标签名"
+          placeholder="请输入标签名"/>
+      </div>
+      <div class="button-wrapper">
+        <Button @click="removeTag">删除标签</Button>
+        <Button @click.native="updateTag">确认更改</Button>
+      </div>
+    </template>
   </Layout>
 </template>
 

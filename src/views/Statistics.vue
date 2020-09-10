@@ -1,23 +1,30 @@
 <template>
-<!--  图标统计组件-->
+  <!--  图标统计组件-->
   <layout>
-    <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"/>
-    <!--    <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>-->
-    <ol v-if="groupedList.length>0">
-      <li v-for="(group,index) in groupedList" :key="index">
-        <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
-        <ol>
-          <li v-for="item in group.items" :key="item.id"
-              class="record">
-            <span>{{tagString(item.tags)}}</span>
-            <span class="notes">{{item.notes}}</span>
-            <span>￥{{item.amount}}</span>
+    <template #header class="statisticsTabs">
+      <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"/>
+      <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>
+    </template>
+    <template #main class="statisticsAll">
+      <Echarts :option="option"/>
+
+      <div class="statisticsList">
+        <ol v-if="groupedList.length>0">
+          <li v-for="(group,index) in groupedList" :key="index">
+            <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
+            <ol>
+              <li v-for="item in group.items" :key="item.id"
+                  class="record">
+                <span>{{tagString(item.tags)}}</span>
+                <span class="notes">{{item.notes}}</span>
+                <span>￥{{item.amount}}</span>
+              </li>
+            </ol>
           </li>
         </ol>
-      </li>
-    </ol>
-    <div class="noResult" v-else>目前没有相关记录</div>
-    <Echarts :option="option"/>
+        <div class="noResult" v-else>目前没有相关记录</div>
+      </div>
+    </template>
   </layout>
 </template>
 
@@ -30,14 +37,15 @@
   import clone from '@/lib/clone';
   import Button from '@/components/Button.vue';
   import Echarts from '@/components/Echarts.vue';
+  import intervalList from '@/constants/intervalList';
 
   @Component({
     components: {Button, Echarts, Tabs},
   })
   export default class Statistics extends Vue {
     type = '-';
-    // interval = 'day';
-    // intervalList = intervalList;
+    interval = 'day';
+    intervalList = intervalList;
     typeList = typeList;
 
     get option() {
@@ -133,10 +141,6 @@
 </script>
 
 <style lang="scss" scoped>
-  .noResult {
-    padding: 16px;
-    text-align: center;
-  }
 
   ::v-deep {
     .type-type {
@@ -153,7 +157,7 @@
 
     .interval-type {
       background-color: white;
-      height: 48px;
+      height: 30px;
 
       &.selected {
         background: #c4c4c4;
@@ -165,27 +169,39 @@
     }
   }
 
-  /*相同样式*/
-  %item {
-    padding: 0 16px;
-    min-height: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  .statisticsList {
 
-  .title {
-    @extend %item;
-  }
+    /*相同样式*/
+    %item {
+      padding: 0 16px;
+      min-height: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-  .record {
-    @extend %item;
-    background: white;
+    height: 500px;
+    overflow: auto;
+    background: fuchsia;
 
-    .notes {
-      margin-right: auto;
-      margin-left: 16px;
-      color: #999;
+    .title {
+      @extend %item;
+    }
+
+    .record {
+      @extend %item;
+      background: white;
+
+      .notes {
+        margin-right: auto;
+        margin-left: 16px;
+        color: #999;
+      }
+    }
+
+    .noResult {
+      padding: 16px;
+      text-align: center;
     }
   }
 
