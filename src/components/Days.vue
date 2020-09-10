@@ -5,17 +5,19 @@
       <Icon name="date" class="icon-data"></Icon>
       <input
         type="text"
-        :value="dataValue">
+        :value="inputDate"
+        @click="showBody=!showBody"
+      >
     </div>
     <div v-if="showBody" class="date-body">
       <div class="data-tri"></div>
       <div class="date-content">
         <div class="date-nav">
-          <Icon name="left-nav" class="date-btn icon-left-nav"></Icon>
-          <Icon name="zuo" class="date-btn icon-zuo"></Icon>
-          <span>2020年</span>
-          <Icon name="you" class="date-btn icon-you"></Icon>
-          <Icon name="right-nav" class="date-btn icon-right-nav"></Icon>
+          <Icon name="left-nav" class="date-btn icon-left-nav" @click="onChangYear('last')"></Icon>
+          <Icon name="zuo" class="date-btn icon-zuo" @click="onChangMonth('last')"></Icon>
+          <span>{{showData.year}}年{{showData.month+1}}月{{showData.day}}</span>
+          <Icon name="you" class="date-btn icon-you" @click="onChangMonth('next')"></Icon>
+          <Icon name="right-nav" class="date-btn icon-right-nav" @click="onChangYear('next')"></Icon>
         </div>
         <div class="data-list">
           <div class="date-weeks">
@@ -25,8 +27,16 @@
             </div>
           </div>
           <div class="date-days">
-            <div v-for="day in 42" :key="day">
-              {{day}}
+            <div
+              v-for="day in showDays"
+              :key="day.getTime()"
+              :class="{
+                'other-month': !isThisMonthDay(day),
+                'is-select': isSelectDay(day),
+                'is-today': isToday(day)}"
+              @click="onSelectDay(day)"
+            >
+              {{day.getDate()}}
             </div>
           </div>
         </div>
@@ -41,21 +51,111 @@
 
   @Component
   export default class Days extends Vue {
-    data = new Date();
     weekDay = ['日', '一', '二', '三', '四', '五', '六'];
-
     showBody = false;
+    data = new Date();
+    showData = { //初始值？
+      year: 0,
+      month: 0,
+      day: 0
+    };
 
-    get dataValue() {
-      const year = this.data.getFullYear();
-      const month = this.data.getMonth();
-      const day = this.data.getDate();
+    getYearMonthDay(date: any) {  //获取时间函数，时间初始化函数
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      const day = date.getDate();
+      return {
+        year,
+        month,
+        day
+      };
+    }
+
+    getShowDate() { //input框跟导航显示的日期可能不同
+      const {year, month, day} = this.getYearMonthDay(this.data);
+      this.showData = {
+        year,
+        month,
+        day
+      };
+    }
+
+    created() {
+      this.getShowDate();
+    }
+
+    get inputDate() {
+      const {year, month, day} = this.getYearMonthDay(this.data);
       return `${year}-${month + 1}-${day}`;
     }
 
-    changeShow(value: boolean) {
-      // this.showBody = value;
+    get showDays() {
+      const days = [];
+      const monthFirstDay = new Date(this.showData.year, this.showData.month, 1);
+      //  拿到1月1号是周几，然后往后错开几天
+      const firstDayWeek = monthFirstDay.getDay();
+      const showStartDay = +monthFirstDay - firstDayWeek * 24 * 60 * 60 * 1000;
+      for (let i = 0; i < 42; i++) {
+        days.push(new Date(showStartDay + i * 24 * 60 * 60 * 1000));
+      }
+      return days;
     }
+
+    isThisMonthDay(date: Date) {
+      const {year, month} = this.getYearMonthDay(date); //看看你这一天是啥
+      const {year: showYear, month: showMonth} = this.showData; //再看看展示的是啥
+      return year === showYear && month === showMonth;
+    }
+
+    isToday(date: Date) {
+      const {year, month, day} = this.getYearMonthDay(date); //看看你这一天是啥
+      const {year: todayYear, month: todayMonth, day: todaytDay} = this.getYearMonthDay(new Date());//今天
+      return year === todayYear && month === todayMonth && day === todaytDay;
+    }
+
+    isSelectDay(date: Date) {
+      const {year, month, day} = this.getYearMonthDay(date); //看看你这一天是啥
+      const {year: selectYear, month: selectMonth, day: selectDay} = this.getYearMonthDay(new Date(this.inputDate));
+      return year === selectYear && month === selectMonth && day === selectDay;
+    }
+
+    onSelectDay(date: Date) { //选择的日期变成点击的日期
+      this.data = date;
+      this.showBody=false
+      this.getShowDate()
+    }
+
+    // onChangMonth(type: string) {  //自己手写
+    //   const minMonth = 0;
+    //   const maxMonth = 11;
+    //   const moveMonth = type === 'last' ? -1 : 1;
+    //   let {year, month} = this.showData;
+    //   month += moveMonth;
+    //   if (month < minMonth) {
+    //     month = maxMonth;
+    //     year--;
+    //   } else if (month > maxMonth) {
+    //     month = minMonth;
+    //     year++;
+    //   }
+    //   this.showData.month = month;
+    //   this.showData.year=year
+    // }
+    onChangMonth(type: string) { //日期对象方法setMonth
+      const moveMonth = type === 'last' ? -1 : 1;
+      const {year, month, day} = this.showData;
+      const changMonth = new Date(year, month, day);
+      changMonth.setMonth(month + moveMonth);
+      const {year: Year, month: Month} = this.getYearMonthDay(changMonth);
+      this.showData.year = Year;
+      this.showData.month = Month;
+    }
+
+    onChangYear(type: string){
+      const moveYear = type === 'last' ? -1 : 1;
+      this.showData.year+=moveYear
+    }
+
   }
 </script>
 
@@ -78,8 +178,8 @@
 
   .date-body {
     border: 1px solid yellow;
-    min-width: 50vw;
-    min-height: 50vh;
+    min-width: 50px;
+    min-height: 500px;
     position: relative;
 
     .data-tri {
@@ -147,23 +247,23 @@
             height: 30px;
             line-height: 30px;
             text-align: center;
-            margin: 4px 6px;
+            margin: 4px 4px;
 
-            .is-today {
+            &.is-today {
               color: #409eff;
               font-weight: 700;
             }
 
-            .is-select {
+            &.is-select {
               border-radius: 50%;
               background: #409eff;
               font-weight: 700;
               color: #fff;
             }
 
-            .other-month {
+            &.other-month {
               border-radius: 50%;
-              color: #c0c4cc;
+              color: red;
             }
           }
         }
