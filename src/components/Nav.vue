@@ -5,10 +5,6 @@
       <Icon name="label"/>
       钱包
     </router-link>
-    <router-link to="/labels" class="item" active-class="selected">
-      <Icon name="label"/>
-      钱包
-    </router-link>
     <router-link to="/money" class="item" active-class="selected">
       <Icon name="add" class="addMoney" @click="h"/>
       记账

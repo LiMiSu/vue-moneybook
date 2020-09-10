@@ -7,11 +7,9 @@
         <span class="title">编辑标签</span>
         <span class="rightIcon"></span>
       </div>
-    </template>
-    <template #main>
       <div class="form-wrapper">
         <form-item
-          :tagName="this.currentTag.name"
+          :tagName="currentTag.name"
           :value.sync="valueDat"
           field-name="标签名"
           placeholder="请输入标签名"/>
@@ -35,6 +33,7 @@
   })
 
   export default class EditLabel extends Vue {
+
     valueDat!: string;
 
     get currentTag() {
