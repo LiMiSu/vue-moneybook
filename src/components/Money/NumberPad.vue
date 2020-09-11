@@ -85,6 +85,9 @@
       return this.isHaveOperator || this.dotLast;
     }
 
+    get arr() {
+      return this.output.split('÷');
+    }
 
     inputContent(event: MouseEvent) {
       this.lock = true;
@@ -123,13 +126,21 @@
 
       if (this.output.indexOf('.') >= 0 && input === '.') {
         if (this.isHaveOperator) {
-          if (this.output.split('.').length === 3) {
+          const arr = this.output.split('.');
+          if (arr.length === 3 && (arr[1].includes('÷') || arr[1].includes('×') || arr[1].includes('+') || arr[1].includes('-'))) {
             return;
-          } else if (this.output.charAt(0) === '-') {
+          } else if (arr.length === 2 && (arr[0].includes('÷') || arr[0].includes('×') || arr[0].includes('+') || arr[0].includes('-'))) {
             return;
           }
         } else {
-          return;
+          if (!this.isOver) {
+            this.output = '0' + input;
+            this.isOver = !this.isOver;
+            return;
+          } else {
+            return;
+          }
+
         }
       }   //符号两边只能有一个小数点
 
@@ -145,7 +156,11 @@
       }   // //在加减乘除号后面输入【.】时
 
       if (!this.isOver) {
-        if ('.÷×+-'.indexOf(input) >= 0) {
+        if ('÷×+-'.indexOf(input) >= 0) {
+          this.output += input;
+          this.isOver = true;
+          return;
+        } else if (input === '.') {
           this.output = '0' + input;
           this.isOver = true;
           return;
