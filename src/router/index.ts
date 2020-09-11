@@ -6,6 +6,7 @@ import Statistics from '@/views/Statistics.vue';
 import NotFound from '@/views/NotFound.vue';
 import EditLabel from '@/views/EditLabel.vue';
 import NumberPad from '@/components/Money/NumberPad.vue';
+import AddMoney from '@/views/AddMoney.vue';
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,10 @@ const routes: Array<RouteConfig> = [
   {
     path: '/numberpad',
     component: NumberPad
+  },
+  {
+    path: '/addmoney',
+    component: AddMoney
   },
   {
     path: '*',

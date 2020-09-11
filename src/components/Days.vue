@@ -1,17 +1,18 @@
 <template>
   <!--  日期组件-->
   <div class="date">
-    <div class="date-input">
-      <Icon name="date" class="icon-data"></Icon>
-      <input
-        type="text"
-        :value="inputDate"
-        @click="showBody=!showBody"
-      >
-    </div>
+    <!--    <div class="date-input">-->
+    <!--      <Icon name="date" class="icon-data"></Icon>-->
+    <!--      <input-->
+    <!--        type="text"-->
+    <!--        :value="inputDate"-->
+    <!--        @click="showBody=!showBody"-->
+    <!--      >-->
+    <!--    </div>-->
     <div v-if="showBody" class="date-body">
       <div class="data-tri"></div>
       <div class="date-content">
+
         <div class="date-nav">
           <Icon name="left-nav" class="date-btn icon-left-nav" @click="onChangYear('last')"></Icon>
           <Icon name="zuo" class="date-btn icon-zuo" @click="onChangMonth('last')"></Icon>
@@ -19,15 +20,38 @@
           <Icon name="you" class="date-btn icon-you" @click="onChangMonth('next')"></Icon>
           <Icon name="right-nav" class="date-btn icon-right-nav" @click="onChangYear('next')"></Icon>
         </div>
-        <div class="data-list">
-          <div class="date-weeks">
-            <div v-for="week in weekDay" :key="week"
+
+<!--        <div class="data-list">-->
+<!--          <div class="date-weeks">-->
+<!--            <div v-for="week in weekDay" :key="week"-->
+<!--            >-->
+<!--              {{week}}-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="date-days">-->
+<!--            <div-->
+<!--              v-for="day in showDays"-->
+<!--              :key="day.getTime()"-->
+<!--              :class="{-->
+<!--                'other-month': !isThisMonthDay(day),-->
+<!--                'is-select': isSelectDay(day),-->
+<!--                'is-today': isToday(day)}"-->
+<!--              @click="onSelectDay(day)"-->
+<!--            >-->
+<!--              {{day.getDate()}}-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+        <table class="data-list">
+          <tr class="date-weeks">
+            <th v-for="week in weekDay" :key="week"
             >
               {{week}}
-            </div>
-          </div>
-          <div class="date-days">
-            <div
+            </th>
+          </tr>
+          <tr class="date-days">
+            <td
               v-for="day in showDays"
               :key="day.getTime()"
               :class="{
@@ -37,9 +61,10 @@
               @click="onSelectDay(day)"
             >
               {{day.getDate()}}
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </table>
+
       </div>
     </div>
   </div>
@@ -52,7 +77,7 @@
   @Component
   export default class Days extends Vue {
     weekDay = ['日', '一', '二', '三', '四', '五', '六'];
-    showBody = false;
+    showBody = true;
     data = new Date();
     showData = { //初始值？
       year: 0,
@@ -121,8 +146,8 @@
 
     onSelectDay(date: Date) { //选择的日期变成点击的日期
       this.data = date;
-      this.showBody=false
-      this.getShowDate()
+      // this.showBody=false
+      this.getShowDate();
     }
 
     // onChangMonth(type: string) {  //自己手写
@@ -151,9 +176,9 @@
       this.showData.month = Month;
     }
 
-    onChangYear(type: string){
+    onChangYear(type: string) {
       const moveYear = type === 'last' ? -1 : 1;
-      this.showData.year+=moveYear
+      this.showData.year += moveYear;
     }
 
   }
@@ -178,9 +203,10 @@
 
   .date-body {
     border: 1px solid yellow;
-    min-width: 50px;
-    min-height: 500px;
+    min-width: 100vw;
+    height: 250px;
     position: relative;
+    overflow: hidden;
 
     .data-tri {
       position: absolute;
@@ -223,8 +249,8 @@
 
       .data-list {
         color: #606266;
-        margin-left: 60px;
-        margin-right: 60px;
+        /*margin-left: 60px;*/
+        /*margin-right: 60px;*/
         font-size: 14px;
         user-select: none;
 
@@ -234,6 +260,12 @@
           align-items: center;
           border-bottom: 1px solid #ebeef5;
           height: 40px;
+
+          th {
+            width: 13.2vw;
+            text-align: center;
+            line-height: 40px;
+          }
         }
 
         .date-days {
@@ -242,12 +274,11 @@
           align-items: center;
           flex-wrap: wrap;
 
-          div {
-            width: 30px;
-            height: 30px;
+          td {
+            width: 13.2vw;
+            height: 40px;
             line-height: 30px;
             text-align: center;
-            margin: 4px 4px;
 
             &.is-today {
               color: #409eff;

@@ -2,24 +2,29 @@
   <nav>
     <!--  导航组件-->
     <router-link to="/labels" class="item" active-class="selected">
-      <Icon name="label"/>钱包
+      <Icon name="label"/>
+      钱包
     </router-link>
     <router-link to="/labels" class="item" active-class="selected">
-      <Icon name="label"/>钱包
+      <Icon name="label"/>
+      钱包
     </router-link>
     <router-link to="/money" class="item" active-class="selected">
-      <div v-if="addMoneyShow">
-        <Icon name="add" class="addMoney" @click="addMoneyPad"/>
-      </div>
+      <router-link v-if="addMoneyShow" to="/addmoney">
+        <Icon  name="add" class="addMoney" @click="addMoneyPad"/>
+      </router-link>
       <div v-else class="tis">
-        <Icon name="label"/>明细
+        <Icon name="label"/>
+        明细
       </div>
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
-      <Icon name="statistics"/>报表
+      <Icon name="statistics"/>
+      报表
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
-      <Icon name="statistics"/>明细
+      <Icon name="statistics"/>
+      明细
     </router-link>
   </nav>
 </template>
@@ -33,7 +38,7 @@
 
 
     get addMoneyShow() {
-      return (this.$router as any).history.current.fullPath==='/money';
+      return (this.$router as any).history.current.fullPath === '/money';
     }
 
     addMoneyPad() {
@@ -52,7 +57,8 @@
     flex-direction: row;
     font-size: 12px;
     position: relative;
-    > .item,.tis {
+
+    > .item, .tis {
       padding: 2px 0;
       width: 33.33333%;
       display: flex;
@@ -66,10 +72,11 @@
 
         &.addMoney {
           position: absolute;
-          left: calc(50vw - 30px);
+          left: calc(50vw - 45px);
           bottom: 0;
           width: 90px;
           height: 90px;
+          background: transparent;
         }
       }
     }

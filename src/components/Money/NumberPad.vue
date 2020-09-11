@@ -211,8 +211,8 @@
   @import "~@/assets/style/helper.scss";
 
   %addMoneyStyle {
-    background: rgb(8, 11, 15);
-    color: rgb(255, 255, 255);
+    background: yellow;
+    color: blue;
     font-size: 22px;
     font-weight: bold;
   }
@@ -223,7 +223,7 @@
     font-size: 36px;
     font-family: Consolas, monospace;
     padding: 7px;
-    height: 72px;
+    height: 60px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -245,13 +245,12 @@
     button {
       @extend %addMoneyStyle;
       width: 25%;
-      height: 60px;
+      height: 42px;
       float: left;
-      border: 1px solid #999999;
 
       &.ok,
       &.equal {
-        height: 60*2px;
+        height: 42*2px;
         float: right;
       }
 
