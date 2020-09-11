@@ -1,13 +1,9 @@
 <template>
   <nav>
     <!--  导航组件-->
-    <router-link to="/labels" class="item" active-class="selected">
-      <Icon name="label"/>
-      钱包
-    </router-link>
-    <router-link to="/labels" class="item" active-class="selected">
-      <Icon name="label"/>
-      钱包
+    <router-link to="/statistics" class="item" active-class="selected">
+      <Icon name="statistics"/>
+      报表
     </router-link>
     <router-link to="/money" class="item" active-class="selected">
       <router-link v-if="addMoneyShow" to="/addmoney">
@@ -17,10 +13,6 @@
         <Icon name="label"/>
         明细
       </div>
-    </router-link>
-    <router-link to="/statistics" class="item" active-class="selected">
-      <Icon name="statistics"/>
-      报表
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
       <Icon name="statistics"/>

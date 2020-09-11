@@ -1,17 +1,19 @@
 <template>
   <!--  新增标签组件-->
   <div class="tags">
-    <ul class="current">
-      <li
-        v-for="tag in tagList"
-        :key="tag.id"
-        :class="{selected: selectedLists.indexOf(tag)>=0}"
-        @click="toggle(tag)">
-        {{ tag.name }}
-      </li>
-    </ul>
-    <div class="new">
-      <router-link to="/labels" @click="createTag">新增标签</router-link>
+    <div class="tagList"
+         v-for="tag in tagList"
+         :key="tag.id">
+      <div class="tagIcon"
+           :class="{selected: selectedLists.indexOf(tag)>=0}"
+           @click="toggle(tag)">
+        <Icon :name=tag.tagicon></Icon>
+      </div>
+      <span>{{tag.name}}</span>
+    </div>
+    <div class="addTag" @click="goAdd">
+      <Icon name="add"></Icon>
+      管理
     </div>
   </div>
 </template>
@@ -32,7 +34,7 @@
     selectedLists: string[] = [];
 
     created() {
-      const tagList = this.$store.commit('fetchTags');
+      this.$store.commit('fetchTags');
       this.toggle(this.$store.state.tagList[0]);
     }
 
@@ -45,18 +47,8 @@
       this.$emit('update:value', this.selectedLists);
     }
 
-    createTag() {
-      const name = window.prompt('请输入标签名');
-      if (name) {
-        this.$store.commit('createTag', name);
-        if (!this.$store.state.isHave) {
-          window.alert('该标签已存在');
-          return;
-        }
-        window.alert('标签添加成功');
-      } else if (name === '') {
-        window.alert('标签名不能为空');
-      }
+    goAdd() {
+      this.$router.push('/labels');
     }
   }
 </script>
@@ -68,42 +60,29 @@
     padding: 16px;
     flex-grow: 1;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    flex-wrap: wrap;
 
-    .current {
-      display: flex;
-      flex-wrap: wrap;
-      overflow: auto;
-
-      li {
-        $bg: #d9d9d9;
-        background: $bg;
-        padding: 0 16px;
-        margin-right: 12px;
-        margin-top: 4px;
-        $h: 24px;
-        border-radius: $h/2;
-        height: $h;
-        line-height: $h;
-
-        &.selected {
-          background: darken($bg, 50%);
-          color: white;
-        }
+    .tagIcon,.addTag {
+      $bg:#d9d9d9;
+      background: $bg;
+      $h:36px;
+      border-radius: $h/2;
+      height: 36px;
+      width: 45px;
+      line-height: $h;
+      text-align: center;
+      .icon{
+        background: transparent;
+      }
+      &.selected {
+        background: darken($bg, 50%);
+        color: white;
       }
     }
 
-    .new {
-      padding-top: 16px;
-
-      button {
-        background: transparent;
-        border: none;
-        color: #999;
-        border-bottom: 1px solid;
-        padding: 0 4px;
-      }
+    svg.icon {
+      width: 33px;
+      height: 33px;
     }
   }
 </style>

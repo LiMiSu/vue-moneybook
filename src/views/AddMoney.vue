@@ -2,6 +2,7 @@
   <div class="addMoney">
     <div class="content">
       <tags :value.sync="record.tags"/>
+      <router-view></router-view>
       <div class="notes"><FormItem :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/></div>
     </div>
     <div>
@@ -10,6 +11,7 @@
         <Days :value.sync="record.createdAt" class="chooseDay"></Days>
       </number-pad>
     </div>
+
   </div>
 </template>
 

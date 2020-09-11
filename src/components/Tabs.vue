@@ -27,9 +27,8 @@
     @Prop(String)
     classPrefix?: string;
 
-    created() {
-      console.log(this.dataSource);
-    }
+    // created() {
+    // }
     liClass(tab: DataSourceItem) {
       return {
         [this.classPrefix + '-type']: this.classPrefix, selected: tab.value === this.value

@@ -8,6 +8,7 @@ type RecordItem = {
 type Tag = {
   id: string;
   name: string;
+  tagicon: string;
 }
 type RootState = {
   recordList: RecordItem[];
@@ -15,9 +16,9 @@ type RootState = {
   currentTag?: Tag;
   isHave: boolean;
 }
- type GetDay ={
-   year: number;
-   month: number;
-   day: number;
- }
+type GetDay = {
+  year: number;
+  month: number;
+  day: number;
+}
 
