@@ -27,7 +27,7 @@
       <button @click="inputContent">2</button>
       <button @click="inputContent">3</button>
       <button @click="equal" class="equal"
-              v-if="isCount">=
+              v-if="isCount&&lock">=
       </button>
       <button @click="ok" class="ok"
               v-else>ok
@@ -53,14 +53,18 @@
     isOver = true;
     one = false;
     two = false;
+    lock = true;
 
+    // twojian = true;
 
     get dayValue() {
       return new Date(this.day).getDate();
     }
-    created(){
+
+    created() {
       // console.log(this.dayValue);
     }
+
     get recordList() {
       return this.$store.state.recordList;
     }
@@ -81,7 +85,9 @@
       return this.isHaveOperator || this.dotLast;
     }
 
+
     inputContent(event: MouseEvent) {
+      this.lock = true;
       const button = (event.target as HTMLButtonElement);
       const input = button.textContent!;
 
@@ -94,7 +100,7 @@
         return;
       }  //输入过长
 
-      if (this.output === '0') {
+      if (this.output && this.output === '0') {
         if ('0123456789'.indexOf(input) >= 0) {
           this.output = input;
         } else {
@@ -102,7 +108,9 @@
         }
         return;
       }     //0时输入
-
+      if (this.output.length === 1 && this.isHaveOperator) {
+        this.output = '0' + this.output;
+      }
       if (this.isHaveOperator) {
         if (this.operatorLast && '÷×+-'.indexOf(input) >= 0) {
           this.output = this.output.slice(0, this.output.length - 1) + input;
@@ -116,6 +124,8 @@
       if (this.output.indexOf('.') >= 0 && input === '.') {
         if (this.isHaveOperator) {
           if (this.output.split('.').length === 3) {
+            return;
+          } else if (this.output.charAt(0) === '-') {
             return;
           }
         } else {
@@ -135,10 +145,14 @@
       }   // //在加减乘除号后面输入【.】时
 
       if (!this.isOver) {
+        if ('.÷×+-'.indexOf(input) >= 0) {
+          this.output = '0' + input;
+          this.isOver = true;
+          return;
+        }
         this.output = '';
         this.isOver = true;
       }
-
       this.output += input;
     }
 
@@ -163,38 +177,43 @@
     }
 
     division() {
-      let [a, b] = this.output.split('÷');
-      a = a || '0';  //输入【4÷】结果NaN的bug
+      let [a, b, c] = this.output.split('÷');
+      a = a || '1';  //输入【4÷】结果NaN的bug
       b = b || '1';
-      const result = (parseFloat(a) / parseFloat(b)).toFixed(2);
+      c = c || '1';
+      const result = (parseFloat(a) / parseFloat(b) / parseFloat(c)).toFixed(2);
       this.output = '' + parseFloat(result);
     }
 
     times() {
-      let [a, b] = this.output.split('×');
-      a = a || '0';
+      let [a, b, c] = this.output.split('×');
+      a = a || '1';
       b = b || '1';
-      const result = (parseFloat(a) * parseFloat(b)).toFixed(2);
+      c = c || '1';
+      const result = (parseFloat(a) * parseFloat(b) * parseFloat(c)).toFixed(2);
       this.output = '' + parseFloat(result);
     }
 
     add() {
-      let [a, b] = this.output.split('+');
+      let [a, b, c] = this.output.split('+');
       a = a || '0';
       b = b || '0';
-      const result = (parseFloat(a) + parseFloat(b)).toFixed(2);
+      c = c || '0';
+      const result = (parseFloat(a) + parseFloat(b) + parseFloat(c)).toFixed(2);
       this.output = '' + parseFloat(result);
     }
 
     minus() {
-      let [a, b] = this.output.split('-');
+      let [a, b, c] = this.output.split('-');
       a = a || '0';
       b = b || '0';
-      const result = (parseFloat(a) - parseFloat(b)).toFixed(2);
+      c = c || '0';
+      const result = (parseFloat(a) - parseFloat(b) - parseFloat(c)).toFixed(2);
       this.output = '' + parseFloat(result);
     }
 
     equal() {
+      this.lock = false;
       this.count();
       if (this.dotLast) {
         this.output = this.output.slice(0, this.output.length - 1);
@@ -217,6 +236,10 @@
 
     ok() {
       const moneyValue = parseFloat(parseFloat(this.output).toFixed(2));
+      if (moneyValue < 0) {
+        window.alert('负值不能入账哦,请重新输入呢');
+        return;
+      }
       this.$emit('update:value', moneyValue);//把输入的字符串变成数字记入账单
       this.$emit('submit', moneyValue);
       this.output = '0';

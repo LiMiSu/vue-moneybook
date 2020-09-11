@@ -1,13 +1,13 @@
 <template>
   <!--  日期组件-->
   <div class="date">
-        <div class="date-input">
-          <Icon name="date" class="icon-data"></Icon>
-          <input
-            type="text"
-            :value="inputDate"
-          >
-        </div>
+<!--        <div class="date-input">-->
+<!--          <Icon name="date" class="icon-data"></Icon>-->
+<!--          <input-->
+<!--            type="text"-->
+<!--            :value="inputDate"-->
+<!--          >-->
+<!--        </div>-->
     <div v-if="$store.state.showBody" class="date-body">
       <div class="data-tri"></div>
       <div class="date-content">
