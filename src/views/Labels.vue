@@ -1,7 +1,13 @@
 <template>
   <!--  新建标签组件-->
   <layout>
+    <template #header>
+      <Tabs :data-source="typeList" ></Tabs>
+    </template>
+
     <template #main>
+
+
       <div class="tags">
         <router-link class="tag"
                      :to="`/labels/edit/${tag.id}`"
@@ -11,6 +17,8 @@
           <Icon name="right"/>
         </router-link>
       </div>
+
+
       <div class="createTag-wrapper">
         <Button @click.native="createTag">新建标签</Button>
       </div>
@@ -24,10 +32,12 @@
   import Button from '@/components/Button.vue';
   import TagHelper from '@/mixins/TagHelper';
   import Days from '@/components/Days.vue';
+  import Tabs from '@/components/Tabs.vue';
+  import typeList from '@/constants/typeList';
 
 
   @Component({
-    components: {Days, Button},
+    components: {Tabs, Days, Button},
     computed: {
       tags() {
         return this.$store.state.tagList;
@@ -35,7 +45,7 @@
     }
   })
   export default class Labels extends mixins(TagHelper) {
-
+    typeList = typeList;
 
     created() {
       this.$store.commit('fetchTags');

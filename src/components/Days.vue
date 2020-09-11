@@ -76,8 +76,6 @@
     }
 
     created() { //让初识值等于今天
-      console.log(this.data.toISOString());
-      console.log(this.value);
       this.getShowDate();
     }
 
