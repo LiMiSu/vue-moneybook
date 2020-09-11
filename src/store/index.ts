@@ -14,6 +14,7 @@ const store = new Vuex.Store({
     currentTag: undefined,
     isHave: true,
     changeShow:false,
+    showBody : false,
   } as RootState,
 
   mutations: {

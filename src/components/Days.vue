@@ -1,15 +1,14 @@
 <template>
   <!--  日期组件-->
   <div class="date">
-    <!--    <div class="date-input">-->
-    <!--      <Icon name="date" class="icon-data"></Icon>-->
-    <!--      <input-->
-    <!--        type="text"-->
-    <!--        :value="inputDate"-->
-    <!--        @click="showBody=!showBody"-->
-    <!--      >-->
-    <!--    </div>-->
-    <div v-if="showBody" class="date-body">
+        <div class="date-input">
+          <Icon name="date" class="icon-data"></Icon>
+          <input
+            type="text"
+            :value="inputDate"
+          >
+        </div>
+    <div v-if="$store.state.showBody" class="date-body">
       <div class="data-tri"></div>
       <div class="date-content">
 
@@ -76,16 +75,18 @@
 
   @Component
   export default class Days extends Vue {
+    @Prop(String)
+    readonly value!: string;
     weekDay = ['日', '一', '二', '三', '四', '五', '六'];
-    showBody = true;
-    data = new Date();
+    data = new Date(this.value);
     showData = { //初始值？
       year: 0,
       month: 0,
       day: 0
     };
 
-    getYearMonthDay(date: any) {  //获取时间函数，时间初始化函数
+
+    getYearMonthDay(date: any) {  //获取时间函数，时间初始化函数，拿到具体天
       const year = date.getFullYear();
       const month = date.getMonth();
       const day = date.getDate();
@@ -96,7 +97,7 @@
       };
     }
 
-    getShowDate() { //input框跟导航显示的日期可能不同
+    getShowDate() { //拿到今天是哪天
       const {year, month, day} = this.getYearMonthDay(this.data);
       this.showData = {
         year,
@@ -105,7 +106,9 @@
       };
     }
 
-    created() {
+    created() { //让初识值等于今天
+      console.log(this.data.toISOString());
+      console.log(this.value);
       this.getShowDate();
     }
 
@@ -114,7 +117,7 @@
       return `${year}-${month + 1}-${day}`;
     }
 
-    get showDays() {
+    get showDays() {  //日历展示这个月
       const days = [];
       const monthFirstDay = new Date(this.showData.year, this.showData.month, 1);
       //  拿到1月1号是周几，然后往后错开几天
@@ -134,7 +137,7 @@
 
     isToday(date: Date) {
       const {year, month, day} = this.getYearMonthDay(date); //看看你这一天是啥
-      const {year: todayYear, month: todayMonth, day: todaytDay} = this.getYearMonthDay(new Date());//今天
+      const {year: todayYear, month: todayMonth, day: todaytDay} = this.getYearMonthDay(new Date(this.value));//今天
       return year === todayYear && month === todayMonth && day === todaytDay;
     }
 
@@ -146,8 +149,9 @@
 
     onSelectDay(date: Date) { //选择的日期变成点击的日期
       this.data = date;
-      // this.showBody=false
+      this.$store.state.showBody=false
       this.getShowDate();
+      this.$emit('update:value', this.data.toISOString());
     }
 
     // onChangMonth(type: string) {  //自己手写
@@ -185,21 +189,21 @@
 </script>
 
 <style lang="scss" scoped>
-  .date-input {
-    height: 40px;
-    line-height: 40px;
-    border: 1px solid blue;
-    padding: 0 30px;
-    border-radius: 4px;
-    position: relative;
+  /*.date-input {*/
+  /*  height: 40px;*/
+  /*  line-height: 40px;*/
+  /*  border: 1px solid blue;*/
+  /*  padding: 0 30px;*/
+  /*  border-radius: 4px;*/
+  /*  position: relative;*/
 
-    .icon-data {
-      position: absolute;
-      left: 5px;
-      top: 3px;
-      font-size: 30px;
-    }
-  }
+    /*.icon-data {*/
+
+    /*  left: 5px;*/
+    /*  top: 3px;*/
+    /*  font-size: 30px;*/
+    /*}*/
+  /*}*/
 
   .date-body {
     border: 1px solid yellow;

@@ -1,16 +1,15 @@
 <template>
   <div class="addMoney">
     <div class="content">
-      <div><Days field-name="日期" placeholder="在这里输入日期"/></div>
-      <div><tags :value.sync="record.tags"/></div>
+      <tags :value.sync="record.tags"/>
       <div class="notes"><FormItem :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/></div>
     </div>
     <div>
-
-      <div><Tabs class-prefix="type" :data-source="typeList" :value.sync="record.type"/></div>
-      <div><number-pad :value.sync="record.amount" @submit="saveRecord"/></div>
+      <Tabs class-prefix="type" :data-source="typeList" :value.sync="record.type"/>
+      <number-pad :value.sync="record.amount" :day="record.createdAt" @submit="saveRecord">
+        <Days :value.sync="record.createdAt" class="chooseDay"></Days>
+      </number-pad>
     </div>
-
   </div>
 </template>
 
@@ -26,15 +25,21 @@
   import Tabs from '@/components/Tabs.vue';
   import dayjs from 'dayjs';
   import Days from '@/components/Days.vue';
-
-
   @Component({
     components: {Days, Tabs, Button, Tags, FormItem, NumberPad},
-
   })
   export default class Money extends Vue {
     record: RecordItem = {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()};
     typeList = typeList;
+
+    // get dayValu() {
+    //   return dayjs(this.record.createdAt).format('YYYY-MM-DD');
+    // }
+    //
+    //
+    // set dayValu(value) {
+    //   this.record.createdAt = value;
+    // }
 
     created() {
       this.$store.commit('fetchRecords');

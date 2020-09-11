@@ -1,7 +1,15 @@
 <template>
   <!--  计算器组件-->
   <div>
-    <div class="inputNumber" :class="[{first:one},{second:two}]">{{output}}</div>
+    <slot/>
+    <div class="inputNumber" :class="[{first:one},{second:two}]">
+      <div class="dayBook" @click="$store.state.showBody=!$store.state.showBody">
+        <div class="left"></div>
+        {{dayValue}}
+        <div class="right"></div>
+      </div>
+      <span>{{output}}</span>
+    </div>
     <div class="numberPad">
       <button @click="inputContent">÷</button>
       <button @click="inputContent">×</button>
@@ -27,23 +35,32 @@
       <button @click="inputContent" class="zero">0</button>
       <button @click="inputContent">.</button>
     </div>
-
   </div>
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Prop} from 'vue-property-decorator';
+  import Days from '@/components/Days.vue';
 
-  @Component
+  @Component({
+    components: {Days}
+  })
   export default class NumberPad extends Vue {
     @Prop() readonly value!: number;
+    @Prop() readonly day!: number;
     output = this.value.toString();
     isOver = true;
     one = false;
     two = false;
 
 
+    get dayValue() {
+      return new Date(this.day).getDate();
+    }
+    created(){
+      // console.log(this.dayValue);
+    }
     get recordList() {
       return this.$store.state.recordList;
     }
@@ -210,6 +227,20 @@
 <style lang="scss" scoped>
   @import "~@/assets/style/helper.scss";
 
+  .icon-data {
+
+    left: 5px;
+    top: 3px;
+    font-size: 30px;
+  }
+
+  .chooseDay {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+  }
+
   %addMoneyStyle {
     background: yellow;
     color: blue;
@@ -225,10 +256,41 @@
     padding: 7px;
     height: 60px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     word-break: break-all;
     overflow: hidden;
+
+    .dayBook {
+      height: 22px;
+      width: 33px;
+      border: 1px solid #5a5a5a;
+      border-radius: 1px;
+      box-shadow: 0px -3px 0px 0px #333333;
+      background: white;
+      position: relative;
+      font-size: 12px;
+      line-height: 22px;
+      text-align: center;
+
+      .left {
+        position: absolute;
+        left: 3px;
+        top: -7px;
+        width: 0px;
+        height: 10px;
+        border: 1px solid #5a5a5a;
+      }
+
+      .right {
+        position: absolute;
+        right: 3px;
+        top: -7px;
+        width: 0px;
+        height: 10px;
+        border: 1px solid #5a5a5a;
+      }
+    }
 
     &.first {
       font-size: 30px;

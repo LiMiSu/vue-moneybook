@@ -4,15 +4,15 @@
     <template #main>
 
 
-<!--      <div v-if="$store.state.changeShow" class="addMoney">-->
-<!--        <tags :value.sync="record.tags"/>-->
-<!--        <div class="notes">-->
-<!--          <FormItem :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>-->
-<!--        </div>-->
-<!--        <Days field-name="日期" placeholder="在这里输入日期"/>-->
-<!--        <Tabs class-prefix="type" :data-source="typeList" :value.sync="record.type"/>-->
-<!--        <number-pad :value.sync="record.amount" @submit="saveRecord"/>-->
-<!--      </div>-->
+      <div v-if="$store.state.changeShow" class="addMoney">
+        <tags :value.sync="record.tags"/>
+        <div class="notes">
+          <FormItem :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>
+        </div>
+        <Days field-name="日期" placeholder="在这里输入日期"/>
+        <Tabs class-prefix="type" :data-source="typeList" :value.sync="record.type"/>
+        <number-pad :value.sync="record.amount" @submit="saveRecord"/>
+      </div>
 
 
     </template>
@@ -39,18 +39,18 @@
 
   })
   export default class Money extends Vue {
-    // record: RecordItem = {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()};
-    // typeList = typeList;
-    //
-    // created() {
-    //   this.$store.commit('fetchRecords');
-    //
-    // }
-    //
-    // saveRecord() {
-    //   this.$store.commit('createRecord', this.record);
-    //   this.record.notes = '';
-    // }
+    record: RecordItem = {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()};
+    typeList = typeList;
+
+    created() {
+      this.$store.commit('fetchRecords');
+
+    }
+
+    saveRecord() {
+      this.$store.commit('createRecord', this.record);
+      this.record.notes = '';
+    }
 
   }
 </script>
