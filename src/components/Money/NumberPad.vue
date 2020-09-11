@@ -55,7 +55,6 @@
     two = false;
     lock = true;
 
-    // twojian = true;
 
     get dayValue() {
       return new Date(this.day).getDate();
@@ -168,6 +167,12 @@
         this.output = '';
         this.isOver = true;
       }
+      if (this.output.length < 16) {
+        this.two = false;
+      }
+      if (this.output.length < 12) {
+        this.one = false;
+      }
       this.output += input;
     }
 
@@ -234,6 +239,12 @@
         this.output = this.output.slice(0, this.output.length - 1);
       }
       this.isOver = false;
+      if (this.output.length < 16) {
+        this.two = false;
+      }
+      if (this.output.length < 12) {
+        this.one = false;
+      }
     }
 
     count() {
@@ -315,7 +326,7 @@
         position: absolute;
         left: 3px;
         top: -7px;
-        width: 0px;
+        width: 0;
         height: 10px;
         border: 1px solid #5a5a5a;
       }
@@ -324,7 +335,7 @@
         position: absolute;
         right: 3px;
         top: -7px;
-        width: 0px;
+        width: 0;
         height: 10px;
         border: 1px solid #5a5a5a;
       }
