@@ -1,5 +1,4 @@
 <template>
-<!--  备注、日期、编辑标签名【输入框组件】-->
   <div>
     <label class="formItem">
       <span class="name">{{fieldName}}</span>

@@ -1,5 +1,4 @@
 <template>
-  <!--  日期组件-->
   <div class="date">
     <div v-if="$store.state.showBody" class="date-body">
       <div class="data-tri"></div>

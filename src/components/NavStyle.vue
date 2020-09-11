@@ -1,5 +1,4 @@
 <template>
-  <!--  导航样式组件-->
   <div class="layout-wrapper">
     <header class="header">
       <slot name="header"></slot>

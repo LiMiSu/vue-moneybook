@@ -1,5 +1,4 @@
 <template>
-  <!--  新建标签组件-->
   <div>
     <Tabs :data-source="typeList"></Tabs>
     <div class="tags">
@@ -25,8 +24,8 @@
   import {mixins} from 'vue-class-component';
   import Button from '@/components/Button.vue';
   import TagHelper from '@/mixins/TagHelper';
-  import Days from '@/components/Days.vue';
-  import Tabs from '@/components/Tabs.vue';
+  import Days from '@/components/Calender.vue';
+  import Tabs from '@/components/MoneyType.vue';
   import typeList from '@/constants/typeList';
 
   @Component({

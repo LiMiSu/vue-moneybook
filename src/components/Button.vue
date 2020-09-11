@@ -1,5 +1,4 @@
 <template>
-<!--  新建标签按钮组件-->
   <button class="button"
           @click="$emit('click', $event)">
     <slot/>

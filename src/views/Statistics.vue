@@ -1,5 +1,4 @@
 <template>
-  <!--  图标统计组件-->
   <layout>
     <template #header>
       <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"/>
@@ -30,7 +29,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
-  import Tabs from '@/components/Tabs.vue';
+  import Tabs from '@/components/MoneyType.vue';
   import typeList from '@/constants/typeList';
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';

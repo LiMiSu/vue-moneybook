@@ -1,5 +1,4 @@
 <template>
-  <!--  新增标签组件-->
   <div class="tags">
     <div class="tagList"
          v-for="tag in tagList"

@@ -1,5 +1,4 @@
 <template>
-  <!--  计算器组件-->
   <div>
     <slot/>
     <div class="inputNumber" :class="[{first:one},{second:two}]">
@@ -41,7 +40,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Prop} from 'vue-property-decorator';
-  import Days from '@/components/Days.vue';
+  import Days from '@/components/Calender.vue';
 
   @Component({
     components: {Days}

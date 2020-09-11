@@ -1,6 +1,5 @@
 <template>
   <nav>
-    <!--  导航组件-->
     <router-link to="/statistics" class="item" active-class="selected">
       <Icon name="statistics"/>
       报表
