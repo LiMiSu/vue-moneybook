@@ -1,5 +1,5 @@
 <template>
-<!--  新增标签组件-->
+  <!--  新增标签组件-->
   <div class="tags">
     <ul class="current">
       <li
@@ -11,13 +11,12 @@
       </li>
     </ul>
     <div class="new">
-      <button @click="createTag">新增标签</button>
+      <router-link to="/labels" @click="createTag">新增标签</router-link>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import {mixins} from 'vue-class-component';
   import TagHelper from '@/mixins/TagHelper';

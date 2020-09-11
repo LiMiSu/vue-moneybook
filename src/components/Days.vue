@@ -1,17 +1,9 @@
 <template>
   <!--  日期组件-->
   <div class="date">
-<!--        <div class="date-input">-->
-<!--          <Icon name="date" class="icon-data"></Icon>-->
-<!--          <input-->
-<!--            type="text"-->
-<!--            :value="inputDate"-->
-<!--          >-->
-<!--        </div>-->
     <div v-if="$store.state.showBody" class="date-body">
       <div class="data-tri"></div>
       <div class="date-content">
-
         <div class="date-nav">
           <Icon name="left-nav" class="date-btn icon-left-nav" @click="onChangYear('last')"></Icon>
           <Icon name="zuo" class="date-btn icon-zuo" @click="onChangMonth('last')"></Icon>
@@ -19,29 +11,6 @@
           <Icon name="you" class="date-btn icon-you" @click="onChangMonth('next')"></Icon>
           <Icon name="right-nav" class="date-btn icon-right-nav" @click="onChangYear('next')"></Icon>
         </div>
-
-<!--        <div class="data-list">-->
-<!--          <div class="date-weeks">-->
-<!--            <div v-for="week in weekDay" :key="week"-->
-<!--            >-->
-<!--              {{week}}-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="date-days">-->
-<!--            <div-->
-<!--              v-for="day in showDays"-->
-<!--              :key="day.getTime()"-->
-<!--              :class="{-->
-<!--                'other-month': !isThisMonthDay(day),-->
-<!--                'is-select': isSelectDay(day),-->
-<!--                'is-today': isToday(day)}"-->
-<!--              @click="onSelectDay(day)"-->
-<!--            >-->
-<!--              {{day.getDate()}}-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-
         <table class="data-list">
           <tr class="date-weeks">
             <th v-for="week in weekDay" :key="week"
@@ -149,27 +118,11 @@
 
     onSelectDay(date: Date) { //选择的日期变成点击的日期
       this.data = date;
-      this.$store.state.showBody=false
+      this.$store.state.showBody = false;
       this.getShowDate();
       this.$emit('update:value', this.data.toISOString());
     }
 
-    // onChangMonth(type: string) {  //自己手写
-    //   const minMonth = 0;
-    //   const maxMonth = 11;
-    //   const moveMonth = type === 'last' ? -1 : 1;
-    //   let {year, month} = this.showData;
-    //   month += moveMonth;
-    //   if (month < minMonth) {
-    //     month = maxMonth;
-    //     year--;
-    //   } else if (month > maxMonth) {
-    //     month = minMonth;
-    //     year++;
-    //   }
-    //   this.showData.month = month;
-    //   this.showData.year=year
-    // }
     onChangMonth(type: string) { //日期对象方法setMonth
       const moveMonth = type === 'last' ? -1 : 1;
       const {year, month, day} = this.showData;
@@ -189,21 +142,6 @@
 </script>
 
 <style lang="scss" scoped>
-  /*.date-input {*/
-  /*  height: 40px;*/
-  /*  line-height: 40px;*/
-  /*  border: 1px solid blue;*/
-  /*  padding: 0 30px;*/
-  /*  border-radius: 4px;*/
-  /*  position: relative;*/
-
-    /*.icon-data {*/
-
-    /*  left: 5px;*/
-    /*  top: 3px;*/
-    /*  font-size: 30px;*/
-    /*}*/
-  /*}*/
 
   .date-body {
     border: 1px solid yellow;
@@ -253,8 +191,6 @@
 
       .data-list {
         color: #606266;
-        /*margin-left: 60px;*/
-        /*margin-right: 60px;*/
         font-size: 14px;
         user-select: none;
 

@@ -23,7 +23,6 @@
   import Button from '@/components/Button.vue';
   import typeList from '@/constants/typeList';
   import Tabs from '@/components/Tabs.vue';
-  import dayjs from 'dayjs';
   import Days from '@/components/Days.vue';
   @Component({
     components: {Days, Tabs, Button, Tags, FormItem, NumberPad},
@@ -31,15 +30,6 @@
   export default class Money extends Vue {
     record: RecordItem = {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()};
     typeList = typeList;
-
-    // get dayValu() {
-    //   return dayjs(this.record.createdAt).format('YYYY-MM-DD');
-    // }
-    //
-    //
-    // set dayValu(value) {
-    //   this.record.createdAt = value;
-    // }
 
     created() {
       this.$store.commit('fetchRecords');
