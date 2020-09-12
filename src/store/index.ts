@@ -47,21 +47,21 @@ const store = new Vuex.Store({
     fetchTags(state) {
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
       if (!state.tagList || state.tagList.length === 0) {
-        store.commit('createTag', {tagName:'衣', tagIcon: 'date'});
-        store.commit('createTag', {tagName:'食', tagIcon: 'date'});
-        store.commit('createTag', {tagName:'住', tagIcon: 'label'});
-        store.commit('createTag', {tagName: '行', tagIcon: 'money'});
+        store.commit('createTag', {name: '衣', tagicon: 'date', type: state.record.type});
+        store.commit('createTag', {name: '食', tagicon: 'date', type: state.record.type});
+        store.commit('createTag', {name: '住', tagicon: 'label', type: state.record.type});
+        store.commit('createTag', {name: '行', tagicon: 'money', type: state.record.type});
       }
     },
-    createTag(state, payload: { tagName: string; tagIcon: string }) {
-      const {tagName, tagIcon} = payload;
+    createTag(state, payload: { name: string; tagicon: string; type: string }) {
+      const {name, tagicon, type} = payload;
       state.isHave = true;
       const names = state.tagList.map(item => item.name);
-      if (names.indexOf(tagName) >= 0) {
+      if (names.indexOf(name) >= 0) {
         state.isHave = false;
       } else {
         const id = createId().toString();
-        state.tagList.push({id, name: tagName, tagicon: tagIcon});
+        state.tagList.push({id, name: name, tagicon: tagicon, type: type});
         store.commit('saveTags');
       }
     },
@@ -89,7 +89,7 @@ const store = new Vuex.Store({
         } else {
           const tag = state.tagList.filter(item => item.id === id)[0];
           tag.name = name;
-          tag.tagicon= tagIcon;
+          tag.tagicon = tagIcon;
           store.commit('saveTags');
           window.alert('更改成功');
           router.back();

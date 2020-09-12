@@ -15,19 +15,39 @@
   import Vue from 'vue';
   import {Component, Prop} from 'vue-property-decorator';
 
-  type DataSourceItem = { text: string; value: string }
+
 
   @Component
   export default class Tabs extends Vue {
     @Prop({required: true, type: Array})
     dataSource!: DataSourceItem[];
+    // dataSource：
+            // [{
+            //   text: '收入';
+            //   value: '+'
+            // },
+            // {
+            //   text: '支出';
+            //   value: '-'
+            // }]
+            //
+
     @Prop(String)
     readonly value!: string;
+    // value: $store.state.record.type  也就是'+'/'-'
+
     @Prop(String)
     classPrefix?: string;
+    // classPrefix?: 父組件传过来的一个 ‘type‘ 常量，不是变量
+    //给组件设置一个前缀的吧:class="{[classPrefix+'-tabs']:classPrefix}"
+    //加前缀是为了在统计页面中或者其他页面deep设置样式
 
-    // created() {
-    // }
+    created() {
+      console.log(this.value);
+    }
+
+
+    //其实就是class的封装：:class="[{[classPrefix+'-tabs']:classPrefix},{selected: tab.value === this.value}]"
     liClass(tab: DataSourceItem) {
       return {
         [this.classPrefix + '-type']: this.classPrefix, selected: tab.value === this.value

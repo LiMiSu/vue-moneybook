@@ -19,7 +19,7 @@
     icon=''
     createTag() {
       if (this.value) {
-        this.$store.commit('createTag', {tagName:this.value, tagIcon: this.icon});
+        this.$store.commit('createTag', {name:this.value, tagicon: this.icon, type: this.$store.state.record.type});
         if (!this.$store.state.isHave) {
           window.alert('该标签已存在');
           return;

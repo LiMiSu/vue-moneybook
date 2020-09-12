@@ -9,6 +9,7 @@ type Tag = {
   id: string;
   name: string;
   tagicon: string;
+  type: string;
 }
 type RootState = {
   record: RecordItem;
@@ -24,4 +25,7 @@ type GetDay = {
   month: number;
   day: number;
 }
-
+type DataSourceItem = {
+  text: string;
+  value: string;
+}

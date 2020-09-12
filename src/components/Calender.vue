@@ -33,7 +33,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component, Prop} from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
   import dayjs from 'dayjs';
 
   @Component
@@ -46,7 +46,7 @@
     };
 
 
-    getYearMonthDay(date: any) {  //获取时间函数，时间初始化函数，拿到具体天
+    getYearMonthDay(date: Date) {  //获取时间函数，时间初始化函数，拿到具体天
       const year = date.getFullYear();
       const month = date.getMonth();
       const day = date.getDate();
@@ -135,9 +135,10 @@
   .date-body {
     border: 1px solid yellow;
     min-width: 100vw;
-    height: 300px;
+    height: 330px;
     position: relative;
     overflow: hidden;
+
 
     .date-nav {
       user-select: none;

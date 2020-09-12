@@ -10,7 +10,9 @@
       <ShowTags :value.sync="$store.state.record.tags"/>
       <router-view></router-view>
       <div class="notes">
-        <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="在这里输入备注"/>
+        <label>
+          <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="在这里输入备注"/>
+        </label>
       </div>
     </main>
 
@@ -88,10 +90,10 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.4);
 
       .top {
-        background: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.2);
         flex: 1;
       }
 

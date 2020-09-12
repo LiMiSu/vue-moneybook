@@ -1,9 +1,8 @@
 <template>
   <div>
-    <Tabs :data-source="typeList"></Tabs>
     <div class="tags">
       <div class="tag"
-           @click="tagList(tag.id)"
+           @click="tagChang(tag.id)"
            v-for="tag in tags"
            :key="tag.id">
         <Icon :name=tag.tagicon></Icon>
@@ -25,11 +24,10 @@
   import Button from '@/components/Button.vue';
   import TagHelper from '@/mixins/TagHelper';
   import Days from '@/components/Calender.vue';
-  import Tabs from '@/components/MoneyType.vue';
-  import typeList from '@/constants/typeList';
+  import MoneyType from '@/components/MoneyType.vue';
 
   @Component({
-    components: {Tabs, Days, Button},
+    components: {MoneyType, Days, Button},
     computed: {
       tags() {
         return this.$store.state.tagList;
@@ -37,28 +35,27 @@
     }
   })
   export default class Labels extends mixins(TagHelper) {
-    typeList = typeList;
+    created() {
+      this.$store.commit('fetchTags');
+    }
+
+    // [
+    //   {"id":"10","name":"衣","tagicon":"date","type":"-"},
+    //   {"id":"11","name":"食","tagicon":"date","type":"-"},
+    //   {"id":"12","name":"住","tagicon":"label","type":"-"},
+    //   {"id":"13","name":"行","tagicon":"money","type":"-"},
+    // ]
 
     get key() {
       return this.$route.path + Math.random();
-    }
-
-    created() {
-      this.$store.commit('fetchTags');
     }
 
     goAdd() {
       this.$router.push('/addtags');
     }
 
-    tagList(id: string) {
+    tagChang(id: string) {
       this.$router.push('/labels/edit/' + id);
-    }
-
-    beforeRouteUpdate(to: any, from: any, next: any) {
-      const id = to.params.id; //to就是你要去的页面的信息
-      this.tagList(id); //再执行一遍
-      next();
     }
   }
 
