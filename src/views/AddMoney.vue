@@ -1,21 +1,30 @@
 <template>
-  <div class="addMoney">
+  <div class="addMoney-wrapper">
+
+    <header class="header">
+      <Tabs class-prefix="type" :data-source="typeList" :value.sync="$store.state.record.type"/>
+    </header>
 
 
-    <div class="content">
+    <main class="main">
       <tags :value.sync="$store.state.record.tags"/>
       <router-view></router-view>
       <div class="notes">
         <FormItem :value.sync="$store.state.record.notes" field-name="备注" placeholder="在这里输入备注"/>
       </div>
-    </div>
+    </main>
 
 
-    <div>
-      <Tabs class-prefix="type" :data-source="typeList" :value.sync="$store.state.record.type"/>
-      <Days class="chooseDay"></Days>
+    <footer class="footer">
+      <div v-if="$store.state.showBody" class="cover">
+        <div class="top" @click="$store.state.showBody=!$store.state.showBody"></div>
+        <div class="daychoose">
+          <Calender class="chooseDay"></Calender>
+          <div class="cancel" @click="$store.state.showBody=!$store.state.showBody">取消</div>
+        </div>
+      </div>
       <number-pad :value.sync="$store.state.record.amount" @submit="saveRecord"></number-pad>
-    </div>
+    </footer>
 
   </div>
 </template>
@@ -30,10 +39,10 @@
   import Button from '@/components/Button.vue';
   import typeList from '@/constants/typeList';
   import Tabs from '@/components/MoneyType.vue';
-  import Days from '@/components/Calender.vue';
+  import Calender from '@/components/Calender.vue';
 
   @Component({
-    components: {Days, Tabs, Button, Tags, FormItem, NumberPad},
+    components: {Calender, Tabs, Button, Tags, FormItem, NumberPad},
   })
   export default class Money extends Vue {
     typeList = typeList;
@@ -50,18 +59,9 @@
 </script>
 
 <style lang="scss" scoped>
-  .addMoney {
-    /*display: flex;*/
-    /*height: 100vh;*/
-    /*width: 100vw;*/
-    /*flex-direction: column;*/
-    /*justify-content: space-between;*/
-    /*flex: 1;*/
+  .addMoney-wrapper {
     display: flex;
     flex-direction: column;
-    /*justify-content: space-between;*/
-    /*min-height: 100vh;*/
-
     position: absolute;
     top: 0;
     left: 0;
@@ -69,18 +69,48 @@
     height: 100%;
   }
 
-  .content {
+  .main {
     display: flex;
     flex-direction: column;
     overflow: auto;
     flex: 1;
-    /*flex-grow: 1;*/
   }
 
-  .chooseDay {
-    position: absolute;
-    left: 0;
-    bottom: 0;
+  .footer {
 
+    .cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      /*铺满整个视口，背景半透明*/
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.5);
+
+      .top {
+        background: rgba(255, 255, 255, 0.5);
+        flex: 1;
+      }
+
+      .daychoose {
+        position: relative;
+
+        .cancel {
+          position: absolute;
+          right: 8px;
+          top: 9px;
+          width: 55px;
+          height: 30px;
+          text-align: center;
+          line-height: 30px;
+        }
+      }
+
+    }
   }
+
+
 </style>

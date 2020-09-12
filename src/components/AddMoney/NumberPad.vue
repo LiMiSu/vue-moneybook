@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="inputNumber" :class="[{first:one},{second:two}]">
-      <DayBook></DayBook>
+    <div class="inputNumber"  :class="[{first:one},{second:two}]">
+      <DayBook v-if="!$store.state.showBody"></DayBook>
       <span>{{output}}</span>
     </div>
     <div class="numberPad">

@@ -1,39 +1,33 @@
 <template>
-  <div class="date">
-    <div v-if="$store.state.showBody" class="date-body">
-      <div class="data-tri"></div>
-      <div class="date-content">
-        <div class="date-nav">
-          <Icon name="left-nav" class="date-btn icon-left-nav" @click="onChangYear('last')"></Icon>
-          <Icon name="zuo" class="date-btn icon-zuo" @click="onChangMonth('last')"></Icon>
-          <span>{{showData.year}}年{{showData.month+1}}月{{showData.day}}</span>
-          <Icon name="you" class="date-btn icon-you" @click="onChangMonth('next')"></Icon>
-          <Icon name="right-nav" class="date-btn icon-right-nav" @click="onChangYear('next')"></Icon>
-        </div>
-        <table class="data-list">
-          <tr class="date-weeks">
-            <th v-for="week in weekDay" :key="week"
-            >
-              {{week}}
-            </th>
-          </tr>
-          <tr class="date-days">
-            <td
-              v-for="day in showDays"
-              :key="day.getTime()"
-              :class="{
+  <div class="date-body">
+    <div class="date-nav">
+      <Icon name="left-nav" class="date-btn icon-left-nav" @click="onChangYear('last')"></Icon>
+      <Icon name="zuo" class="date-btn icon-zuo" @click="onChangMonth('last')"></Icon>
+      <span>{{showData.year}}年{{showData.month+1}}月{{showData.day}}</span>
+      <Icon name="you" class="date-btn icon-you" @click="onChangMonth('next')"></Icon>
+      <Icon name="right-nav" class="date-btn icon-right-nav" @click="onChangYear('next')"></Icon>
+    </div>
+    <table class="data-list">
+      <tr class="date-weeks">
+        <th v-for="week in weekDay" :key="week"
+        >
+          {{week}}
+        </th>
+      </tr>
+      <tr class="date-days">
+        <td
+          v-for="day in showDays"
+          :key="day.getTime()"
+          :class="{
                 'other-month': !isThisMonthDay(day),
                 'is-select': isSelectDay(day),
                 'is-today': isToday(day)}"
-              @click="onSelectDay(day)"
-            >
-              {{day.getDate()}}
-            </td>
-          </tr>
-        </table>
-
-      </div>
-    </div>
+          @click="onSelectDay(day)"
+        >
+          {{day.getDate()}}
+        </td>
+      </tr>
+    </table>
   </div>
 </template>
 
@@ -87,6 +81,7 @@
       }
       return days;
     }
+
     onSelectDay(date: Date) { //选择的日期变成点击的日期
       this.$store.state.record.createdAt = date.toISOString();
       this.$store.state.showBody = false;
@@ -110,7 +105,6 @@
       const {year: selectYear, month: selectMonth, day: selectDay} = this.getYearMonthDay(new Date(this.$store.state.record.createdAt));
       return year === selectYear && month === selectMonth && day === selectDay;
     }
-
 
 
     onChangMonth(type: string) { //日期对象方法setMonth
@@ -140,97 +134,71 @@
     position: relative;
     overflow: hidden;
 
-    .data-tri {
-      position: absolute;
-      top: -12px;
-      left: 30px;
-      width: 0;
-      height: 0;
-      border: 6px solid transparent;
-      border-bottom-color: red;
+    .date-nav {
+      user-select: none;
+      padding-top: 15px;
+      padding-bottom: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-      &::after {
-        position: absolute;
-        left: -6px;
-        top: -6px;
-        content: '';
-        display: block;
-        width: 0;
-        height: 0;
-        border: 6px solid transparent;
-        border-bottom-color: white;
+      .date-btn {
+        margin-left: 5px;
+        margin-right: 5px;
+        color: #000;
+        font-size: 20px;
       }
     }
 
-    .date-content {
-      .date-nav {
-        user-select: none;
-        padding-top: 15px;
-        padding-bottom: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    .data-list {
+      color: #606266;
+      font-size: 14px;
+      user-select: none;
 
-        .date-btn {
-          margin-left: 5px;
-          margin-right: 5px;
-          color: #000;
-          font-size: 20px;
+      .date-weeks {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-bottom: 1px solid #ebeef5;
+        height: 40px;
+
+        th {
+          width: 13.2vw;
+          text-align: center;
+          line-height: 40px;
         }
       }
 
-      .data-list {
-        color: #606266;
-        font-size: 14px;
-        user-select: none;
+      .date-days {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
 
-        .date-weeks {
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
-          border-bottom: 1px solid #ebeef5;
+        td {
+          width: 13.2vw;
           height: 40px;
+          line-height: 30px;
+          text-align: center;
 
-          th {
-            width: 13.2vw;
-            text-align: center;
-            line-height: 40px;
+          &.is-today {
+            color: #409eff;
+            font-weight: 700;
           }
-        }
 
-        .date-days {
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
-          flex-wrap: wrap;
+          &.is-select {
+            border-radius: 50%;
+            background: #409eff;
+            font-weight: 700;
+            color: #fff;
+          }
 
-          td {
-            width: 13.2vw;
-            height: 40px;
-            line-height: 30px;
-            text-align: center;
-
-            &.is-today {
-              color: #409eff;
-              font-weight: 700;
-            }
-
-            &.is-select {
-              border-radius: 50%;
-              background: #409eff;
-              font-weight: 700;
-              color: #fff;
-            }
-
-            &.other-month {
-              border-radius: 50%;
-              color: red;
-            }
+          &.other-month {
+            border-radius: 50%;
+            color: red;
           }
         }
       }
     }
   }
-
-
 </style>
