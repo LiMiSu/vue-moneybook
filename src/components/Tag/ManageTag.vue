@@ -3,7 +3,7 @@
     <div class="tags">
       <div class="tag"
            @click="tagChang(tag.id)"
-           v-for="tag in tags"
+           v-for="tag in newTagList"
            :key="tag.id">
         <Icon :name=tag.tagicon></Icon>
         <span>{{tag.name}}</span>
@@ -25,14 +25,10 @@
   import TagHelper from '@/mixins/TagHelper';
   import Days from '@/components/Calender.vue';
   import MoneyType from '@/components/MoneyType.vue';
+  import clone from '@/lib/clone';
 
   @Component({
     components: {MoneyType, Days, Button},
-    computed: {
-      tags() {
-        return this.$store.state.tagList;
-      }
-    }
   })
   export default class Labels extends mixins(TagHelper) {
     created() {
@@ -45,6 +41,16 @@
     //   {"id":"12","name":"住","tagicon":"label","type":"-"},
     //   {"id":"13","name":"行","tagicon":"money","type":"-"},
     // ]
+    //渲染的数据要改装一下，分类
+    get tagList() {
+      return this.$store.state.tagList;
+    }
+
+    get newTagList() {
+      const {tagList} = this;
+      return clone(tagList).filter((item: Tag) => item.type === this.$store.state.record.type);
+
+    }
 
     get key() {
       return this.$route.path + Math.random();

@@ -4,7 +4,7 @@
       <Icon name="statistics"/>
       报表
     </router-link>
-    <router-link to="/money" class="item" active-class="selected">
+    <router-link to="/main" class="item" active-class="selected">
       <router-link v-if="addMoneyShow" to="/addmoney">
         <Icon  name="add" class="addMoney" @click="addMoneyPad"/>
       </router-link>
