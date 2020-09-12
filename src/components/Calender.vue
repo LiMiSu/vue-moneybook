@@ -34,6 +34,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Prop} from 'vue-property-decorator';
+  import dayjs from 'dayjs';
 
   @Component
   export default class Days extends Vue {
@@ -56,8 +57,8 @@
       };
     }
 
-    getShowDate() { //拿到今天是哪天
-      const {year, month, day} = this.getYearMonthDay(new Date(this.$store.state.record.createdAt));
+    getShowDate(date: Date) { //拿到今天是哪天
+      const {year, month, day} = this.getYearMonthDay(date);
       this.showData = {
         year,
         month,
@@ -66,7 +67,7 @@
     }
 
     created() { //让初识值等于今天
-      this.getShowDate();
+      this.getShowDate(new Date(this.$store.state.record.createdAt));
     }
 
 
@@ -85,7 +86,7 @@
     onSelectDay(date: Date) { //选择的日期变成点击的日期
       this.$store.state.record.createdAt = date.toISOString();
       this.$store.state.showBody = false;
-      this.getShowDate();
+      this.getShowDate(date);
     }
 
     isThisMonthDay(date: Date) {
@@ -95,9 +96,12 @@
     }
 
     isToday(date: Date) {
-      const {year, month, day} = this.getYearMonthDay(date); //看看你这一天是啥
-      const {year: todayYear, month: todayMonth, day: todaytDay} = this.getYearMonthDay(new Date(this.$store.state.record.createdAt));//今天
-      return year === todayYear && month === todayMonth && day === todaytDay;
+      // const {year, month, day} = this.getYearMonthDay(date); //看看你这一天是啥
+      // const {year: todayYear, month: todayMonth, day: todaytDay} = this.getYearMonthDay(new Date(this.$store.state.record.createdAt));//今天
+      // return year === todayYear && month === todayMonth && day === todaytDay;
+      if (dayjs(date).isSame(new Date(), 'day')) {
+        return true;
+      }
     }
 
     isSelectDay(date: Date) {
@@ -112,9 +116,10 @@
       const {year, month, day} = this.showData;
       const changMonth = new Date(year, month, day);
       changMonth.setMonth(month + moveMonth);
-      const {year: Year, month: Month} = this.getYearMonthDay(changMonth);
+      const {year: Year, month: Month, day: Day} = this.getYearMonthDay(changMonth);
       this.showData.year = Year;
       this.showData.month = Month;
+      this.showData.day = Day;
     }
 
     onChangYear(type: string) {
@@ -130,7 +135,7 @@
   .date-body {
     border: 1px solid yellow;
     min-width: 100vw;
-    height: 250px;
+    height: 300px;
     position: relative;
     overflow: hidden;
 
@@ -195,7 +200,7 @@
 
           &.other-month {
             border-radius: 50%;
-            color: red;
+            color: #b5b5b5;
           }
         }
       }
