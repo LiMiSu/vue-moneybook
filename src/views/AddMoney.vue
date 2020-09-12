@@ -2,15 +2,15 @@
   <div class="addMoney-wrapper">
 
     <header class="header">
-      <Tabs class-prefix="type" :data-source="typeList" :value.sync="$store.state.record.type"/>
+      <MoneyType class-prefix="type" :data-source="typeList" :value.sync="$store.state.record.type"/>
     </header>
 
 
     <main class="main">
-      <tags :value.sync="$store.state.record.tags"/>
+      <ShowTags :value.sync="$store.state.record.tags"/>
       <router-view></router-view>
       <div class="notes">
-        <FormItem :value.sync="$store.state.record.notes" field-name="备注" placeholder="在这里输入备注"/>
+        <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="在这里输入备注"/>
       </div>
     </main>
 
@@ -23,7 +23,7 @@
           <div class="cancel" @click="$store.state.showBody=!$store.state.showBody">取消</div>
         </div>
       </div>
-      <number-pad :value.sync="$store.state.record.amount" @submit="saveRecord"></number-pad>
+      <NumberPad :value.sync="$store.state.record.amount" @submit="saveRecord"></NumberPad>
     </footer>
 
   </div>
@@ -34,15 +34,15 @@
   import {Component} from 'vue-property-decorator';
 
   import NumberPad from '@/components/AddMoney/NumberPad.vue';
-  import FormItem from '@/components/Input.vue';
-  import Tags from '@/components/Tag/ShowTags.vue';
+  import Input from '@/components/Input.vue';
+  import ShowTags from '@/components/Tag/ShowTags.vue';
   import Button from '@/components/Button.vue';
   import typeList from '@/constants/typeList';
-  import Tabs from '@/components/MoneyType.vue';
+  import MoneyType from '@/components/MoneyType.vue';
   import Calender from '@/components/Calender.vue';
 
   @Component({
-    components: {Calender, Tabs, Button, Tags, FormItem, NumberPad},
+    components: {Calender, MoneyType, Button, ShowTags, Input, NumberPad},
   })
   export default class Money extends Vue {
     typeList = typeList;
