@@ -11,10 +11,13 @@ type Tag = {
   tagicon: string;
 }
 type RootState = {
+  record: RecordItem;
   recordList: RecordItem[];
   tagList: Tag[];
   currentTag?: Tag;
   isHave: boolean;
+  changeShow: boolean;
+  showBody: boolean;
 }
 type GetDay = {
   year: number;

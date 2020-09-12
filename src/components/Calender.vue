@@ -43,10 +43,7 @@
 
   @Component
   export default class Days extends Vue {
-    @Prop(String)
-    readonly value!: string;
     weekDay = ['日', '一', '二', '三', '四', '五', '六'];
-    data = new Date(this.value);
     showData = { //初始值？
       year: 0,
       month: 0,
@@ -66,7 +63,7 @@
     }
 
     getShowDate() { //拿到今天是哪天
-      const {year, month, day} = this.getYearMonthDay(this.data);
+      const {year, month, day} = this.getYearMonthDay(new Date(this.$store.state.record.createdAt));
       this.showData = {
         year,
         month,
@@ -78,10 +75,6 @@
       this.getShowDate();
     }
 
-    get inputDate() {
-      const {year, month, day} = this.getYearMonthDay(this.data);
-      return `${year}-${month + 1}-${day}`;
-    }
 
     get showDays() {  //日历展示这个月
       const days = [];
@@ -94,6 +87,11 @@
       }
       return days;
     }
+    onSelectDay(date: Date) { //选择的日期变成点击的日期
+      this.$store.state.record.createdAt = date.toISOString();
+      this.$store.state.showBody = false;
+      this.getShowDate();
+    }
 
     isThisMonthDay(date: Date) {
       const {year, month} = this.getYearMonthDay(date); //看看你这一天是啥
@@ -103,22 +101,17 @@
 
     isToday(date: Date) {
       const {year, month, day} = this.getYearMonthDay(date); //看看你这一天是啥
-      const {year: todayYear, month: todayMonth, day: todaytDay} = this.getYearMonthDay(new Date(this.value));//今天
+      const {year: todayYear, month: todayMonth, day: todaytDay} = this.getYearMonthDay(new Date(this.$store.state.record.createdAt));//今天
       return year === todayYear && month === todayMonth && day === todaytDay;
     }
 
     isSelectDay(date: Date) {
       const {year, month, day} = this.getYearMonthDay(date); //看看你这一天是啥
-      const {year: selectYear, month: selectMonth, day: selectDay} = this.getYearMonthDay(new Date(this.inputDate));
+      const {year: selectYear, month: selectMonth, day: selectDay} = this.getYearMonthDay(new Date(this.$store.state.record.createdAt));
       return year === selectYear && month === selectMonth && day === selectDay;
     }
 
-    onSelectDay(date: Date) { //选择的日期变成点击的日期
-      this.data = date;
-      this.$store.state.showBody = false;
-      this.getShowDate();
-      this.$emit('update:value', this.data.toISOString());
-    }
+
 
     onChangMonth(type: string) { //日期对象方法setMonth
       const moveMonth = type === 'last' ? -1 : 1;

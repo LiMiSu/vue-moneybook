@@ -1,12 +1,7 @@
 <template>
   <div>
-    <slot/>
     <div class="inputNumber" :class="[{first:one},{second:two}]">
-      <div class="dayBook" @click="$store.state.showBody=!$store.state.showBody">
-        <div class="left"></div>
-        {{dayValue}}
-        <div class="right"></div>
-      </div>
+      <DayBook></DayBook>
       <span>{{output}}</span>
     </div>
     <div class="numberPad">
@@ -41,27 +36,18 @@
   import Vue from 'vue';
   import {Component, Prop} from 'vue-property-decorator';
   import Days from '@/components/Calender.vue';
+  import DayBook from '@/components/AddMoney/DayBook.vue';
 
   @Component({
-    components: {Days}
+    components: {DayBook, Days}
   })
   export default class NumberPad extends Vue {
     @Prop() readonly value!: number;
-    @Prop() readonly day!: number;
     output = this.value.toString();
     isOver = true;
     one = false;
     two = false;
     lock = true;
-
-
-    get dayValue() {
-      return new Date(this.day).getDate();
-    }
-
-    created() {
-      // console.log(this.dayValue);
-    }
 
     get recordList() {
       return this.$store.state.recordList;
@@ -258,7 +244,6 @@
       }
     }
 
-
     ok() {
       const moneyValue = parseFloat(parseFloat(this.output).toFixed(2));
       if (moneyValue < 0) {
@@ -282,12 +267,7 @@
     font-size: 30px;
   }
 
-  .chooseDay {
-    position: absolute;
-    left: 0;
-    bottom: 0;
 
-  }
 
   %addMoneyStyle {
     background: yellow;
@@ -308,37 +288,6 @@
     align-items: center;
     word-break: break-all;
     overflow: hidden;
-
-    .dayBook {
-      height: 22px;
-      width: 33px;
-      border: 1px solid #5a5a5a;
-      border-radius: 1px;
-      box-shadow: 0px -3px 0px 0px #333333;
-      background: white;
-      position: relative;
-      font-size: 12px;
-      line-height: 22px;
-      text-align: center;
-
-      .left {
-        position: absolute;
-        left: 3px;
-        top: -7px;
-        width: 0;
-        height: 10px;
-        border: 1px solid #5a5a5a;
-      }
-
-      .right {
-        position: absolute;
-        right: 3px;
-        top: -7px;
-        width: 0;
-        height: 10px;
-        border: 1px solid #5a5a5a;
-      }
-    }
 
     &.first {
       font-size: 30px;
@@ -367,36 +316,6 @@
       &.zero {
         width: 25*2%;
       }
-
-      /*$bg: rgb(8,11,15);*/
-
-      /*      &:nth-child(1) {
-              background: $bg;
-            }
-
-            &:nth-child(2), &:nth-child(5) {
-              background: darken($bg, 4%);
-            }
-
-            &:nth-child(3), &:nth-child(6), &:nth-child(9) {
-              background: darken($bg, 4*2%);
-            }
-
-            &:nth-child(4), &:nth-child(7), &:nth-child(10) {
-              background: darken($bg, 4*3%);
-            }
-
-            &:nth-child(8), &:nth-child(11), &:nth-child(13) {
-              background: darken($bg, 4*4%);
-            }
-
-            &:nth-child(14) {
-              background: darken($bg, 4*5%);
-            }
-
-            &:nth-child(12) {
-              background: darken($bg, 4*6%);
-            }*/
     }
   }
 </style>
