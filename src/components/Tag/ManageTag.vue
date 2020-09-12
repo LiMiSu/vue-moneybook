@@ -51,11 +51,11 @@
     }
 
     goAdd() {
-      this.$router.push('/addtags');
+      this.$router.replace('/addtags');
     }
 
     tagChang(id: string) {
-      this.$router.push('/labels/edit/' + id);
+      this.$router.replace('/managetag/rewrite/' + id);
     }
   }
 

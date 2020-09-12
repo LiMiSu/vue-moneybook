@@ -22,11 +22,9 @@
   import {mixins} from 'vue-class-component';
   import TagHelper from '@/mixins/TagHelper';
   import clone from '@/lib/clone';
-  import typeList from '@/constants/typeList';
 
   @Component
   export default class Note extends mixins(TagHelper) {
-    typeList = typeList;
     type = '-';
     selectedLists: string[] = [];
 
@@ -65,7 +63,7 @@
     }
 
     goAdd() {
-      this.$router.push('/labels');
+      this.$router.push('/managetag');
     }
   }
 </script>

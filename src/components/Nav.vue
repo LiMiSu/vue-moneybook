@@ -29,7 +29,7 @@
 
 
     get addMoneyShow() {
-      return (this.$router as any).history.current.fullPath === '/money';
+      return (this.$router as any).history.current.fullPath === '/main';
     }
 
     addMoneyPad() {

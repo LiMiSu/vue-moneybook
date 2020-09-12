@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import VueRouter, {RouteConfig} from 'vue-router';
-import Money from '@/views/Main.vue';
-import Labels from '@/components/Tag/ManageTag.vue';
+import Main from '@/views/Main.vue';
+import ManageTag from '@/components/Tag/ManageTag.vue';
 import Statistics from '@/views/Statistics.vue';
 import NotFound from '@/views/NotFound.vue';
-import EditLabel from '@/components/Tag/RewriteTag.vue';
+import RewriteTag from '@/components/Tag/RewriteTag.vue';
 import NumberPad from '@/components/AddMoney/NumberPad.vue';
 import AddMoney from '@/views/AddMoney.vue';
 import AddTags from '@/components/Tag/AddTag.vue';
@@ -26,23 +26,23 @@ VueRouter.prototype.replace = function replace (to: any) {
 const routes: Array<RouteConfig> = [
   {
     path: '/',
-    redirect: '/money'
+    redirect: '/main'
   },
   {
-    path: '/money',
-    component: Money
+    path: '/main',
+    component: Main
   },
   {
-    path: '/labels',
-    component: Labels,
+    path: '/managetag',
+    component: ManageTag,
     children:[
       {
         path: '/addtags',
         component: AddTags,
       },
       {
-        path: 'edit/:id',
-        component: EditLabel
+        path: 'rewrite/:id',
+        component: RewriteTag
       }
     ]
   },

@@ -25,7 +25,7 @@
           return;
         }
         window.alert('标签添加成功');
-        this.$router.back()
+        this.$router.replace('/managetag')
       } else if (this.value === '') {
         window.alert('标签名不能为空');
       }

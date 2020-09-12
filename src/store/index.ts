@@ -25,7 +25,6 @@ const store = new Vuex.Store({
     },
     createRecord(state, record: RecordItem) {
       const recordDeep: RecordItem = clone(record);
-      // recordDeep.createdAt = new Date().toISOString();
       recordDeep.createdAt = recordDeep.createdAt || new Date().toISOString();
       // if (!recordDeep.tags || recordDeep.tags.length === 0) {
       //   return window.alert('选择一项标签会更好分类哦');
@@ -92,7 +91,7 @@ const store = new Vuex.Store({
           tag.tagicon = tagIcon;
           store.commit('saveTags');
           window.alert('更改成功');
-          router.back();
+          router.replace('/managetag').then();
         }
       }
     },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="navBar">
-      <Icon class="leftIcon" name="left" @click="$router.back()"/>
+      <Icon class="leftIcon" name="left" @click="goBack"/>
       <span class="title">编辑标签</span>
       <span class="rightIcon"></span>
     </div>
@@ -58,6 +58,9 @@
       if (this.currentTag) {
         this.$store.commit('removeTag', this.currentTag.id);
       }
+    }
+    goBack(){
+      this.$router.replace('/managetag')
     }
   }
 
