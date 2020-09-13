@@ -1,16 +1,16 @@
 <template>
   <nav>
-    <router-link to="/main" class="item" active-class="selected">
-      <Icon name="statistics"/>
-      报表
+    <router-link to="/detail" class="item" active-class="selected">
+<!--      <svg>-->
+<!--        <text>明细</text>-->
+<!--      </svg>-->
+      明细
     </router-link>
-    <router-link to="/addmoney" class="item" active-class="selected">
-        <Icon  name="add"/>
-      记一笔
+    <router-link to="/main" class="item" active-class="selected">
+      记账
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
-      <Icon name="money"/>
-      明细
+      统计
     </router-link>
   </nav>
 </template>
@@ -22,15 +22,6 @@
   @Component
   export default class Nav extends Vue {
 
-
-    get addMoneyShow() {
-      return (this.$router as any).history.current.fullPath === '/main';
-    }
-
-    addMoneyPad() {
-      this.$store.state.changeShow = !this.$store.state.changeShow;
-    }
-
   }
 </script>
 
@@ -38,41 +29,22 @@
   @import "~@/assets/style/helper.scss";
 
   nav {
-    @extend %outerShadow;
     display: flex;
-    flex-direction: row;
-    font-size: 12px;
-    position: relative;
-
-    > .item, .tis {
-      padding: 2px 0;
-      width: 33.33333%;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    margin: 10px;
+    .item {
       display: flex;
       justify-content: center;
-      flex-direction: column;
       align-items: center;
-
-      .icon {
-        width: 32px;
-        height: 32px;
-
-        &.addMoney {
-          position: absolute;
-          left: calc(50vw - 15px);
-          bottom: 10px;
-          width: 30px;
-          height: 30px;
-          background: transparent;
-        }
+      height: 8vh;
+      width: 25vw;
+      margin: 10px;
+      padding: 6px;
+      &.selected {
+        color: red;
       }
-    }
-
-    > .item.selected {
-      color: $color-highlight;
-    }
-
-    .addMoneyTable .icon {
-      color: red;
     }
   }
 </style>
