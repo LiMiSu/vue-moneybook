@@ -1,21 +1,29 @@
 <template>
-  <div>
-    <div class="tags">
-      <div class="tag"
-           @click="tagChang(tag.id)"
-           v-for="tag in newTagList"
-           :key="tag.id">
-        <Icon :name=tag.tagicon></Icon>
-        <span>{{tag.name}}</span>
-      </div>
-      <div class="addTag" @click="goAdd">
-        <Icon name="add"></Icon>
-        新增
-      </div>
-    </div>
-    <router-view :key="key"></router-view>
-  </div>
+  <div class="manege-tag">
+    <header>
+      <div>编辑与新增</div>
+    </header>
 
+    <main class="main">
+      <div class="tags">
+        <div class="tagList"
+             @click="tagChang(tag.id)"
+             v-for="tag in newTagList"
+             :key="tag.id">
+          <Icon :name=tag.tagicon class="tagIcon"></Icon>
+          <span :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
+        </div>
+        <div class="addTag tagList" @click="goAdd">
+          <Icon name="add"></Icon>
+          新增
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <router-view :key="key"></router-view>
+    </footer>
+  </div>
 </template>
 
 <script lang="ts">
@@ -24,11 +32,10 @@
   import Button from '@/components/Button.vue';
   import TagHelper from '@/mixins/TagHelper';
   import Days from '@/components/Calender.vue';
-  import MoneyType from '@/components/MoneyType.vue';
   import clone from '@/lib/clone';
 
   @Component({
-    components: {MoneyType, Days, Button},
+    components: {Days, Button},
   })
   export default class Labels extends mixins(TagHelper) {
     created() {
@@ -67,36 +74,67 @@
 
 </script>
 <style lang="scss" scoped>
-  .tags {
-    background: white;
-    font-size: 16px;
+  .manege-tag{
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-
-    .tag {
-      min-height: 44px;
-      padding-left: 16px;
-      padding-right: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .addTag {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    svg.icon {
-      width: 33px;
-      height: 33px;
-    }
-
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
+
+  header {
+    display: flex;
+    flex-direction: column;
+    height: 52px;
+    text-align: center;
+    font-size: 20px;
+    line-height: 50px;
+  }
+
+  .main{
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    flex: 1;
+    .tags {
+      font-size: 14px;
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+
+      .tagList {
+        width: 20%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .tagIcon, .addTag {
+          $bg: #d9d9d9;
+          background: $bg;
+          $h: 36px;
+          border-radius: $h/2;
+          height: 36px;
+          width: 45px;
+          line-height: $h;
+          text-align: center;
+
+          .icon {
+            background: transparent;
+          }
+        }
+
+        .small {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+
+
+
 
 </style>

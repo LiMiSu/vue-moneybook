@@ -1,20 +1,15 @@
 <template>
   <nav>
-    <router-link to="/statistics" class="item" active-class="selected">
+    <router-link to="/main" class="item" active-class="selected">
       <Icon name="statistics"/>
       报表
     </router-link>
-    <router-link to="/main" class="item" active-class="selected">
-      <router-link v-if="addMoneyShow" to="/addmoney">
-        <Icon  name="add" class="addMoney" @click="addMoneyPad"/>
-      </router-link>
-      <div v-else class="tis">
-        <Icon name="label"/>
-        明细
-      </div>
+    <router-link to="/addmoney" class="item" active-class="selected">
+        <Icon  name="add"/>
+      记一笔
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
-      <Icon name="statistics"/>
+      <Icon name="money"/>
       明细
     </router-link>
   </nav>

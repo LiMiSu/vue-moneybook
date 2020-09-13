@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import clone from '@/lib/clone';
 import createId from '@/lib/createId';
 import router from '@/router';
-import typeList from '@/constants/tagList';
+import tagInit from '@/constants/tagInit';
 
 Vue.use(Vuex);
 
@@ -46,7 +46,7 @@ const store = new Vuex.Store({
     fetchTags(state) {
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
       if (!state.tagList || state.tagList.length === 0) {
-        typeList.forEach(item=>{
+        tagInit.forEach(item=>{
           return store.commit('createTag', {name: item.name, tagicon: item.tagicon, type: item.type})
         })
 
@@ -76,8 +76,8 @@ const store = new Vuex.Store({
         window.alert('删除失败');
       }
     },
-    updateTag(state, payload: { id: string; name: string; tagIcon: string }) {
-      const {id, name, tagIcon} = payload;
+    updateTag(state, payload: { id: string; name: string}) {
+      const {id, name} = payload;
       const idList = state.tagList.map(item => item.id);
       if (idList.indexOf(id) >= 0) {
         const names = state.tagList.map(item => item.name);
@@ -88,7 +88,6 @@ const store = new Vuex.Store({
         } else {
           const tag = state.tagList.filter(item => item.id === id)[0];
           tag.name = name;
-          tag.tagicon = tagIcon;
           store.commit('saveTags');
           window.alert('更改成功');
           router.replace('/managetag').then();

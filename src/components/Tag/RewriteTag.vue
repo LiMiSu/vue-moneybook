@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="rewrite">
     <div class="navBar">
       <Icon class="leftIcon" name="left" @click="goBack"/>
       <span class="title">编辑标签</span>
@@ -67,11 +67,14 @@
 </script>
 
 <style lang="scss" scoped>
+  .rewrite{
+    background: papayawhip;
+  }
   .navBar {
     text-align: center;
     font-size: 16px;
     padding: 12px 16px;
-    background: white;
+    background: palevioletred;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -93,7 +96,7 @@
   }
 
   .form-wrapper {
-    background: white;
+    background: palevioletred;
     margin-top: 8px;
   }
 

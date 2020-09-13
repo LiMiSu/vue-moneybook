@@ -3,14 +3,13 @@
     <div class="tagList"
          v-for="tag in newTagList"
          :key="tag.id">
-      <div class="tagIcon"
+      <Icon class="tagIcon" :name=tag.tagicon
            :class="{selected: selectedLists.indexOf(tag)>=0}"
            @click="toggle(tag)">
-        <Icon :name=tag.tagicon></Icon>
-      </div>
-      <span>{{tag.name}}</span>
+      </Icon>
+      <span :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
     </div>
-    <div class="addTag" @click="goAdd">
+    <div class="addTag tagList" @click="goAdd">
       <Icon name="add"></Icon>
       管理
     </div>
@@ -41,7 +40,6 @@
     //   {"id":"13","name":"行","tagicon":"money","type":"-"},
     // ]
 
-
     //渲染的数据要改装一下，分类
     get tagList() {
       return this.$store.state.tagList;
@@ -52,6 +50,7 @@
       return clone(tagList).filter((item: Tag) => item.type === this.$store.state.record.type);
 
     }
+
 
     toggle(tag: string) {
       this.selectedLists.push(tag);
@@ -70,32 +69,43 @@
 
 <style lang="scss" scoped>
   .tags {
-    background: white;
     font-size: 14px;
     padding: 16px;
-    flex-grow: 1;
     display: flex;
     flex-wrap: wrap;
 
-    .tagIcon, .addTag {
-      $bg: #d9d9d9;
-      background: $bg;
-      $h: 36px;
-      border-radius: $h/2;
-      height: 36px;
-      width: 45px;
-      line-height: $h;
-      text-align: center;
+    .tagList {
+      width: 20%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
 
-      .icon {
-        background: transparent;
+      .tagIcon, .addTag {
+        $bg: #d9d9d9;
+        background: $bg;
+        $h: 36px;
+        border-radius: $h/2;
+        height: 36px;
+        width: 45px;
+        line-height: $h;
+        text-align: center;
+
+        .icon {
+          background: transparent;
+        }
+
+        &.selected {
+          background: darken($bg, 50%);
+          color: white;
+        }
       }
 
-      &.selected {
-        background: darken($bg, 50%);
-        color: white;
+      .small {
+        font-size: 12px;
       }
     }
+
 
     svg.icon {
       width: 33px;
