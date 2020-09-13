@@ -14,7 +14,7 @@ const store = new Vuex.Store({
     record: {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()},
     recordList: [],
     tagList: [],
-    monthRecordList: [],
+    dayRecordList: [],
     currentTag: undefined,
     isHave: true,
     showBody: false,
@@ -40,6 +40,7 @@ const store = new Vuex.Store({
     },
     saveRecords(state) {
       window.localStorage.setItem('recordList', JSON.stringify(state.recordList));
+      store.commit('updateDayRecordList');
     },
 
     setCurrentTag(state, id: string) {
@@ -100,9 +101,12 @@ const store = new Vuex.Store({
       window.localStorage.setItem('tagList', JSON.stringify(state.tagList));
     },
 
-    //按月
-    fetchMonthRecordList(state) {
-      const newRecordList: any = clone(this.recordList);
+    //按天
+    fetchDayRecordList(state) {
+      state.dayRecordList = JSON.parse(window.localStorage.getItem('dayRecordList') || '[]') as Result[];
+    },
+    updateDayRecordList(state, recordList) {
+      const newRecordList: any = clone(recordList);
       newRecordList.filter((item: RecordItem) => (item as any).type === this.type)
         .sort((a: RecordItem, b: RecordItem) =>
           dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
@@ -129,8 +133,16 @@ const store = new Vuex.Store({
           return sum + item.amount;
         }, 0);
       });
-      state.monthRecordList = result;
-    }
+      state.dayRecordList = result;
+      store.commit('saveDayRecordList');
+    },
+    saveDayRecordList(state) {
+      window.localStorage.setItem('dayRecordList', JSON.stringify(state.dayRecordList));
+    },
+
+    //按周
+    //按月
+    //按年
 
   }
 });

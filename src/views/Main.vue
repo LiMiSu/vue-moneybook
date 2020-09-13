@@ -13,7 +13,7 @@
           <Calender v-if="$store.state.showBody" class-prefix="main"/>
         </div>
         <div class="result">
-          <div class="sum">您{{month}}月<span>xxx钱</span></div>
+          <div class="sum">您{{month}}月<span>xxx钱{{}}</span></div>
           <div class="type">
             <div class="pay">
               <span>支出</span>
@@ -26,6 +26,7 @@
           </div>
         </div>
       </div>
+
     </template>
   </NavStyle>
 </template>
@@ -36,11 +37,15 @@
   import Calender from '@/components/Calender.vue';
   import DayBook from '@/components/AddMoney/DayBook.vue';
 
+
   @Component({
     components: {DayBook, Calender}
   })
   export default class Nav extends Vue {
 
+    // beforeCreate() {
+    //   this.$store.commit('fetchDayRecordList');
+    // }
     get dayValue() {
       return new Date(this.$store.state.record.createdAt);
     }
@@ -50,6 +55,9 @@
     get month(){
       return this.dayValue.getMonth() + 1
     }
+    // get count(){
+    //   return this.$store.state.monthRecordList
+    // }
   }
 </script>
 <style lang="scss" scoped>
