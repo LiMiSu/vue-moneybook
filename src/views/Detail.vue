@@ -1,8 +1,8 @@
 <template>
   <NavStyle class-prefix="main" class="a">
     <template #header>
-      <DayDetail />
-      <DayDetail />
+      <DayDetail></DayDetail>
+      <DayDetail></DayDetail>
       <div class="shownav">
         <div class="showlist pay"></div>
         <div class="showlist in"></div>
@@ -56,7 +56,7 @@
     components: {DayDetail, Input, Calender, MoneyType, Days, Tabs, Button, Tags, FormItem, NumberPad},
 
   })
-  export default class Main extends Vue {
+  export default class Detail extends Vue {
     type = '-';
     typeList = typeList;
 
@@ -185,3 +185,4 @@
     }
   }
 </style>
+

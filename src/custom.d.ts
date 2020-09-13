@@ -17,7 +17,6 @@ type RootState = {
   tagList: Tag[];
   currentTag?: Tag;
   isHave: boolean;
-  changeShow: boolean;
   showBody: boolean;
 }
 type GetDay = {

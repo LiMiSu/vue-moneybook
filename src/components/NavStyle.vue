@@ -14,7 +14,7 @@
 
 <script lang="ts">
   export default {
-    name: 'Layout',
+    name: 'NavStyle',
     props: ['classPrefix', 'value'],
   };
 </script>
@@ -40,8 +40,12 @@
     flex: 1;
     /*flex-grow: 1;*/
   }
-  .header,.footer{
-    /*flex: 0 0 0;*/
+  .header,{
+    display: flex;
+    flex-direction: column;
   /*  同学为什么要设置这个？不设置目前看来没什么影响*/
+  }
+  .footer{
+    /*flex: 0 0 0;*/
   }
 </style>

@@ -63,10 +63,10 @@
 
         &.addMoney {
           position: absolute;
-          left: calc(50vw - 45px);
-          bottom: 0;
-          width: 90px;
-          height: 90px;
+          left: calc(50vw - 15px);
+          bottom: 10px;
+          width: 30px;
+          height: 30px;
           background: transparent;
         }
       }

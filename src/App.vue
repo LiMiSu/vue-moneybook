@@ -15,9 +15,9 @@
     -moz-osx-font-smoothing: grayscale;
     font-family: $font-heiti;
     /*color: rgb(255,255,255);*/
-    color: black;
+    color: red;
     font-size: 16px;
-    /*background: rgb(21,27,35);*/
+    /*background: rgba(21,27,35,0.6);*/
     background: #f5f5f5;
   }
 

@@ -1,9 +1,9 @@
 <template>
-  <div class="date-body">
+  <div class="date-body" :class="{[classPrefix+'-datebody']:classPrefix}">
     <div class="date-nav">
       <Icon name="left-nav" class="date-btn icon-left-nav" @click="onChangYear('last')"></Icon>
       <Icon name="zuo" class="date-btn icon-zuo" @click="onChangMonth('last')"></Icon>
-      <span>{{showData.year}}年{{showData.month+1}}月{{showData.day}}</span>
+      <span>{{showData.year}}年{{showData.month+1}}月{{showData.day}}日</span>
       <Icon name="you" class="date-btn icon-you" @click="onChangMonth('next')"></Icon>
       <Icon name="right-nav" class="date-btn icon-right-nav" @click="onChangYear('next')"></Icon>
     </div>
@@ -33,11 +33,13 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component} from 'vue-property-decorator';
+  import {Component, Prop} from 'vue-property-decorator';
   import dayjs from 'dayjs';
 
   @Component
   export default class Days extends Vue {
+    @Prop(String)
+    classPrefix?: string;
     weekDay = ['日', '一', '二', '三', '四', '五', '六'];
     showData = { //初始值？
       year: 0,
@@ -133,7 +135,6 @@
 <style lang="scss" scoped>
 
   .date-body {
-    border: 1px solid yellow;
     min-width: 100vw;
     height: 330px;
     position: relative;

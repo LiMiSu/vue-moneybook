@@ -1,33 +1,29 @@
 <template>
   <div class="addMoney-wrapper">
-
-    <header class="header">
-      <MoneyType class-prefix="type" :data-source="typeList" :value.sync="$store.state.record.type"/>
-    </header>
-
-
-    <main class="main">
-      <ShowTags :value.sync="$store.state.record.tags"/>
-      <router-view></router-view>
-      <div class="notes">
-        <label>
-          <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="在这里输入备注"/>
-        </label>
-      </div>
-    </main>
-
-
-    <footer class="footer">
-      <div v-if="$store.state.showBody" class="cover">
-        <div class="top" @click="$store.state.showBody=!$store.state.showBody"></div>
-        <div class="daychoose">
-          <Calender class="chooseDay"></Calender>
-          <div class="cancel" @click="$store.state.showBody=!$store.state.showBody">取消</div>
+      <header class="addheader">
+        <MoneyType class-prefix="add" :data-source="typeList" :value.sync="$store.state.record.type"/>
+      </header>
+      <main class="addmain">
+        <ShowTags :value.sync="$store.state.record.tags"/>
+        <router-view></router-view>
+        <div class="notes">
+          <label>
+            <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="在这里输入备注"/>
+          </label>
         </div>
-      </div>
-      <NumberPad :value.sync="$store.state.record.amount" @submit="saveRecord"></NumberPad>
-    </footer>
+      </main>
 
+
+      <footer class="addfooter">
+        <div v-if="$store.state.showBody" class="cover">
+          <div class="top" @click="$store.state.showBody=!$store.state.showBody"></div>
+          <div class="daychoose">
+            <Calender class="chooseDay"></Calender>
+            <div class="cancel" @click="$store.state.showBody=!$store.state.showBody">取消</div>
+          </div>
+        </div>
+        <NumberPad :value.sync="$store.state.record.amount" @submit="saveRecord"></NumberPad>
+      </footer>
   </div>
 </template>
 
@@ -71,14 +67,14 @@
     height: 100%;
   }
 
-  .main {
+  .addmain {
     display: flex;
     flex-direction: column;
     overflow: auto;
     flex: 1;
   }
 
-  .footer {
+  .addfooter {
 
     .cover {
       display: flex;

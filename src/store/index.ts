@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import clone from '@/lib/clone';
 import createId from '@/lib/createId';
 import router from '@/router';
+import typeList from '@/constants/tagList';
 
 Vue.use(Vuex);
 
@@ -14,7 +15,6 @@ const store = new Vuex.Store({
     tagList: [],
     currentTag: undefined,
     isHave: true,
-    changeShow: false,
     showBody: false,
   } as RootState,
 
@@ -46,10 +46,10 @@ const store = new Vuex.Store({
     fetchTags(state) {
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
       if (!state.tagList || state.tagList.length === 0) {
-        store.commit('createTag', {name: '衣', tagicon: 'date', type: state.record.type});
-        store.commit('createTag', {name: '食', tagicon: 'date', type: state.record.type});
-        store.commit('createTag', {name: '住', tagicon: 'label', type: state.record.type});
-        store.commit('createTag', {name: '行', tagicon: 'money', type: state.record.type});
+        typeList.forEach(item=>{
+          return store.commit('createTag', {name: item.name, tagicon: item.tagicon, type: item.type})
+        })
+
       }
     },
     createTag(state, payload: { name: string; tagicon: string; type: string }) {

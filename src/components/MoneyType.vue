@@ -42,11 +42,6 @@
     //给组件设置一个前缀的吧:class="{[classPrefix+'-tabs']:classPrefix}"
     //加前缀是为了在统计页面中或者其他页面deep设置样式
 
-    created() {
-      console.log(this.value);
-    }
-
-
     //其实就是class的封装：:class="[{[classPrefix+'-tabs']:classPrefix},{selected: tab.value === this.value}]"
     liClass(tab: DataSourceItem) {
       return {
