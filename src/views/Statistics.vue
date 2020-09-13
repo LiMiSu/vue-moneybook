@@ -22,6 +22,7 @@
         </ol>
         <div class="noResult" v-else>目前没有相关记录</div>
       </div>
+      <img src="../assets/imges/bg.jpg">
     </template>
   </NavStyle>
 </template>
