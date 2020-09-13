@@ -15,6 +15,7 @@ type RootState = {
   record: RecordItem;
   recordList: RecordItem[];
   tagList: Tag[];
+  monthRecordList: Result[];
   currentTag?: Tag;
   isHave: boolean;
   showBody: boolean;
@@ -27,4 +28,9 @@ type GetDay = {
 type DataSourceItem = {
   text: string;
   value: string;
+}
+type Result = {
+  title: string;
+  total?: number;
+  items: RecordItem[];
 }

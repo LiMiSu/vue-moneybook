@@ -1,9 +1,9 @@
 <template>
-  <div class="addMoney-wrapper">
-      <header class="addheader">
+  <NavStyle class="addMoney-wrapper">
+      <template #header class="addheader">
         <MoneyType class-prefix="add" :data-source="typeList" :value.sync="$store.state.record.type"/>
-      </header>
-      <main class="addmain">
+      </template>
+      <template #main class="addmain">
         <ShowTags :value.sync="$store.state.record.tags"/>
         <router-view></router-view>
         <div class="notes">
@@ -11,7 +11,7 @@
             <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="在这里输入备注"/>
           </label>
         </div>
-      </main>
+      </template>
 
 
       <footer class="addfooter">
@@ -24,7 +24,7 @@
         </div>
         <NumberPad :value.sync="$store.state.record.amount" @submit="saveRecord"></NumberPad>
       </footer>
-  </div>
+  </NavStyle>
 </template>
 
 <script lang="ts">

@@ -5,18 +5,17 @@
 </template>
 
 
-
 <style lang="scss">
   @import "~@/assets/style/reset.scss";
   @import "~@/assets/style/helper.scss";
+
 
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: $font-heiti;
-    color: #505050;
+    color: #000000;
     font-size: 16px;
-    background: #fff;
   }
 
 

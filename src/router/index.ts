@@ -8,6 +8,7 @@ import RewriteTag from '@/components/Tag/RewriteTag.vue';
 import NumberPad from '@/components/AddMoney/NumberPad.vue';
 import AddMoney from '@/views/AddMoney.vue';
 import AddTags from '@/components/Tag/AddTag.vue';
+import Detail from '@/views/Detail.vue';
 
 Vue.use(VueRouter);
 
@@ -61,6 +62,10 @@ const routes: Array<RouteConfig> = [
   {
     path: '/addtags',
     component: AddTags
+  },
+  {
+    path: '/detail',
+    component: Detail
   },
   {
     path: '*',

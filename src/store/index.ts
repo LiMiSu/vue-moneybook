@@ -4,6 +4,7 @@ import clone from '@/lib/clone';
 import createId from '@/lib/createId';
 import router from '@/router';
 import tagInit from '@/constants/tagInit';
+import dayjs from 'dayjs';
 
 Vue.use(Vuex);
 
@@ -13,6 +14,7 @@ const store = new Vuex.Store({
     record: {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()},
     recordList: [],
     tagList: [],
+    monthRecordList: [],
     currentTag: undefined,
     isHave: true,
     showBody: false,
@@ -46,9 +48,9 @@ const store = new Vuex.Store({
     fetchTags(state) {
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
       if (!state.tagList || state.tagList.length === 0) {
-        tagInit.forEach(item=>{
-          return store.commit('createTag', {name: item.name, tagicon: item.tagicon, type: item.type})
-        })
+        tagInit.forEach(item => {
+          return store.commit('createTag', {name: item.name, tagicon: item.tagicon, type: item.type});
+        });
 
       }
     },
@@ -76,7 +78,7 @@ const store = new Vuex.Store({
         window.alert('删除失败');
       }
     },
-    updateTag(state, payload: { id: string; name: string}) {
+    updateTag(state, payload: { id: string; name: string }) {
       const {id, name} = payload;
       const idList = state.tagList.map(item => item.id);
       if (idList.indexOf(id) >= 0) {
@@ -97,6 +99,39 @@ const store = new Vuex.Store({
     saveTags(state) {
       window.localStorage.setItem('tagList', JSON.stringify(state.tagList));
     },
+
+    //按月
+    fetchMonthRecordList(state) {
+      const newRecordList: any = clone(this.recordList);
+      newRecordList.filter((item: RecordItem) => (item as any).type === this.type)
+        .sort((a: RecordItem, b: RecordItem) =>
+          dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
+        );
+      if (newRecordList.length === 0) {
+        return [];
+      }
+
+      const result: Result[] = [{
+        title: dayjs(newRecordList[0].createdAt).format('YYYY-M-D'),
+        items: [newRecordList[0]]
+      }];
+      for (let i = 1; i < newRecordList.length; i++) {
+        const current = newRecordList[i];
+        const last = result[result.length - 1];
+        if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {
+          last.items.push(current);
+        } else {
+          result.push({title: dayjs(current.createdAt).format('YYYY-M-D'), items: [current]});
+        }
+      }
+      result.forEach(group => {
+        group.total = group.items.reduce((sum, item) => {
+          return sum + item.amount;
+        }, 0);
+      });
+      state.monthRecordList = result;
+    }
+
   }
 });
 
