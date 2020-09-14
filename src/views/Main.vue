@@ -1,7 +1,7 @@
 <template>
   <NavStyle class-prefix="main">
     <template #header>
-      <div class="header">叮咚记账</div>
+      <div class="header">汤姆记账</div>
     </template>
     <template #main>
       <div class="main-header">
@@ -26,7 +26,6 @@
           </div>
         </div>
       </div>
-
     </template>
   </NavStyle>
 </template>
@@ -49,12 +48,15 @@
     get dayValue() {
       return new Date(this.$store.state.record.createdAt);
     }
-    get year(){
-      return this.dayValue.getFullYear()
+
+    get year() {
+      return this.dayValue.getFullYear();
     }
-    get month(){
-      return this.dayValue.getMonth() + 1
+
+    get month() {
+      return this.dayValue.getMonth() + 1;
     }
+
     // get count(){
     //   return this.$store.state.monthRecordList
     // }
@@ -69,7 +71,6 @@
     font-size: 16px;
     font-weight: bold;
     min-height: 60px;
-    background: plum;
   }
 
   .main-header {
@@ -77,9 +78,9 @@
 
     .day {
       height: 140px;
-      background: greenyellow;
-      ::v-deep{
-        .main-datebody{
+
+      ::v-deep {
+        .main-datebody {
 
         }
       }
@@ -94,13 +95,12 @@
 
       .sum {
         flex: 1;
-        background: cadetblue;
+        background:#DE7873;
       }
 
       .type {
         display: flex;
         justify-content: space-between;
-        background: darkviolet;
       }
     }
   }

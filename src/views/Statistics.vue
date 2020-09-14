@@ -22,7 +22,6 @@
         </ol>
         <div class="noResult" v-else>目前没有相关记录</div>
       </div>
-      <img src="../assets/imges/bg.jpg">
     </template>
   </NavStyle>
 </template>
@@ -150,32 +149,32 @@
 
 <style lang="scss" scoped>
 
-  ::v-deep {
-    .type-type {
-      background-color: #c4c4c4;
+/*  ::v-deep {*/
+/*    .type-type {*/
+/*      background-color: #c4c4c4;*/
 
-      &.selected {
-        background: white;
+/*      &.selected {*/
+/*        background: white;*/
 
-        &::after {
-          display: none;
-        }
-      }
-    }
+/*        &::after {*/
+/*          display: none;*/
+/*        }*/
+/*      }*/
+/*    }*/
 
-    .interval-type {
-      background-color: white;
-      height: 30px;
+/*    .interval-type {*/
+/*      background-color: white;*/
+/*      height: 30px;*/
 
-      &.selected {
-        background: #c4c4c4;
+/*      &.selected {*/
+/*        background: #c4c4c4;*/
 
-        &::after {
-          display: none;
-        }
-      }
-    }
-  }
+/*        &::after {*/
+/*          display: none;*/
+/*        }*/
+/*      }*/
+/*    }*/
+/*  }*/
 
 
   /*相同样式*/
@@ -189,7 +188,7 @@
 
   .statisticsList {
     overflow: auto;
-    background: fuchsia;
+    background: #DE7873;
     .title {
       @extend %item;
     }

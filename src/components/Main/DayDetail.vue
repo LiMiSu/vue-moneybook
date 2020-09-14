@@ -68,7 +68,6 @@
 
 <style lang="scss" scoped>
   .date-body {
-    border: 1px solid yellow;
     .date-nav {
       user-select: none;
       padding-top: 15px;

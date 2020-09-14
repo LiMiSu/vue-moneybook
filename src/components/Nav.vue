@@ -1,16 +1,13 @@
 <template>
   <nav>
     <router-link to="/detail" class="item" active-class="selected">
-<!--      <svg>-->
-<!--        <text>明细</text>-->
-<!--      </svg>-->
-      明细
+<Icon name="detail"></Icon>
     </router-link>
     <router-link to="/main" class="item" active-class="selected">
-      记账
+      <Icon name="write"></Icon>
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
-      统计
+      <Icon name="stati"></Icon>
     </router-link>
   </nav>
 </template>
@@ -43,7 +40,7 @@
       margin: 10px;
       padding: 6px;
       &.selected {
-        color: red;
+        color: #FC6468;
       }
     }
   }

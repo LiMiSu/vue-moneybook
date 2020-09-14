@@ -129,26 +129,25 @@
     .showlist {
       flex: 1;
       height: 100px;
-      border: 1px solid blue;
     }
   }
 
   .type {
     flex: 1;
 
-    ::v-deep {
-      .main-type {
-        background-color: #c4c4c4;
+    /*::v-deep {*/
+    /*  .main-type {*/
+    /*    background-color: #c4c4c4;*/
 
-        &.selected {
-          background: white;
+    /*    &.selected {*/
+    /*      background: white;*/
 
-          &::after {
-            display: none;
-          }
-        }
-      }
-    }
+    /*      &::after {*/
+    /*        display: none;*/
+    /*      }*/
+    /*    }*/
+    /*  }*/
+    /*}*/
   }
 
   /*相同样式*/
@@ -162,7 +161,7 @@
 
   .statisticsList {
     overflow: auto;
-    background: fuchsia;
+    background: #DE7873;
 
     .title {
       @extend %item;

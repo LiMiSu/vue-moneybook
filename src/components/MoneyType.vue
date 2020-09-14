@@ -1,14 +1,15 @@
 <template>
-  <ul class="tabs" :class="{[classPrefix+'-tabs']:classPrefix}">
-    <li
-      v-for="tab in dataSource"
-      :key="tab.value"
-      class="tabs-type"
-      :class="liClass(tab)"
-      @click="select(tab)"
-    >{{ tab.text }}
-    </li>
-  </ul>
+  <div class="tabs" :class="{[classPrefix+'-tabs']:classPrefix}">
+    <div class="tabs-type"
+         v-for="tab in dataSource"
+         :key="tab.value"
+         :class="liClass(tab)"
+         @click="select(tab)"
+    >
+      <Icon :name="tab.text">
+      </Icon>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -57,27 +58,33 @@
 
 <style lang="scss" scoped>
   .tabs {
-    background: #c4c4c4;
+    background: rgb(197,179,142);
     display: flex;
-    font-size: 24px;
-
+    /*font-size: 24px;*/
     &-type {
       width: 50%;
       height: 40px;
       display: flex;
       justify-content: center;
       align-items: center;
-      position: relative;
+      /*position: relative;*/
 
-      &.selected::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: #333;
+      &.selected{
+        background: rgb(246,234,212);
       }
+      .icon{
+        width: 30px;
+        height: 30px;
+      }
+      /*&.selected::after {*/
+      /*  content: '';*/
+      /*  position: absolute;*/
+      /*  bottom: 0;*/
+      /*  left: 0;*/
+      /*  width: 100%;*/
+      /*  height: 4px;*/
+      /*  background: #333;*/
+      /*}*/
     }
   }
 </style>
