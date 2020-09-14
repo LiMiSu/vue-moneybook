@@ -270,7 +270,7 @@
 
 
   %addMoneyStyle {
-    background: yellow;
+    background: rgb(246,234,212);
     color: blue;
     font-size: 22px;
     font-weight: bold;

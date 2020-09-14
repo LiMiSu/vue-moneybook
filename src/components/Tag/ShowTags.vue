@@ -24,7 +24,7 @@
 
   @Component
   export default class Note extends mixins(TagHelper) {
-    type = '-';
+    type = '+';
     selectedLists: string[] = [];
 
     created() {
@@ -82,7 +82,7 @@
       align-items: center;
 
       .tagIcon, .addTag {
-        $bg: #d9d9d9;
+        $bg: rgb(246,234,212);
         background: $bg;
         $h: 36px;
         border-radius: $h/2;
@@ -96,7 +96,7 @@
         }
 
         &.selected {
-          background: darken($bg, 50%);
+          background: #DE7873;
           color: white;
         }
       }

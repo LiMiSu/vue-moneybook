@@ -96,7 +96,7 @@
   .main{
     display: flex;
     flex-direction: column;
-    overflow: auto;
+    overflow-y: auto;
     flex: 1;
     .tags {
       font-size: 14px;

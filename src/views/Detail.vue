@@ -1,34 +1,9 @@
 <template>
   <NavStyle class-prefix="main" class="a">
     <template #header>
-      <DayDetail></DayDetail>
-      <DayDetail></DayDetail>
-      <div class="shownav">
-        <div class="showlist pay"></div>
-        <div class="showlist in"></div>
-        <div class="showlist have"></div>
-      </div>
-      <div class="type">
-        <MoneyType :data-source="typeList" class-prefix="type" :value.sync="type"/>
-      </div>
+     明细
     </template>
     <template #main>
-      <div class="statisticsList">
-        <ol v-if="groupedList.length>0">
-          <li v-for="(group,index) in groupedList" :key="index">
-            <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
-            <ol>
-              <li v-for="item in group.items" :key="item.id"
-                  class="record">
-                <span>{{tagString(item.tags)}}</span>
-                <span class="notes">{{item.notes}}</span>
-                <span>￥{{item.amount}}</span>
-              </li>
-            </ol>
-          </li>
-        </ol>
-        <div class="noResult" v-else>目前没有相关记录</div>
-      </div>
     </template>
   </NavStyle>
 </template>
@@ -160,7 +135,7 @@
   }
 
   .statisticsList {
-    overflow: auto;
+    overflow-y: auto;
     background: #DE7873;
 
     .title {

@@ -1,30 +1,71 @@
 <template>
-  <NavStyle class="addMoney-wrapper">
-      <template #header class="addheader">
-        <MoneyType class-prefix="add" :data-source="typeList" :value.sync="$store.state.record.type"/>
-      </template>
-      <template #main class="addmain">
-        <ShowTags :value.sync="$store.state.record.tags"/>
-        <router-view></router-view>
-        <div class="notes">
+  <div class="addMoney-wrapper">
+    <header class="addheader">
+      <Icon name="left" class="left"></Icon>
+      <div class="header">
+        记一笔
+      </div>
+      <span class="icon off"></span>
+    </header>
+
+
+    <main class="addmain">
+      <MoneyType class-prefix="add" :data-source="typeList" :value.sync="$store.state.record.type"/>
+      <div class="message date">
+        <div class="text"><span>日期</span></div>
+        <div class="input"><label>
+          <input type="text">
+        </label></div>
+      </div>
+      <div class="message tag">
+        <div class="text"><span>标签</span></div>
+        <div class="input"><label>
+          <input type="text">
+        </label></div>
+      </div>
+      <div class="message amount">
+        <div class="text"><span>金额</span></div>
+        <div class="input"><label>
+          <input type="text">
+        </label></div>
+      </div>
+      <div class="notes">
+        <div class="text">
+          <span>备注</span>
+        </div>
+        <div class="input">
           <label>
-            <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="在这里输入备注"/>
-          </label>
+          <textarea></textarea>
+        </label>
         </div>
-      </template>
+      </div>
+      <div class="yes">
+        <div class="text"><span>确定</span></div>
+      </div>
+
+<!--      <ShowTags :value.sync="$store.state.record.tags"/>-->
+<!--      class="input"-->
+<!--      <router-view></router-view>-->
+<!--      <div class="notes">-->
+<!--        <label>-->
+<!--          <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="在这里输入备注"/>-->
+<!--        </label>-->
+<!--      </div>-->
+<!--      <div v-if="$store.state.showBody" class="cover">-->
+<!--        <div class="top" @click="$store.state.showBody=!$store.state.showBody"></div>-->
+<!--        <div class="daychoose">-->
+<!--          <Calender class="chooseDay"></Calender>-->
+<!--          <div class="cancel" @click="$store.state.showBody=!$store.state.showBody">取消</div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <NumberPad :value.sync="$store.state.record.amount" @submit="saveRecord"></NumberPad>-->
+    </main>
 
 
-      <footer class="addfooter">
-        <div v-if="$store.state.showBody" class="cover">
-          <div class="top" @click="$store.state.showBody=!$store.state.showBody"></div>
-          <div class="daychoose">
-            <Calender class="chooseDay"></Calender>
-            <div class="cancel" @click="$store.state.showBody=!$store.state.showBody">取消</div>
-          </div>
-        </div>
-        <NumberPad :value.sync="$store.state.record.amount" @submit="saveRecord"></NumberPad>
-      </footer>
-  </NavStyle>
+    <footer class="addfooter">
+
+    </footer>
+  </div>
 </template>
 
 <script lang="ts">
@@ -70,8 +111,69 @@
   .addmain {
     display: flex;
     flex-direction: column;
-    overflow: auto;
+    overflow-y: auto;
     flex: 1;
+
+    .message {
+      border-bottom: 1px dotted rgb(222, 225, 230);
+      display: flex;
+      justify-content: space-between;
+      padding: 0 22px;
+
+      .text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 10vh;
+      }
+
+      .input {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 10vh;
+
+        input{
+          border: 1px solid rgb(230, 230, 230);
+          border-radius: 4px;
+          padding: 3px 16px;
+          background: #ffffff;
+        }
+      }
+    }
+    .notes{
+      padding: 0 22px;
+      .text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 5vh;
+      }
+      textarea{
+        border: 1px solid rgb(230, 230, 230);
+        border-radius: 4px;
+        padding: 3px 16px;
+        background: #ffffff;
+        resize: none;
+        width: 100%;
+      }
+    }
+  }
+
+  .addheader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    height: 6vh;
+    border-bottom: 1px solid rgb(243, 243, 243);
+
+    .icon.left, .icon.off {
+      width: 24px;
+      height: 24px;
+      margin: 0 16px;
+    }
   }
 
   .addfooter {

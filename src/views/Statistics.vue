@@ -1,5 +1,8 @@
 <template>
   <NavStyle>
+    <template #header>
+      统计
+    </template>
     <template #main>
       <div>
         <MoneyType class-prefix="type" :data-source="typeList" :value.sync="type"/>
@@ -41,7 +44,7 @@
     components: {Button, Echarts,MoneyType},
   })
   export default class Statistics extends Vue {
-    type = '-';
+    type = '+';
     interval = 'day';
     intervalList = intervalList;
     typeList = typeList;
@@ -187,7 +190,7 @@
   }
 
   .statisticsList {
-    overflow: auto;
+    overflow-y: auto;
     background: #DE7873;
     .title {
       @extend %item;

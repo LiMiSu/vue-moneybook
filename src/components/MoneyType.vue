@@ -22,16 +22,6 @@
   export default class Tabs extends Vue {
     @Prop({required: true, type: Array})
     dataSource!: DataSourceItem[];
-    // dataSource：
-            // [{
-            //   text: '收入';
-            //   value: '+'
-            // },
-            // {
-            //   text: '支出';
-            //   value: '-'
-            // }]
-            //
 
     @Prop(String)
     readonly value!: string;
@@ -39,11 +29,6 @@
 
     @Prop(String)
     classPrefix?: string;
-    // classPrefix?: 父組件传过来的一个 ‘type‘ 常量，不是变量
-    //给组件设置一个前缀的吧:class="{[classPrefix+'-tabs']:classPrefix}"
-    //加前缀是为了在统计页面中或者其他页面deep设置样式
-
-    //其实就是class的封装：:class="[{[classPrefix+'-tabs']:classPrefix},{selected: tab.value === this.value}]"
     liClass(tab: DataSourceItem) {
       return {
         [this.classPrefix + '-type']: this.classPrefix, selected: tab.value === this.value
@@ -58,23 +43,23 @@
 
 <style lang="scss" scoped>
   .tabs {
-    background: rgb(246,234,212);
+    background: rgb(243,243,243);
     display: flex;
     /*font-size: 24px;*/
     &-type {
       width: 50%;
-      min-height: 40px;
+      min-height: 30px;
       display: flex;
       justify-content: center;
       align-items: center;
       /*position: relative;*/
 
       &.selected{
-        background: rgb(197,179,142);
+        background: rgb(246,234,212);
       }
       .icon{
-        width: 30px;
-        height: 30px;
+        width: 24px;
+        height: 24px;
       }
       /*&.selected::after {*/
       /*  content: '';*/

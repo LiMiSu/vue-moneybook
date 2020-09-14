@@ -2,9 +2,9 @@
   <div class="layout-wrapper">
     <header class="header">
       <Icon name="set" class="set" @click="say"></Icon>
-      <div class="header">XX记账</div>
+      <div class="header"><slot name="header"></slot></div>
       <Icon name="me" class="me" @click="say"></Icon>
-      <div class="say" v-if="sayValue" @click="sayValue=!sayValue">
+      <div class="say" v-if="sayValue">
         <div class="value">此功能尚未开发，敬请期待哟</div>
       </div>
     </header>
@@ -27,10 +27,12 @@
     @Prop() value!: string;
     sayValue = false;
     say(){
-      this.sayValue=!this.sayValue
-      setTimeout(() =>{
+      if(!this.sayValue){
         this.sayValue=!this.sayValue
-      },1000)
+        setTimeout(() =>{
+          this.sayValue=!this.sayValue
+        },1000)
+      }
     }
   }
 </script>
@@ -49,7 +51,7 @@
   .main {
     display: flex;
     flex-direction: column;
-    overflow: auto;
+    overflow-y: auto;
     flex: 1;
   }
 
@@ -82,7 +84,7 @@
         background: rgba(243,243,243,0.8);
         text-align: center;
         padding: 0 6px;
-        font-size: 12px;
+        font-size: 14px;
         border-radius: 7px;
       }
 
