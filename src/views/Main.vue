@@ -32,42 +32,6 @@
       </div>
       <div class="main-body">
         <router-link to='/addmoney'>去记一笔吧！</router-link>
-
-
-
-<!--        <div class="message date">-->
-<!--          <div class="text"><span>日期</span></div>-->
-<!--          <div class="input"><label>-->
-<!--            <input type="text">-->
-<!--          </label></div>-->
-<!--        </div>-->
-<!--        <div class="message tag">-->
-<!--          <div class="text"><span>标签</span></div>-->
-<!--          <div class="input"><label>-->
-<!--            <input type="text">-->
-<!--          </label></div>-->
-<!--        </div>-->
-<!--        <div class="message amount">-->
-<!--          <div class="text"><span>金额</span></div>-->
-<!--          <div class="input"><label>-->
-<!--            <input type="text">-->
-<!--          </label></div>-->
-<!--        </div>-->
-<!--        <div class="notes">-->
-<!--          <div class="text">-->
-<!--            <span>备注</span>-->
-<!--          </div>-->
-<!--          <div class="input">-->
-<!--            <label>-->
-<!--              <textarea></textarea>-->
-<!--            </label>-->
-<!--          </div>-->
-<!--        </div>-->
-
-
-
-
-
       </div>
     </template>
   </NavStyle>
@@ -167,67 +131,18 @@
           color: #DE7873;
         }
       }
-
       .in {
         width: 50%;
         @extend %payin;
 
         .in-money {
           color: rgb(43, 162, 69);
-
         }
-      ;
       }
-
       .icon {
         width: 24px;
         height: 24px;
       }
-    }
-  }
-
-  .message {
-    border-bottom: 1px dotted rgb(222, 225, 230);
-    display: flex;
-    justify-content: space-between;
-    padding: 0 22px;
-
-    .text {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      height: 10vh;
-    }
-
-    .input {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      height: 10vh;
-
-      input{
-        border: 1px solid rgb(230, 230, 230);
-        border-radius: 4px;
-        padding: 3px 16px;
-        background: #ffffff;
-      }
-    }
-  }
-  .notes{
-    padding: 0 22px;
-    .text {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      height: 5vh;
-    }
-    textarea{
-      border: 1px solid rgb(230, 230, 230);
-      border-radius: 4px;
-      padding: 3px 16px;
-      background: #ffffff;
-      resize: none;
-      width: 100%;
     }
   }
 </style>

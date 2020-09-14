@@ -1,69 +1,49 @@
 <template>
   <div class="addMoney-wrapper">
-    <header class="addheader">
-      <Icon name="left" class="left"></Icon>
-      <div class="header">
-        记一笔
+    <header>
+      <div class="addheader" @click="goBack">
+        <Icon name="left" class="left"></Icon>
+        <div class="header">
+          记一笔
+        </div>
+        <span class="icon off"></span>
       </div>
-      <span class="icon off"></span>
-    </header>
-
-
-    <main class="addmain">
       <MoneyType class-prefix="add" :data-source="typeList" :value.sync="$store.state.record.type"/>
-      <div class="message date">
-        <div class="text"><span>日期</span></div>
-        <div class="input"><label>
-          <input type="text">
-        </label></div>
-      </div>
-      <div class="message tag">
-        <div class="text"><span>标签</span></div>
+    </header>
+    <main class="addmain">
+
+      <ShowTags :value.sync="$store.state.record.tags"/>
+      <router-view></router-view>
+    </main>
+    <footer class="addfooter">
+
+      <div class="message amount">
+        <div class="text"><span>请输入金额</span></div>
         <div class="input"><label>
           <input type="text">
         </label></div>
       </div>
       <div class="message amount">
-        <div class="text"><span>金额</span></div>
-        <div class="input"><label>
-          <input type="text">
-        </label></div>
+        确定
       </div>
-      <div class="notes">
-        <div class="text">
-          <span>备注</span>
+
+      <div v-if="$store.state.showBody" class="cover">
+        <div class="top" @click="$store.state.showBody=!$store.state.showBody"></div>
+        <div class="daychoose">
+          <Calender class="chooseDay"></Calender>
+          <div class="cancel" @click="$store.state.showBody=!$store.state.showBody">
+            <Icon name="x"></Icon>
+          </div>
         </div>
-        <div class="input">
+      </div>
+      <div v-if="$store.state.numberShow">
+        <div class="notes">
           <label>
-          <textarea></textarea>
-        </label>
+            <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="在这里输入备注"/>
+          </label>
         </div>
+        <NumberPad :value.sync="$store.state.record.amount" @submit="saveRecord"></NumberPad>
       </div>
-      <div class="yes">
-        <div class="text"><span>确定</span></div>
-      </div>
-
-<!--      <ShowTags :value.sync="$store.state.record.tags"/>-->
-<!--      class="input"-->
-<!--      <router-view></router-view>-->
-<!--      <div class="notes">-->
-<!--        <label>-->
-<!--          <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="在这里输入备注"/>-->
-<!--        </label>-->
-<!--      </div>-->
-<!--      <div v-if="$store.state.showBody" class="cover">-->
-<!--        <div class="top" @click="$store.state.showBody=!$store.state.showBody"></div>-->
-<!--        <div class="daychoose">-->
-<!--          <Calender class="chooseDay"></Calender>-->
-<!--          <div class="cancel" @click="$store.state.showBody=!$store.state.showBody">取消</div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <NumberPad :value.sync="$store.state.record.amount" @submit="saveRecord"></NumberPad>-->
-    </main>
-
-
-    <footer class="addfooter">
-
     </footer>
   </div>
 </template>
@@ -94,6 +74,9 @@
       this.$store.commit('createRecord', this.$store.state.record);
       this.$store.state.record.notes = '';
     }
+    goBack(){
+      this.$router.replace('/main')
+    }
   }
 </script>
 
@@ -106,58 +89,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-  }
-
-  .addmain {
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    flex: 1;
-
-    .message {
-      border-bottom: 1px dotted rgb(222, 225, 230);
-      display: flex;
-      justify-content: space-between;
-      padding: 0 22px;
-
-      .text {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 10vh;
-      }
-
-      .input {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 10vh;
-
-        input{
-          border: 1px solid rgb(230, 230, 230);
-          border-radius: 4px;
-          padding: 3px 16px;
-          background: #ffffff;
-        }
-      }
-    }
-    .notes{
-      padding: 0 22px;
-      .text {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 5vh;
-      }
-      textarea{
-        border: 1px solid rgb(230, 230, 230);
-        border-radius: 4px;
-        padding: 3px 16px;
-        background: #ffffff;
-        resize: none;
-        width: 100%;
-      }
-    }
   }
 
   .addheader {
@@ -174,6 +105,15 @@
       height: 24px;
       margin: 0 16px;
     }
+  }
+
+  .addmain {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex: 1;
+
+
   }
 
   .addfooter {
@@ -200,8 +140,8 @@
 
         .cancel {
           position: absolute;
-          right: 8px;
-          top: 9px;
+          right: 2px;
+          top: 11px;
           width: 55px;
           height: 30px;
           text-align: center;
@@ -209,6 +149,55 @@
         }
       }
 
+    }
+
+
+    .message {
+      border-bottom: 1px dotted rgb(222, 225, 230);
+      display: flex;
+      justify-content: space-between;
+      padding: 0 22px;
+
+      .text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 10vh;
+      }
+
+      .input {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 10vh;
+
+        input {
+          border: 1px solid rgb(230, 230, 230);
+          border-radius: 4px;
+          padding: 3px 16px;
+          background: #ffffff;
+        }
+      }
+    }
+
+    .notes {
+      padding: 0 22px;
+
+      .text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 5vh;
+      }
+
+      textarea {
+        border: 1px solid rgb(230, 230, 230);
+        border-radius: 4px;
+        padding: 3px 16px;
+        background: #ffffff;
+        resize: none;
+        width: 100%;
+      }
     }
   }
 

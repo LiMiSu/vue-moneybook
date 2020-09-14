@@ -1,19 +1,25 @@
 <template>
-  <div class="tags">
-    <div class="tagList"
-         v-for="tag in newTagList"
-         :key="tag.id">
-      <Icon class="tagIcon" :name=tag.tagicon
-           :class="{selected: selectedLists.indexOf(tag)>=0}"
-           @click="toggle(tag)">
-      </Icon>
-      <span :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
-    </div>
-    <div class="addTag tagList" @click="goAdd">
-      <Icon name="add"></Icon>
+  <div>
+    <div class="metagList" @click="goAdd">
+      <Icon name="add" class="addTag"></Icon>
       管理
     </div>
+    <div>
+      <div class="choosetag">请选择{{ }}类目：</div>
+    </div>
+    <div class="tags">
+      <div class="tagList"
+           v-for="tag in newTagList"
+           :key="tag.id">
+        <Icon class="tagIcon" :name=tag.tagicon
+              :class="{selected: selectedLists.indexOf(tag)>=0}"
+              @click="toggle(tag)">
+        </Icon>
+        <span :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
+      </div>
+    </div>
   </div>
+
 </template>
 
 <script lang="ts">
@@ -51,6 +57,9 @@
 
     }
 
+    get value() {
+      return this.newTagList
+    }
 
     toggle(tag: string) {
       this.selectedLists.push(tag);
@@ -68,6 +77,10 @@
 </script>
 
 <style lang="scss" scoped>
+  .choosetag {
+    padding: 10px 16px 0 16px;
+  }
+
   .tags {
     font-size: 14px;
     padding: 16px;
@@ -81,8 +94,8 @@
       justify-content: center;
       align-items: center;
 
-      .tagIcon, .addTag {
-        $bg: rgb(246,234,212);
+      .tagIcon{
+        $bg: rgb(246, 234, 212);
         background: $bg;
         $h: 36px;
         border-radius: $h/2;
@@ -110,6 +123,35 @@
     svg.icon {
       width: 33px;
       height: 33px;
+    }
+  }
+  .metagList{
+    font-size: 14px;
+    margin-left: 16px;
+    margin-top: 10px;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .addTag{
+      $bg: rgb(246, 234, 212);
+      background: $bg;
+      $h: 36px;
+      border-radius: $h/2;
+      height: 36px;
+      width: 45px;
+      line-height: $h;
+      text-align: center;
+
+      .icon {
+        background: transparent;
+      }
+
+      &.selected {
+        background: #DE7873;
+        color: white;
+      }
     }
   }
 </style>

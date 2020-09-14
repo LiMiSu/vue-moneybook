@@ -1,10 +1,24 @@
 <template>
   <div class="manege-tag">
     <header>
-      <div>编辑与新增</div>
+      <div class="addheader">
+        <Icon name="left" class="left" @click="goBack"></Icon>
+        <div class="header">
+          编辑与新增
+        </div>
+        <span class="icon off"></span>
+      </div>
     </header>
 
     <main class="main">
+      <div class="text">点击新增类目：</div>
+      <div class="add">
+        <div class="tagList" @click="goAdd">
+          <Icon name="add" class="addTag"></Icon>
+          新增
+        </div>
+      </div>
+      <div class="text">点击编辑类目：</div>
       <div class="tags">
         <div class="tagList"
              @click="tagChang(tag.id)"
@@ -12,10 +26,6 @@
              :key="tag.id">
           <Icon :name=tag.tagicon class="tagIcon"></Icon>
           <span :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
-        </div>
-        <div class="addTag tagList" @click="goAdd">
-          <Icon name="add"></Icon>
-          新增
         </div>
       </div>
     </main>
@@ -70,11 +80,14 @@
     tagChang(id: string) {
       this.$router.replace('/managetag/rewrite/' + id);
     }
+    goBack(){
+      this.$router.replace('/addmoney')
+    }
   }
 
 </script>
 <style lang="scss" scoped>
-  .manege-tag{
+  .manege-tag {
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -84,57 +97,71 @@
     height: 100%;
   }
 
-  header {
+  .addheader {
     display: flex;
-    flex-direction: column;
-    height: 52px;
-    text-align: center;
-    font-size: 20px;
-    line-height: 50px;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    height: 6vh;
+    border-bottom: 1px solid rgb(243, 243, 243);
+
+    .icon.left, .icon.off {
+      width: 24px;
+      height: 24px;
+      margin: 0 16px;
+    }
   }
 
-  .main{
+  .main {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     flex: 1;
+
     .tags {
       font-size: 14px;
       padding: 16px;
       display: flex;
       flex-wrap: wrap;
+    }
 
-      .tagList {
-        width: 20%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+    .tagList {
+      width: 20%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
 
-        .tagIcon, .addTag {
-          $bg: #d9d9d9;
-          background: $bg;
-          $h: 36px;
-          border-radius: $h/2;
-          height: 36px;
-          width: 45px;
-          line-height: $h;
-          text-align: center;
+    .tagIcon, .addTag {
+      $bg: #d9d9d9;
+      background: $bg;
+      $h: 36px;
+      border-radius: $h/2;
+      height: 36px;
+      width: 45px;
+      line-height: $h;
+      text-align: center;
 
-          .icon {
-            background: transparent;
-          }
-        }
-
-        .small {
-          font-size: 12px;
-        }
+      .icon {
+        background: transparent;
       }
     }
+
+    .add {
+      padding: 16px;
+    }
+
+    .small {
+      font-size: 12px;
+    }
+
+    .text {
+      padding: 0 16px;
+      background: #d9d9d9;
+    }
   }
-
-
-
 
 
 </style>

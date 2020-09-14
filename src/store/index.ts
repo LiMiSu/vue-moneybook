@@ -11,13 +11,14 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    record: {tags: [], notes: '', type: '+', amount: 0, createdAt: new Date().toISOString()},
+    record: {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()},
     recordList: [],
     tagList: [],
     dayRecordList: [],
     currentTag: undefined,
     isHave: true,
     showBody: false,
+    numberShow: false
   } as RootState,
 
   mutations: {

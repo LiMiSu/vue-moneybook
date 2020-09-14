@@ -19,6 +19,7 @@ type RootState = {
   currentTag?: Tag;
   isHave: boolean;
   showBody: boolean;
+  numberShow: boolean;
 }
 type GetDay = {
   year: number;
