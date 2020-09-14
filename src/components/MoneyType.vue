@@ -58,19 +58,19 @@
 
 <style lang="scss" scoped>
   .tabs {
-    background: rgb(197,179,142);
+    background: rgb(246,234,212);
     display: flex;
     /*font-size: 24px;*/
     &-type {
       width: 50%;
-      height: 40px;
+      min-height: 40px;
       display: flex;
       justify-content: center;
       align-items: center;
       /*position: relative;*/
 
       &.selected{
-        background: rgb(246,234,212);
+        background: rgb(197,179,142);
       }
       .icon{
         width: 30px;

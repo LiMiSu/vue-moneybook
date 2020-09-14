@@ -1,10 +1,10 @@
 <template>
   <NavStyle>
-    <template #header>
-      <MoneyType class-prefix="type" :data-source="typeList" :value.sync="type"/>
-<!--      <MoneyType class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>-->
-    </template>
     <template #main>
+      <div>
+        <MoneyType class-prefix="type" :data-source="typeList" :value.sync="type"/>
+        <!--      <MoneyType class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>-->
+      </div>
       <Echarts :option="option"/>
       <div class="statisticsList">
         <ol v-if="groupedList.length>0">

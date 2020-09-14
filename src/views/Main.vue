@@ -1,8 +1,5 @@
 <template>
   <NavStyle class-prefix="main">
-    <template #header>
-      <div class="header">汤姆记账</div>
-    </template>
     <template #main>
       <div class="main-header">
         <div class="day">
@@ -25,6 +22,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="main-body">
+
       </div>
     </template>
   </NavStyle>
@@ -78,7 +78,7 @@
 
     .day {
       height: 140px;
-
+      background:#DE7873;
       ::v-deep {
         .main-datebody {
 
@@ -101,6 +101,7 @@
       .type {
         display: flex;
         justify-content: space-between;
+        background:#DE7873;
       }
     }
   }

@@ -7,7 +7,7 @@
       <Icon name="write"></Icon>
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
-      <Icon name="stati"></Icon>
+      <Icon name="statil"></Icon>
     </router-link>
   </nav>
 </template>
