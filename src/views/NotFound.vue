@@ -2,15 +2,21 @@
   <div>
     <div>当前页面不存在，请检查网站是否正确</div>
     <div>
-      <router-link to="/">返回首页</router-link>|
+      <div @click="goBack">返回首页</div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  export default {
-    name: 'NotFound'
-  };
+  import Vue from 'vue';
+  import {Component} from 'vue-property-decorator';
+
+  @Component
+  export default class NotFound extends Vue {
+      goBack(){
+        this.$router.go(-1)
+      }
+  }
 </script>
 
 <style lang="scss" scoped>

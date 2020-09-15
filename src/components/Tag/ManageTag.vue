@@ -19,19 +19,25 @@
         </div>
       </div>
       <div class="text">点击编辑类目：</div>
+
+
+
+
       <div class="tags">
         <div class="tagList"
              v-for="tag in newTagList"
-             :key="tag.id">
-          <Icon
+             :key="tag.id"
+             >
+          <Icon :name=tag.tagicon
             class="tagIcon"
-            :class="{selected: selectedLists.indexOf(tag)>=0}"
+            :class="{selected: currenttag===tag}"
             @click="tagChang(tag)"
-            :name=tag.tagicon
           ></Icon>
           <span :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
         </div>
       </div>
+
+
     </main>
 
     <footer>
@@ -52,7 +58,7 @@
     components: {Days, Button},
   })
   export default class Labels extends mixins(TagHelper) {
-    selectedLists: string[] = [];
+    currenttag = '';
 
     created() {
       this.$store.commit('fetchTags');
@@ -84,22 +90,23 @@
     }
 
     tagChang(tag: any) {
-      const index = this.selectedLists.indexOf(tag);
-      if (index >= 0 && this.selectedLists.length === 1) {
-        this.selectedLists.splice(0, 1);
-      } else {
-        this.$set(this.selectedLists, 0, tag);
+      this.$store.state.showAdd = false;
+      if (this.currenttag===tag){
+        this.$router.replace('/managetag');
+        this.currenttag=''
+      }else {
+        this.currenttag = tag;
+        this.$router.replace('/rewrite/' + tag.id);
+        // this.$router.replace('/addtags');
       }
-      console.log(this.selectedLists);
     }
+
 
     goBack() {
       this.$router.replace('/addmoney');
     }
   }
-  // if (this.selectedLists.indexOf(tag)>=0){
-  //   this.$router.push('/managetag/rewrite/' + tag.id);
-  // }
+
 </script>
 <style lang="scss" scoped>
   .manege-tag {

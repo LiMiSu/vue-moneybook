@@ -42,7 +42,7 @@ const routes: Array<RouteConfig> = [
         component: AddTags,
       },
       {
-        path: 'rewrite/:id',
+        path: '/rewrite/:id',
         component: RewriteTag
       }
     ]
