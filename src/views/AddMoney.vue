@@ -15,7 +15,6 @@
     <main class="addmain">
 
       <ShowTags :value.sync="$store.state.record.tags"/>
-      <router-view></router-view>
     </main>
     <footer class="addfooter">
 

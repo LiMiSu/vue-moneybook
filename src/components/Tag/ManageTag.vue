@@ -21,17 +21,15 @@
       <div class="text">点击编辑类目：</div>
 
 
-
-
       <div class="tags">
         <div class="tagList"
              v-for="tag in newTagList"
              :key="tag.id"
-             >
+        >
           <Icon :name=tag.tagicon
-            class="tagIcon"
-            :class="{selected: currenttag===tag}"
-            @click="tagChang(tag)"
+                class="tagIcon"
+                :class="{selected: currenttag===tag}"
+                @click="tagChang(tag)"
           ></Icon>
           <span :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
         </div>
@@ -81,6 +79,7 @@
     }
 
     goAdd() {
+      this.currenttag = '';
       this.$store.state.showAdd = !this.$store.state.showAdd;
       if (this.$store.state.showAdd) {
         this.$router.replace('/addtags');
@@ -91,10 +90,10 @@
 
     tagChang(tag: any) {
       this.$store.state.showAdd = false;
-      if (this.currenttag===tag){
+      if (this.currenttag === tag) {
         this.$router.replace('/managetag');
-        this.currenttag=''
-      }else {
+        this.currenttag = '';
+      } else {
         this.currenttag = tag;
         this.$router.replace('/rewrite/' + tag.id);
         // this.$router.replace('/addtags');

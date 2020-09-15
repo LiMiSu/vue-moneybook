@@ -48,6 +48,9 @@
     one = false;
     two = false;
     lock = true;
+    created(){
+      this.output='0'
+    }
 
     get recordList() {
       return this.$store.state.recordList;

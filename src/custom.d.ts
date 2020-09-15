@@ -32,7 +32,7 @@ type DataSourceItem = {
   value: string;
 }
 type Result = {
-  title: string;
+  title: any;
   total?: number;
   items: RecordItem[];
 }

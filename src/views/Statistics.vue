@@ -51,6 +51,8 @@
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
+      // this.$store.commit('createdDayRecordList',{recordList: this.$store.state.recordList, type: this.type});
+      // console.log(this.$store.state.dayRecordList);
     }
     // [
     //   {"tags":[{"id":"1","name":"衣","tagicon":"date"}],   "notes":"","type":"-","amount":8,   "createdAt":"2020-09-11T23:36:23.663Z"},
@@ -63,15 +65,19 @@
 
     get recordList() {
       return this.$store.state.recordList;
+
     }
 
     get groupedList() { //计算出渲染数据
       const {recordList} = this;
-      const newRecordList = clone(recordList)  //根据时间排序
-        .filter((item: RecordItem) => item.type === this.type)
+      const newRecordList = clone(recordList);
+      console.log(newRecordList);
+      //根据时间排序
+      newRecordList.filter((item: RecordItem) => item.type === this.type)
         .sort((a: RecordItem, b: RecordItem) =>
           dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
         );
+      console.log(newRecordList);
 
       if (newRecordList.length === 0) {
         return [];

@@ -47,7 +47,6 @@
       day: 0
     };
 
-
     getYearMonthDay(date: Date) {  //获取时间函数，时间初始化函数，拿到具体天
       const year = date.getFullYear();
       const month = date.getMonth();

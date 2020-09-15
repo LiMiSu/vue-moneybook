@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="metagList" @click="goAdd">
-      <Icon name="add" class="addTag"></Icon>
+      <Icon name="manage" class="addTag"></Icon>
       管理
     </div>
     <div>
