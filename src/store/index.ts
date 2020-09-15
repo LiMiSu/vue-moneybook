@@ -19,7 +19,7 @@ const store = new Vuex.Store({
     isHave: true,
     showBody: false,
     numberShow: false,
-    showAdd:false
+    showAdd: false
   } as RootState,
 
   mutations: {
@@ -113,11 +113,10 @@ const store = new Vuex.Store({
 
     //按天
 
-    createdDayRecordList(state, payload: {recordList: RecordItem[]; type: string}) {
-      const {recordList, type} = payload
-      const newRecordList: any = clone(recordList); //先复制一份原数据
-      console.log(newRecordList);
-      newRecordList.filter((item: RecordItem) => (item as any).type === type) //按支出和收入筛选
+    createdDayRecordList(state, payload: { recordList: RecordItem[]; type: string }) {
+      const {recordList, type} = payload;
+      const newRecordList: any = clone(recordList)
+        .filter((item: RecordItem) => (item as any).type === type) //按支出和收入筛选
         .sort((a: RecordItem, b: RecordItem) =>   //再按日期排序，valueOf是把数据变成数字（时间戳）然后比较
           dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
         );
