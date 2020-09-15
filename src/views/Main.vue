@@ -31,6 +31,7 @@
         </div>
       </div>
       <div class="main-body">
+        最新记账
         <router-link to='/addmoney'>去记一笔吧！</router-link>
       </div>
     </template>

@@ -1,14 +1,16 @@
 <template>
   <div class="addMoney-wrapper">
     <header>
-      <div class="addheader" @click="goBack">
-        <Icon name="left" class="left"></Icon>
+      <div class="addheader" >
+        <Icon name="left" class="left" @click="goBack"></Icon>
         <div class="header">
           记一笔
         </div>
         <span class="icon off"></span>
       </div>
-      <MoneyType class-prefix="add" :data-source="typeList" :value.sync="$store.state.record.type"/>
+      <div class="type">
+        <MoneyType class-prefix="add" :data-source="typeList" :value.sync="$store.state.record.type"/>
+      </div>
     </header>
     <main class="addmain">
 
@@ -18,13 +20,10 @@
     <footer class="addfooter">
 
       <div class="message amount">
-        <div class="text"><span>请输入金额</span></div>
+        <div class="text"><span>{{this.$store.state.record.type==='-'?'支出':'收入'}}金额</span></div>
         <div class="input"><label>
           <input type="text">
         </label></div>
-      </div>
-      <div class="message amount">
-        确定
       </div>
 
       <div v-if="$store.state.showBody" class="cover">
@@ -36,7 +35,7 @@
           </div>
         </div>
       </div>
-      <div v-if="$store.state.numberShow">
+      <div>
         <div class="notes">
           <label>
             <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="在这里输入备注"/>

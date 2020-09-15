@@ -5,7 +5,7 @@
       管理
     </div>
     <div>
-      <div class="choosetag">请选择{{ }}类目：</div>
+      <div class="choosetag">请选择{{this.$store.state.record.type==='-'?'支出':'收入'}}类目：</div>
     </div>
     <div class="tags">
       <div class="tagList"
@@ -30,23 +30,11 @@
 
   @Component
   export default class Note extends mixins(TagHelper) {
-    type = '+';
     selectedLists: string[] = [];
 
     created() {
       this.$store.commit('fetchTags');
-      this.toggle(this.$store.state.tagList[0]);
     }
-
-
-    // [
-    //   {"id":"10","name":"衣","tagicon":"date","type":"-"},
-    //   {"id":"11","name":"食","tagicon":"date","type":"-"},
-    //   {"id":"12","name":"住","tagicon":"label","type":"-"},
-    //   {"id":"13","name":"行","tagicon":"money","type":"-"},
-    // ]
-
-    //渲染的数据要改装一下，分类
     get tagList() {
       return this.$store.state.tagList;
     }
@@ -54,18 +42,15 @@
     get newTagList() {
       const {tagList} = this;
       return clone(tagList).filter((item: Tag) => item.type === this.$store.state.record.type);
-
     }
 
-    get value() {
-      return this.newTagList
-    }
 
     toggle(tag: string) {
-      this.selectedLists.push(tag);
       const index = this.selectedLists.indexOf(tag);
-      if (index >= 0 && this.selectedLists.length > 1) {
+      if (index >= 0 && this.selectedLists.length === 1) {
         this.selectedLists.splice(0, 1);
+      }else {
+        this.$set(this.selectedLists, 0, tag);
       }
       this.$emit('update:value', this.selectedLists);
     }
@@ -94,7 +79,7 @@
       justify-content: center;
       align-items: center;
 
-      .tagIcon{
+      .tagIcon {
         $bg: rgb(246, 234, 212);
         background: $bg;
         $h: 36px;
@@ -125,7 +110,8 @@
       height: 33px;
     }
   }
-  .metagList{
+
+  .metagList {
     font-size: 14px;
     margin-left: 16px;
     margin-top: 10px;
@@ -134,7 +120,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    .addTag{
+
+    .addTag {
       $bg: rgb(246, 234, 212);
       background: $bg;
       $h: 36px;

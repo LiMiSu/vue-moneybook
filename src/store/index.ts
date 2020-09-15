@@ -28,10 +28,9 @@ const store = new Vuex.Store({
     },
     createRecord(state, record: RecordItem) {
       const recordDeep: RecordItem = clone(record);
-      recordDeep.createdAt = recordDeep.createdAt || new Date().toISOString();
-      // if (!recordDeep.tags || recordDeep.tags.length === 0) {
-      //   return window.alert('选择一项标签会更好分类哦');
-      // }
+      if (!recordDeep.tags || recordDeep.tags.length === 0) {
+        return window.alert('选择一项标签会更好分类哦');
+      }
       if (!recordDeep.amount || recordDeep.amount === 0) {
         return window.alert('请输入金额');
       }

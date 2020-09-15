@@ -44,6 +44,7 @@
 <style lang="scss" scoped>
   .tabs {
     background: rgb(243,243,243);
+    color: #767676;
     display: flex;
     /*font-size: 24px;*/
     &-type {
@@ -56,6 +57,7 @@
 
       &.selected{
         background: rgb(246,234,212);
+        color: black;
       }
       .icon{
         width: 24px;
