@@ -20,6 +20,7 @@ type RootState = {
   isHave: boolean;
   showBody: boolean;
   numberShow: boolean;
+  showAdd: boolean;
 }
 type GetDay = {
   year: number;

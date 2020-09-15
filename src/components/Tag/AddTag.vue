@@ -7,7 +7,7 @@
     </div>
     <div class="form-wrapper">
       <label>
-        <input type="text"  v-model="value" placeholder="请输入标签名">
+        <input type="text" v-model="value" placeholder="请输入标签名">
       </label>
     </div>
     <div class="button-wrapper">
@@ -21,38 +21,46 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import Button from '@/components/Button.vue';
+
   @Component({
     components: {Button}
   })
   export default class AddTags extends Vue {
-    value=''
-    icon=''
+    value = '';
+    icon = '';
+
     createTag() {
       if (this.value) {
-        this.$store.commit('createTag', {name:this.value, tagicon: this.icon, type: this.$store.state.record.type});
+        this.$store.commit('createTag', {name: this.value, tagicon: this.icon, type: this.$store.state.record.type});
         if (!this.$store.state.isHave) {
-          window.alert('该标签已存在');
+          window.alert('已存在');
+          this.$router.replace('/managetag');
+          this.$store.state.showAdd = false;
           return;
         }
-        window.alert('标签添加成功');
-        this.$router.replace('/managetag')
+        window.alert('成功');
+        this.$router.replace('/managetag');
+        this.$store.state.showAdd = false;
       } else if (this.value === '') {
         window.alert('标签名不能为空');
       }
     }
-    goBack(){
-      this.$router.replace('/managetag')
+
+    goBack() {
+      this.$router.replace('/managetag');
     }
-    back(){
-      this.$router.replace('/managetag')
+
+    back() {
+      this.$router.replace('/managetag');
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .addtag{
+  .addtag {
     background: papayawhip;
   }
+
   .navBar {
     text-align: center;
     font-size: 16px;
@@ -81,10 +89,11 @@
   .form-wrapper {
     background: palevioletred;
     margin-top: 8px;
-    input{
+
+    input {
       padding: 10px;
       width: 100%;
-      border: 1px solid rgb(217,217,217);
+      border: 1px solid rgb(217, 217, 217);
     }
   }
 

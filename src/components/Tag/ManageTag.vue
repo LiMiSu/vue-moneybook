@@ -14,17 +14,21 @@
       <div class="text">点击新增类目：</div>
       <div class="add">
         <div class="tagList" @click="goAdd">
-          <Icon name="add" class="addTag"></Icon>
+          <Icon name="add" class="addTag" :class="{selected: $store.state.showAdd}"></Icon>
           新增
         </div>
       </div>
       <div class="text">点击编辑类目：</div>
       <div class="tags">
         <div class="tagList"
-             @click="tagChang(tag.id)"
              v-for="tag in newTagList"
              :key="tag.id">
-          <Icon :name=tag.tagicon class="tagIcon"></Icon>
+          <Icon
+            class="tagIcon"
+            :class="{selected: selectedLists.indexOf(tag)>=0}"
+            @click="tagChang(tag)"
+            :name=tag.tagicon
+          ></Icon>
           <span :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
         </div>
       </div>
@@ -48,17 +52,14 @@
     components: {Days, Button},
   })
   export default class Labels extends mixins(TagHelper) {
+    selectedLists: string[] = [];
+
     created() {
       this.$store.commit('fetchTags');
+      this.$router.replace('/managetag');
     }
 
-    // [
-    //   {"id":"10","name":"衣","tagicon":"date","type":"-"},
-    //   {"id":"11","name":"食","tagicon":"date","type":"-"},
-    //   {"id":"12","name":"住","tagicon":"label","type":"-"},
-    //   {"id":"13","name":"行","tagicon":"money","type":"-"},
-    // ]
-    //渲染的数据要改装一下，分类
+
     get tagList() {
       return this.$store.state.tagList;
     }
@@ -74,17 +75,31 @@
     }
 
     goAdd() {
-      this.$router.replace('/addtags');
+      this.$store.state.showAdd = !this.$store.state.showAdd;
+      if (this.$store.state.showAdd) {
+        this.$router.replace('/addtags');
+      } else {
+        this.$router.replace('/managetag');
+      }
     }
 
-    tagChang(id: string) {
-      this.$router.replace('/managetag/rewrite/' + id);
+    tagChang(tag: any) {
+      const index = this.selectedLists.indexOf(tag);
+      if (index >= 0 && this.selectedLists.length === 1) {
+        this.selectedLists.splice(0, 1);
+      } else {
+        this.$set(this.selectedLists, 0, tag);
+      }
+      console.log(this.selectedLists);
     }
-    goBack(){
-      this.$router.replace('/addmoney')
+
+    goBack() {
+      this.$router.replace('/addmoney');
     }
   }
-
+  // if (this.selectedLists.indexOf(tag)>=0){
+  //   this.$router.push('/managetag/rewrite/' + tag.id);
+  // }
 </script>
 <style lang="scss" scoped>
   .manege-tag {
@@ -149,6 +164,11 @@
       }
     }
 
+    .selected {
+      background: #DE7873;
+      color: white;
+    }
+
     .add {
       padding: 16px;
     }
@@ -163,5 +183,7 @@
     }
   }
 
+  footer {
 
+  }
 </style>
