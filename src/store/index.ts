@@ -15,6 +15,8 @@ const store = new Vuex.Store({
     recordList: [],
     tagList: [],
     dayRecordList: [],
+    monthRecordList: [],
+    yearRecordList: [],
     currentTag: undefined,
     isHave: true,
     showBody: false,
@@ -130,8 +132,68 @@ const store = new Vuex.Store({
         }, 0);
       });
       state.dayRecordList = dayResult;
+      // console.log(dayResult);
     },
-
+    createdMonthRecordList(state, payload: { dayRecordList: Result[]; type: string }) {
+      const {dayRecordList, type} = payload;
+      const newRecordList: any = clone(dayRecordList)
+        .sort((a: Result, b: Result) =>
+          dayjs(b.title).valueOf() - dayjs(a.title).valueOf()
+        );
+      if (newRecordList.length === 0) {
+        return [];
+      }
+      const monthResult: Result[] = [{
+        title: dayjs(newRecordList[0].title).format('YYYY-M'),
+        items: [newRecordList[0]]
+      }];
+      for (let i = 1; i < newRecordList.length; i++) {
+        const current = newRecordList[i];
+        const last = monthResult[monthResult.length - 1];
+        if (dayjs(last.title).isSame(dayjs(current.title), 'month')) {
+          last.items.push(current);
+        } else {
+          monthResult.push({title: dayjs(current.title).format('YYYY-M'), items: [current]});
+        }
+      }
+      monthResult.forEach(group => {
+        group.total = group.items.reduce((sum, item) => {
+          return sum + item.amount;
+        }, 0);
+      });
+      state.dayRecordList = monthResult;
+      // console.log(monthResult);
+    },
+    createdYearRecordList(state, payload: { monthRecordList: Result[]; type: string }) {
+      const {monthRecordList, type} = payload;
+      const newRecordList: any = clone(monthRecordList)
+        .sort((a: Result, b: Result) =>
+          dayjs(b.title).valueOf() - dayjs(a.title).valueOf()
+        );
+      if (newRecordList.length === 0) {
+        return [];
+      }
+      const yearResult: Result[] = [{
+        title: dayjs(newRecordList[0].title).format('YYYY'),
+        items: [newRecordList[0]]
+      }];
+      for (let i = 1; i < newRecordList.length; i++) {
+        const current = newRecordList[i];
+        const last = yearResult[yearResult.length - 1];
+        if (dayjs(last.title).isSame(dayjs(current.title), 'year')) {
+          last.items.push(current);
+        } else {
+          yearResult.push({title: dayjs(current.title).format('YYYY'), items: [current]});
+        }
+      }
+      yearResult.forEach(group => {
+        group.total = group.items.reduce((sum, item) => {
+          return sum + item.amount;
+        }, 0);
+      });
+      state.dayRecordList = yearResult;
+      console.log(yearResult);
+    },
   }
 });
 

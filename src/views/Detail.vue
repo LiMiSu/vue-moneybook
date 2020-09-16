@@ -10,28 +10,14 @@
       <!--      <MoneyType class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>-->
       <div class="statisticsList">
 
-        <div >
-          <h2 class="year-title"><span>2020</span><span>支出: ￥-300</span><span>支出：￥+888</span><span>合计：￥+888</span></h2>
-          <div >
-            <h3 class="month-title"><span>9月</span><span>支出: ￥-300</span><span>支出：￥+888</span><span>合计：￥+888</span></h3>
-            <div v-if="dayRecordList.length>0">
-              <div v-for="(group,index) in dayRecordList" :key="index">
-                <h3 class="day-title" @click="showList(group.title)">{{beautify(group.title)}}<span>￥{{group.total}}</span>
-                </h3>
-                <div v-if="currentList!==group.title">
-                  <div v-for="item in group.items" :key="item.id"
-                       class="record">
-                    <span>{{tagString(item.tags)}}</span>
-                    <span class="notes">{{item.notes}}</span>
-                    <span>￥{{item.amount}}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="noResult" v-else>目前没有相关记录</div>
+<!--        <div v-for="year in yearRecordList" :key="year.title">-->
+<!--          <h2 class="year-title"><span>{{year.title}}</span><span>支出: </span><span>支出：</span><span>合计：</span></h2>-->
+<!--            <div v-for="month in year.items" :key="month.createdAt">-->
+<!--              <h3 class="month-title"><span>{{month.createdAt}}</span><span>支出: </span><span>支出：</span><span>合计：</span></h3>-->
 
-          </div>
-        </div>
+
+<!--            </div>-->
+<!--        </div>-->
       </div>
     </template>
   </NavStyle>
@@ -71,6 +57,14 @@
 
     get dayRecordList() {
       this.$store.commit('createdDayRecordList', {recordList: this.$store.state.recordList, type: this.type});
+      return this.$store.state.dayRecordList;
+    }
+    get monthRecordList() {
+      this.$store.commit('createdMonthRecordList', {recordList: this.$store.state.recordList, type: this.type});
+      return this.$store.state.dayRecordList;
+    }
+    get yearRecordList() {
+      this.$store.commit('createdYearRecordList', {recordList: this.$store.state.recordList, type: this.type});
       return this.$store.state.dayRecordList;
     }
 

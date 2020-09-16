@@ -16,6 +16,8 @@ type RootState = {
   recordList: RecordItem[];
   tagList: Tag[];
   dayRecordList: Result[];
+  monthRecordList: Result[];
+  yearRecordList: Result[];
   currentTag?: Tag;
   isHave: boolean;
   showBody: boolean;
