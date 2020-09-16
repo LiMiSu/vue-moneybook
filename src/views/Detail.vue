@@ -1,14 +1,35 @@
 <template>
   <NavStyle>
     <template #header>
-      统计
+      明细
     </template>
     <template #main>
-      <div>
-        <MoneyType class-prefix="type" :data-source="typeList" :value.sync="type"/>
-        <!--      <MoneyType class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>-->
+      <div class="nav-year">
+        <div>2020</div>
+        <div>
+          <span>支出: ￥-300</span>
+          <span>支出：￥+888</span>
+          <span>合计：￥+888</span>
+        </div>
       </div>
+      <div class="nav-month">
+        <div>9月</div>
+        <div>
+          <span>支出: ￥-300</span>
+          <span>支出：￥+888</span>
+          <span>合计：￥+888</span>
+        </div>
+      </div>
+      <MoneyType class-prefix="type" :data-source="typeList" :value.sync="type"/>
+      <!--      <MoneyType class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>-->
       <div class="statisticsList">
+
+
+
+
+
+
+
         <ol v-if="dayRecordList.length>0">
           <li v-for="(group,index) in dayRecordList" :key="index">
             <h3 class="title" @click="showList(group.title)">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
@@ -23,6 +44,12 @@
           </li>
         </ol>
         <div class="noResult" v-else>目前没有相关记录</div>
+
+
+
+
+
+
       </div>
     </template>
   </NavStyle>
@@ -92,6 +119,14 @@
 </script>
 
 <style lang="scss" scoped>
+  .nav-year, .nav-month {
+    width: 100%;
+    min-height: 30px;
+    background: rgba(243, 243, 243, 0.8);
+    display: flex;
+    justify-content: space-between;
+  }
+
   %item {
     padding: 0 16px;
     min-height: 40px;
