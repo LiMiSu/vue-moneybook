@@ -192,7 +192,7 @@ const store = new Vuex.Store({
         }, 0);
       });
       state.dayRecordList = yearResult;
-      console.log(yearResult);
+      // console.log(yearResult);
     },
   }
 });

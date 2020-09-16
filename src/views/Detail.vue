@@ -9,15 +9,28 @@
       <MoneyType class-prefix="type" :data-source="typeList" :value.sync="type"/>
       <!--      <MoneyType class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>-->
       <div class="statisticsList">
+        <div v-if="yearRecordList.length>0">
+          <div v-for="year in yearRecordList" :key="year.title">
+            <h2 class="year-title"><span>{{year.title}}</span><span>支出: </span><span>支出：</span><span>合计：</span></h2>
+            <div v-for="month in year.items" :key="month.title">
+              <h3 class="month-title"><span>{{month.title}}</span><span>支出: </span><span>支出：</span><span>合计：</span></h3>
+              <div v-for="day in month.items" :key="day.title">
+                <h3 class="day-title" @click="showList(day.title)">{{beautify(day.title)}}<span>￥{{day.title}}</span>
+                </h3>
+                <div v-if="currentList!==day.title">
+                  <div v-for="(item,index) in day.items" :key="index"
+                       class="record">
 
-<!--        <div v-for="year in yearRecordList" :key="year.title">-->
-<!--          <h2 class="year-title"><span>{{year.title}}</span><span>支出: </span><span>支出：</span><span>合计：</span></h2>-->
-<!--            <div v-for="month in year.items" :key="month.createdAt">-->
-<!--              <h3 class="month-title"><span>{{month.createdAt}}</span><span>支出: </span><span>支出：</span><span>合计：</span></h3>-->
-
-
-<!--            </div>-->
-<!--        </div>-->
+                    <span>{{tagString(item.tags)}}</span>
+                    <span class="notes">{{item.notes}}</span>
+                    <span>￥{{item.amount}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="noResult" v-else>目前没有相关记录</div>
       </div>
     </template>
   </NavStyle>
@@ -59,21 +72,22 @@
       this.$store.commit('createdDayRecordList', {recordList: this.$store.state.recordList, type: this.type});
       return this.$store.state.dayRecordList;
     }
+
     get monthRecordList() {
-      this.$store.commit('createdMonthRecordList', {recordList: this.$store.state.recordList, type: this.type});
+      this.$store.commit('createdMonthRecordList', {dayRecordList: this.dayRecordList, type: this.type});
       return this.$store.state.dayRecordList;
     }
+
     get yearRecordList() {
-      this.$store.commit('createdYearRecordList', {recordList: this.$store.state.recordList, type: this.type});
+      this.$store.commit('createdYearRecordList', {monthRecordList: this.monthRecordList, type: this.type});
       return this.$store.state.dayRecordList;
     }
 
     tagString(tags: Tag[]) {
-      const nameArr = [];
-      for (let i = 0; i < tags.length; i++) {
-        nameArr.push(tags[i].name);
-      }
-      return nameArr.join(' ') || '未分类';
+      const tag = tags;
+      console.log(tag);
+      // const name = tag[0].name;
+      // return name;
     }
 
     beautify(title: string) {
@@ -95,7 +109,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .year-title, .month-title{
+  .year-title, .month-title {
     width: 100%;
     min-height: 30px;
     display: flex;

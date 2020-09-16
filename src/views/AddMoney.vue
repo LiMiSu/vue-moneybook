@@ -70,23 +70,7 @@
 
 
 
-<!--<div>-->
-<!--  <div v-if="dayRecordList.length>0">-->
-<!--    <div v-for="(group,index) in dayRecordList" :key="index">-->
-<!--      <h3 class="day-title" @click="showList(group.title)">{{beautify(group.title)}}<span>￥{{group.total}}</span>-->
-<!--      </h3>-->
-<!--      <div v-if="currentList!==group.title">-->
-<!--        <div v-for="item in group.items" :key="item.id"-->
-<!--             class="record">-->
-<!--          <span>{{tagString(item.tags)}}</span>-->
-<!--          <span class="notes">{{item.notes}}</span>-->
-<!--          <span>￥{{item.amount}}</span>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <div class="noResult" v-else>目前没有相关记录</div>-->
-<!--</div>-->
+
 
 
 
