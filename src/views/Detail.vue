@@ -4,6 +4,7 @@
      明细
     </template>
     <template #main>
+
     </template>
   </NavStyle>
 </template>

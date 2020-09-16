@@ -12,8 +12,8 @@
       <div class="statisticsList">
         <ol v-if="dayRecordList.length>0">
           <li v-for="(group,index) in dayRecordList" :key="index">
-            <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
-            <ol>
+            <h3 class="title" @click="showList(group.title)">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
+            <ol v-if="currentList!==group.title">
               <li v-for="item in group.items" :key="item.id"
                   class="record">
                 <span>{{tagString(item.tags)}}</span>
@@ -40,63 +40,31 @@
   import intervalList from '@/constants/intervalList';
 
   @Component({
-    components: {Button, Echarts,MoneyType},
+    components: {Button, Echarts, MoneyType},
   })
   export default class Statistics extends Vue {
     type = '+';
     interval = 'day';
     intervalList = intervalList;
     typeList = typeList;
+    currentList = '';
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
     }
-    // [
-    //   {"tags":[{"id":"1","name":"衣","tagicon":"date"}],   "notes":"","type":"-","amount":8,   "createdAt":"2020-09-11T23:36:23.663Z"},
-    //   {"tags":[{"id":"1","name":"衣","tagicon":"date"}],   "notes":"","type":"-","amount":9,   "createdAt":"2020-09-11T23:36:23.663Z"},
-    //   {"tags":[{"id":"1","name":"衣","tagicon":"date"}],   "notes":"","type":"-","amount":5,   "createdAt":"2020-09-11T23:40:11.700Z"},
-    //   {"tags":[{"id":"3","name":"住","tagicon":"label"}],  "notes":"","type":"+","amount":58,  "createdAt":"2020-09-11T23:40:11.700Z"},
-    //   {"tags":[{"id":"3","name":"住","tagicon":"label"}],  "notes":"","type":"+","amount":9,   "createdAt":"2020-09-11T23:40:11.700Z"},
-    //   {"tags":[{"id":"1","name":"衣","tagicon":"date"}],   "notes":"","type":"-","amount":88,  "createdAt":"2020-09-21T16:00:00.000Z"}
-    // ]
 
-    get dayRecordList() {
-
-      this.$store.commit('createdDayRecordList',{recordList: this.$store.state.recordList, type: this.type});
-      console.log(this.$store.state.dayRecordList);
-      return this.$store.state.dayRecordList;
+    showList(title: string) {
+      if (this.currentList === title) {
+        this.currentList = '';
+      } else {
+        this.currentList = title;
+      }
     }
 
-    // get groupedList() { //计算出渲染数据
-    //   const {recordList} = this;
-    //   const newRecordList = clone(recordList)
-    //   .filter((item: RecordItem) => item.type === this.type)
-    //     .sort((a: RecordItem, b: RecordItem) =>
-    //       dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
-    //     );
-    //   console.log(newRecordList);
-    //
-    //   if (newRecordList.length === 0) {
-    //     return [];
-    //   }
-    //   type Result = { title: string; total?: number; items: RecordItem[] }[]
-    //   const result: Result = [{title: dayjs(newRecordList[0].createdAt).format('YYYY-M-D'), items: [newRecordList[0]]}]; //先拿一个参照物
-    //   for (let i = 1; i < newRecordList.length; i++) {
-    //     const current = newRecordList[i];
-    //     const last = result[result.length - 1];
-    //     if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {  //是同一天就直接放，不是同一天就新建，对比：你跟我这一天的最后一项相比较
-    //       last.items.push(current);
-    //     } else {
-    //       result.push({title: dayjs(current.createdAt).format('YYYY-M-D'), items: [current]});
-    //     }
-    //   }
-    //   result.forEach(group => { //计算总和
-    //     group.total = group.items.reduce((sum, item) => {
-    //       return sum + item.amount;
-    //     }, 0);
-    //   });
-    //   return result;
-    // }
+    get dayRecordList() {
+      this.$store.commit('createdDayRecordList', {recordList: this.$store.state.recordList, type: this.type});
+      return this.$store.state.dayRecordList;
+    }
 
     tagString(tags: Tag[]) {
       const nameArr = [];
@@ -154,36 +122,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-/*  ::v-deep {*/
-/*    .type-type {*/
-/*      background-color: #c4c4c4;*/
-
-/*      &.selected {*/
-/*        background: white;*/
-
-/*        &::after {*/
-/*          display: none;*/
-/*        }*/
-/*      }*/
-/*    }*/
-
-/*    .interval-type {*/
-/*      background-color: white;*/
-/*      height: 30px;*/
-
-/*      &.selected {*/
-/*        background: #c4c4c4;*/
-
-/*        &::after {*/
-/*          display: none;*/
-/*        }*/
-/*      }*/
-/*    }*/
-/*  }*/
-
-
-  /*相同样式*/
   %item {
     padding: 0 16px;
     min-height: 40px;
@@ -195,6 +133,7 @@
   .statisticsList {
     overflow-y: auto;
     background: #DE7873;
+
     .title {
       @extend %item;
     }

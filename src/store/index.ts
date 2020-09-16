@@ -101,45 +101,31 @@ const store = new Vuex.Store({
       window.localStorage.setItem('tagList', JSON.stringify(state.tagList));
     },
 
-
-    // [
-    //   {"tags":[{"id":"1","name":"衣","tagicon":"date"}],   "notes":"","type":"-","amount":8,   "createdAt":"2020-09-11T23:36:23.663Z"},
-    //   {"tags":[{"id":"1","name":"衣","tagicon":"date"}],   "notes":"","type":"-","amount":9,   "createdAt":"2020-09-11T23:36:23.663Z"},
-    //   {"tags":[{"id":"1","name":"衣","tagicon":"date"}],   "notes":"","type":"-","amount":5,   "createdAt":"2020-09-11T23:40:11.700Z"},
-    //   {"tags":[{"id":"3","name":"住","tagicon":"label"}],  "notes":"","type":"+","amount":58,  "createdAt":"2020-09-11T23:40:11.700Z"},
-    //   {"tags":[{"id":"3","name":"住","tagicon":"label"}],  "notes":"","type":"+","amount":9,   "createdAt":"2020-09-11T23:40:11.700Z"},
-    //   {"tags":[{"id":"1","name":"衣","tagicon":"date"}],   "notes":"","type":"-","amount":88,  "createdAt":"2020-09-21T16:00:00.000Z"}
-    // ]
-
-    //按天
-
     createdDayRecordList(state, payload: { recordList: RecordItem[]; type: string }) {
       const {recordList, type} = payload;
       const newRecordList: any = clone(recordList)
-        .filter((item: RecordItem) => (item as any).type === type) //按支出和收入筛选
-        .sort((a: RecordItem, b: RecordItem) =>   //再按日期排序，valueOf是把数据变成数字（时间戳）然后比较
+        .filter((item: RecordItem) => (item as any).type === type)
+        .sort((a: RecordItem, b: RecordItem) =>
           dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
         );
-      console.log(newRecordList);
       if (newRecordList.length === 0) {
         return [];
       }
-      //做渲染数据：哈希表   结构：[{title:2020-9-11,items:[{},{},{}]}，{title:2020-9-12,items:[{},{},{}]}]
-      const dayResult: Result[] = [{  //拿出第一项做参照物，之前已经按日期排好了
+      const dayResult: Result[] = [{
         title: dayjs(newRecordList[0].createdAt).format('YYYY-M-D'),
         items: [newRecordList[0]]
       }];
       for (let i = 1; i < newRecordList.length; i++) {
         const current = newRecordList[i];
-        const last = dayResult[dayResult.length - 1];  //拿最后一项
-        if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {  //按照同一天分组
+        const last = dayResult[dayResult.length - 1];
+        if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {
           last.items.push(current);
         } else {
           dayResult.push({title: dayjs(current.createdAt).format('YYYY-M-D'), items: [current]});
         }
       }
       dayResult.forEach(group => {
-        group.total = group.items.reduce((sum, item) => {  //算合计
+        group.total = group.items.reduce((sum, item) => {
           return sum + item.amount;
         }, 0);
       });
