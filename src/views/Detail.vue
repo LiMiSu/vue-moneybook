@@ -85,7 +85,7 @@
 
     tagString(tags: Tag[]) {
       const tag = tags;
-      console.log(tag);
+      // console.log(tag);
       // const name = tag[0].name;
       // return name;
     }

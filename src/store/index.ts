@@ -162,7 +162,6 @@ const store = new Vuex.Store({
         }, 0);
       });
       state.dayRecordList = monthResult;
-      // console.log(monthResult);
     },
     createdYearRecordList(state, payload: { monthRecordList: Result[]; type: string }) {
       const {monthRecordList, type} = payload;
