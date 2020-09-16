@@ -1,10 +1,29 @@
 <template>
-  <NavStyle class-prefix="main" class="a">
+  <NavStyle>
     <template #header>
-     明细
+      统计
     </template>
     <template #main>
-
+      <div>
+        <MoneyType class-prefix="type" :data-source="typeList" :value.sync="type"/>
+        <!--      <MoneyType class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>-->
+      </div>
+      <div class="statisticsList">
+        <ol v-if="dayRecordList.length>0">
+          <li v-for="(group,index) in dayRecordList" :key="index">
+            <h3 class="title" @click="showList(group.title)">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
+            <ol v-if="currentList!==group.title">
+              <li v-for="item in group.items" :key="item.id"
+                  class="record">
+                <span>{{tagString(item.tags)}}</span>
+                <span class="notes">{{item.notes}}</span>
+                <span>￥{{item.amount}}</span>
+              </li>
+            </ol>
+          </li>
+        </ol>
+        <div class="noResult" v-else>目前没有相关记录</div>
+      </div>
     </template>
   </NavStyle>
 </template>
@@ -12,66 +31,38 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
-
-  import NumberPad from '@/components/AddMoney/NumberPad.vue';
-  import FormItem from '@/components/Input.vue';
-  import Tags from '@/components/Tag/ShowTags.vue';
-  import Button from '@/components/Button.vue';
-  import Tabs from '@/components/MoneyType.vue';
-  import Days from '@/components/Calender.vue';
   import MoneyType from '@/components/MoneyType.vue';
   import typeList from '@/constants/typeList';
-  import Calender from '@/components/Calender.vue';
-  import Input from '@/components/Input.vue';
-  import clone from '@/lib/clone';
   import dayjs from 'dayjs';
-  import DayDetail from '@/components/Main/DayDetail.vue';
-
+  import Button from '@/components/Button.vue';
+  import Echarts from '@/components/Echarts.vue';
+  import intervalList from '@/constants/intervalList';
 
   @Component({
-    components: {DayDetail, Input, Calender, MoneyType, Days, Tabs, Button, Tags, FormItem, NumberPad},
-
+    components: {Button, Echarts, MoneyType},
   })
   export default class Detail extends Vue {
-    type = '-';
+    type = '+';
+    interval = 'day';
+    intervalList = intervalList;
     typeList = typeList;
+    currentList = '';
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
     }
 
-    get recordList() {
-      return this.$store.state.recordList;
+    showList(title: string) {
+      if (this.currentList === title) {
+        this.currentList = '';
+      } else {
+        this.currentList = title;
+      }
     }
 
-    get groupedList() { //计算出渲染数据
-      const {recordList} = this;
-      const newRecordList = clone(recordList)  //根据时间排序
-        .filter((item: RecordItem) => item.type === this.type)
-        .sort((a: RecordItem, b: RecordItem) =>
-          dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
-        );
-
-      if (newRecordList.length === 0) {
-        return [];
-      }
-      type Result = { title: string; total?: number; items: RecordItem[] }[]
-      const result: Result = [{title: dayjs(newRecordList[0].createdAt).format('YYYY-M-D'), items: [newRecordList[0]]}]; //先拿一个参照物
-      for (let i = 1; i < newRecordList.length; i++) {
-        const current = newRecordList[i];
-        const last = result[result.length - 1];
-        if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {  //是同一天就直接放，不是同一天就新建，对比：你跟我这一天的最后一项相比较
-          last.items.push(current);
-        } else {
-          result.push({title: dayjs(current.createdAt).format('YYYY-M-D'), items: [current]});
-        }
-      }
-      result.forEach(group => { //计算总和
-        group.total = group.items.reduce((sum, item) => {
-          return sum + item.amount;
-        }, 0);
-      });
-      return result;
+    get dayRecordList() {
+      this.$store.commit('createdDayRecordList', {recordList: this.$store.state.recordList, type: this.type});
+      return this.$store.state.dayRecordList;
     }
 
     tagString(tags: Tag[]) {
@@ -99,34 +90,8 @@
     }
   }
 </script>
+
 <style lang="scss" scoped>
-  .shownav {
-    display: flex;
-    .showlist {
-      flex: 1;
-      height: 100px;
-    }
-  }
-
-  .type {
-    flex: 1;
-
-    /*::v-deep {*/
-    /*  .main-type {*/
-    /*    background-color: #c4c4c4;*/
-
-    /*    &.selected {*/
-    /*      background: white;*/
-
-    /*      &::after {*/
-    /*        display: none;*/
-    /*      }*/
-    /*    }*/
-    /*  }*/
-    /*}*/
-  }
-
-  /*相同样式*/
   %item {
     padding: 0 16px;
     min-height: 40px;
@@ -159,5 +124,6 @@
       text-align: center;
     }
   }
-</style>
 
+
+</style>
