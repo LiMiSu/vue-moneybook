@@ -2,6 +2,7 @@
   <div>
     <div class="inputNumber"  :class="[{first:one},{second:two}]">
       <DayBook v-if="!$store.state.showBody"></DayBook>
+
       <span>{{output}}</span>
     </div>
     <div class="numberPad">
@@ -78,8 +79,7 @@
 
     inputContent(event: MouseEvent) {
       this.lock = true;
-      const button = (event.target as HTMLButtonElement);
-      const input = button.textContent!;
+      const input = (event.target as HTMLButtonElement).textContent!;
 
       if (this.output.length === 12) {
         this.one = true;

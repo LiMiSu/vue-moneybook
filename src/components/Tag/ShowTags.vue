@@ -30,14 +30,18 @@
 
   @Component
   export default class Note extends mixins(TagHelper) {
-    currenttag = '';
+    currenttag: any = '';
 
     created() {
       this.$store.commit('fetchTags');
     }
 
     beforeUpdate() {
-      this.$emit('update:value', []);
+      if (this.$store.state.record.type===this.currenttag.type){
+        this.$emit('update:value', this.currenttag);
+      }else {
+        this.$emit('update:value', []);
+      }
     }
 
     get tagList() {
@@ -50,21 +54,13 @@
     }
 
 
-    toggle(tag: string) {
-
-
+    toggle(tag: Tag) {
       if (this.currenttag === tag) {
-        if (this.$store.state.record.type === '-') {
-          console.log(1);
-        }
         this.currenttag = '';
         this.$emit('update:value', []);
       } else {
         this.currenttag = tag;
-        this.$emit('update:value', tag);
       }
-
-
     }
 
     goAdd() {
