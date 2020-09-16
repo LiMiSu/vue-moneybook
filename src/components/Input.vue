@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <label class="formItem">
       <span class="name">{{fieldName}}</span>
       <input
@@ -27,6 +27,9 @@
 </script>
 
 <style lang="scss" scoped>
+  .wrapper{
+    border-bottom: 1px solid  #d9d9d9;
+  }
   .formItem {
     font-size: 14px;
     padding-left: 16px;

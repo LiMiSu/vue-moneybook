@@ -49,6 +49,7 @@ const store = new Vuex.Store({
       state.currentTag = state.tagList.filter(t => t.id === id)[0];
     },
     fetchTags(state) {
+
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
       if (!state.tagList || state.tagList.length === 0) {
         tagInit.forEach(item => {

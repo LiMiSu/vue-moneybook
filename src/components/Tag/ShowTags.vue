@@ -5,7 +5,7 @@
       管理
     </div>
     <div>
-      <div class="choosetag">请选择{{this.$store.state.record.type==='-'?'支出':'收入'}}类目：</div>
+      <div class="choosetag">请选择{{this.$store.state.record.type==='-'?'支出':'收入'}}标签：</div>
     </div>
     <div class="tags">
       <div class="tagList"
@@ -38,7 +38,6 @@
 
     beforeUpdate() {
       this.$emit('update:value', []);
-      console.log(this.currenttag);
     }
 
     get tagList() {
