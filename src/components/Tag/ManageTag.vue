@@ -83,7 +83,7 @@
       this.currenttag = '';
       this.$store.state.showAdd = !this.$store.state.showAdd;
       if (this.$store.state.showAdd) {
-        this.$router.replace('/rewrite');
+        this.$router.replace('/addrewrite');
       } else {
         this.$router.replace('/managetag');
       }
@@ -96,7 +96,7 @@
         this.currenttag = '';
       } else {
         this.currenttag = tag;
-        this.$router.replace('/rewrite/' + tag.id);
+        this.$router.replace('/addrewrite/' + tag.id);
         // this.$router.replace('/addtags');
       }
     }

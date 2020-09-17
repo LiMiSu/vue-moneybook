@@ -4,10 +4,9 @@ import Main from '@/views/Main.vue';
 import ManageTag from '@/components/Tag/ManageTag.vue';
 import Statistics from '@/views/Statistics.vue';
 import NotFound from '@/views/NotFound.vue';
-import RewriteTag from '@/components/Tag/RewriteTag.vue';
+import AddRewriteTag from '@/components/Tag/AddRewriteTag.vue';
 import NumberPad from '@/components/AddMoney/NumberPad.vue';
 import AddMoney from '@/views/AddMoney.vue';
-import AddTags from '@/components/Tag/AddTag.vue';
 import Detail from '@/views/Detail.vue';
 
 Vue.use(VueRouter);
@@ -38,16 +37,12 @@ const routes: Array<RouteConfig> = [
     component: ManageTag,
     children:[
       {
-        path: '/addtags',
-        component: AddTags,
+        path: '/addrewrite',
+        component: AddRewriteTag
       },
       {
-        path: '/rewrite',
-        component: RewriteTag
-      },
-      {
-        path: '/rewrite/:id',
-        component: RewriteTag
+        path: '/addrewrite/:id',
+        component: AddRewriteTag
       }
     ]
   },
@@ -62,10 +57,6 @@ const routes: Array<RouteConfig> = [
   {
     path: '/addmoney',
     component: AddMoney
-  },
-  {
-    path: '/addtags',
-    component: AddTags
   },
   {
     path: '/detail',
