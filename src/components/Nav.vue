@@ -35,8 +35,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 8vh;
-      width: 25vw;
+      height: 2vh;
+      min-width: 25vw;
       margin: 10px;
       padding: 6px;
       &.selected {

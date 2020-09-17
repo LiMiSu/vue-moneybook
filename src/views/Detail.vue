@@ -4,27 +4,35 @@
       明细
     </template>
     <template #main>
-
-
-      <MoneyType @click.native="a" class-prefix="type" :data-source="typeList" :value.sync="type"/>
+      <MoneyType @click.native="a" class-prefix="type" :data-source="detailList" :value.sync="type"/>
       <div class="statisticsList">
         <div v-if="yearRecordList.length>0">
+          <h1>{{type}} {{total}}</h1>
           <div v-for="year in yearRecordList" :key="year.title">
-            <h2 class="year-title">
-              <span>{{year.title}}</span><span>支出: </span><span>支出：</span><span>合计：￥{{year.total}}</span>
+            <h2 @click="showList(year.title)" class="year-title">
+              <span>{{year.title}}</span><span>{{type}} {{year.total}}</span>
             </h2>
-            <div v-for="month in year.items" :key="month.title">
-              <h3 class="month-title"><span>{{month.title}}</span><span>支出: </span><span>支出：</span><span>合计：￥{{month.total}}</span>
-              </h3>
-              <div v-for="day in month.items" :key="day.title">
-                <h3 class="day-title" @click="showList(day.title)">{{beautify(day.title)}}<span>￥{{day.total}}</span>
+            <div v-if="currentList!==year.title">
+              <div v-for="month in year.items" :key="month.title">
+                <h3 @click="showList(year.title)" class="month-title">
+                  <span>{{beautifyMonth(month.title)}}</span><span>{{type}} {{month.total}}</span>
                 </h3>
-                <div v-if="currentList!==day.title">
-                  <div v-for="(item,index) in day.items" :key="index"
-                       class="record">
-                    <span>{{item.tag.name}}</span>
-                    <span class="notes">{{item.notes}}</span>
-                    <span>￥{{item.amount}}</span>
+                <div v-if="currentList!==year.title">
+                  <div v-for="day in month.items" :key="day.title">
+                    <h4 class="day-title" @click="showList(day.title)">
+                      {{beautifyDay(day.title)}}<span>{{type}} {{day.total}}</span>
+                    </h4>
+                    <div v-if="currentList!==day.title">
+                      <div v-for="(item,index) in day.items" :key="index"
+                           class="record">
+                        <div class="left">
+                          <Icon :name="item.tag.tagicon"></Icon>
+                          <span class="name">{{item.tag.name}}</span>
+                        </div>
+                        <span class="notes">{{item.notes}}</span>
+                        <span class="amount">{{type}} {{item.amount}}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -41,26 +49,25 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import MoneyType from '@/components/MoneyType.vue';
-  import typeList from '@/constants/typeList';
   import dayjs from 'dayjs';
   import Button from '@/components/Button.vue';
   import Echarts from '@/components/Echarts.vue';
-  import intervalList from '@/constants/intervalList';
+  import detail from '@/constants/detail';
 
   @Component({
     components: {Button, Echarts, MoneyType},
   })
   export default class Detail extends Vue {
     type = '-';
-    typeList = typeList;
     currentList = '';
+    detailList = detail;
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
     }
 
     a() {
-      console.log(this.$store.state.yearRecordList);
+      console.log(this.total);
     }
 
     showList(title: string) {
@@ -83,13 +90,21 @@
 
     get yearRecordList() {
       this.$store.commit('createdYearRecordList', {monthRecordList: this.monthRecordList, type: this.type});
-      return this.$store.state.yearRecordList.filter((item: YearResult) => {
-        return item.items[0].items[0].items[0].type === this.type;
-      });
+      // if (this.type === '1') {
+      //   return this.$store.state.yearRecordList;
+      // } else if(this.type === '-'||this.type === '+'){
+      return this.$store.state.yearRecordList.filter((item: YearResult) => item.items[0].items[0].items[0].type === this.type);
+      // }
     }
 
+    get total() {
+      const total = (this.yearRecordList as YearResult[]).reduce((sum, group) => {
+        return sum + group.total!;
+      }, 0);
+      return total;
+    }
 
-    beautify(title: string) {
+    beautifyDay(title: string) {
       const dayValue = dayjs(title);
       const now = dayjs();
       if (dayValue.isSame(now, 'day')) {
@@ -98,29 +113,48 @@
         return '昨天';
       } else if (dayValue.isSame(now.subtract(2, 'day'), 'day')) {
         return '前天';
-      } else if (dayValue.isSame(now, 'year')) {
-        return dayValue.format('M月D日');
       } else {
-        return dayValue.format('YYYY年M月D日');
+        return dayValue.format('D / M');
       }
+    }
+
+    beautifyMonth(title: string) {
+      return dayjs(title).format('M月');
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .year-title, .month-title {
+  %title {
     width: 100%;
     min-height: 30px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+  }
+
+  .year-title {
+    @extend %title;
+    background: #DE7873;
+  }
+
+  .month-title {
+    @extend %title;
+    background: goldenrod;
+  }
+
+  .day-title {
+    @extend %title;
+    background: lightgreen;
   }
 
   %item {
-    padding: 0 16px;
+    padding: 0 10px;
     min-height: 40px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    /*align-items: center;*/
   }
 
   .statisticsList {
@@ -133,11 +167,32 @@
     .record {
       @extend %item;
       background: white;
+      padding-top: 10px;
+      border-bottom: 1px solid rgb(224, 224, 224);
+
+      .left {
+        display: flex;
+        /*align-items: center;*/
+        max-width: 105px;
+
+        .icon {
+          width: 24px;
+          height: 24px;
+          margin-right: 5px;
+          margin-bottom: 5px;
+        }
+      }
 
       .notes {
-        margin-right: auto;
-        margin-left: 16px;
+        flex: 1;
+        margin: 0 16px;
         color: #999;
+        font-size: 12px;
+      }
+
+      .amount {
+        color: #999;
+        /*font-size: 14px;*/
       }
     }
 

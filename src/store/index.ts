@@ -136,7 +136,7 @@ const store = new Vuex.Store({
     createdMonthRecordList(state, payload: { dayRecordList: DayResult[]; type: string }) {
       const {dayRecordList, type} = payload;
       const newRecordList: DayResult[] = clone(dayRecordList)
-        .filter(item => item.items.filter(item => item.type === type))
+        // .filter(item => item.items.filter(item => item.type === type))
         .sort((a: DayResult, b: DayResult) =>
           dayjs(b.title).valueOf() - dayjs(a.title).valueOf()
         );
@@ -166,7 +166,7 @@ const store = new Vuex.Store({
     createdYearRecordList(state, payload: { monthRecordList: MonthResult[]; type: string }) {
       const {monthRecordList, type} = payload;
       const newRecordList: MonthResult[] = clone(monthRecordList)
-        .filter(item => item.items.filter(item => item.items.filter(item=>item.type === type)))
+        // .filter(item => item.items.filter(item => item.items.filter(item=>item.type === type)))
         .sort((a: MonthResult, b: MonthResult) =>
           dayjs(b.title).valueOf() - dayjs(a.title).valueOf()
         );

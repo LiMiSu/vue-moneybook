@@ -32,7 +32,8 @@
           <Icon :name="$store.state.currentTag.tagicon" class="item"></Icon>
           <span class="item">{{$store.state.currentTag.name}}</span>
           <label>
-            <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="写点备注..." class="item"/>
+            <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="写点备注..." class="item"
+                   />
           </label>
         </div>
         <NumberPad :value.sync="$store.state.record.amount" @submit="saveRecord"></NumberPad>
@@ -61,8 +62,15 @@
 
     created() {
       this.$store.commit('fetchRecords');
-      this.$store.state.currentTag=''
+      this.$store.state.currentTag = '';
     }
+
+    // a(e: any) {
+    //   if (e.data.length > 10) {
+    //     window.alert('最多输入10个字符');
+    //     return;
+    //   }
+    // }
 
     saveRecord() {
       this.$store.commit('createRecord', this.$store.state.record);
