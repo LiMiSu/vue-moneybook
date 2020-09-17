@@ -11,7 +11,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    record: {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()},
+    record: {tag: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()},
     recordList: [],
     tagList: [],
     dayRecordList: [],
@@ -105,8 +105,8 @@ const store = new Vuex.Store({
 
     createdDayRecordList(state, payload: { recordList: RecordItem[]; type: string }) {
       const {recordList, type} = payload;
-      const newRecordList: any = clone(recordList)
-        .filter((item: RecordItem) => (item as any).type === type)
+      const newRecordList: RecordItem[] = clone(recordList)
+        .filter((item) => item.type === type)
         .sort((a: RecordItem, b: RecordItem) =>
           dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
         );
@@ -133,10 +133,11 @@ const store = new Vuex.Store({
       });
       state.dayRecordList = dayResult;
     },
-    createdMonthRecordList(state, payload: { dayRecordList: Resultwrapper[]; type: string }) {
+    createdMonthRecordList(state, payload: { dayRecordList: Result[]; type: string }) {
       const {dayRecordList, type} = payload;
       const newRecordList: any = clone(dayRecordList)
-        .sort((a: Resultwrapper, b: Resultwrapper) =>
+        .filter(item => item.items.filter(item => item.type === type))
+        .sort((a: Result, b: Result) =>
           dayjs(b.title).valueOf() - dayjs(a.title).valueOf()
         );
       if (newRecordList.length === 0) {
@@ -165,6 +166,7 @@ const store = new Vuex.Store({
     createdYearRecordList(state, payload: { monthRecordList: Resultwrapper[]; type: string }) {
       const {monthRecordList, type} = payload;
       const newRecordList: any = clone(monthRecordList)
+        .filter(item => item.items.filter(item => item.items.filter(item=>item.type === type)))
         .sort((a: Resultwrapper, b: Resultwrapper) =>
           dayjs(b.title).valueOf() - dayjs(a.title).valueOf()
         );

@@ -11,7 +11,7 @@
       <div class="statisticsList">
         <div v-if="yearRecordList.length>0">
           <div v-for="year in yearRecordList" :key="year.title">
-            <h2 @click="a" class="year-title"><span>{{year.title}}</span><span>支出: </span><span>支出：</span><span>合计：￥{{year.total}}</span>
+            <h2 class="year-title"><span>{{year.title}}</span><span>支出: </span><span>支出：</span><span>合计：￥{{year.total}}</span>
             </h2>
             <div v-for="month in year.items" :key="month.title">
               <h3 class="month-title"><span>{{month.title}}</span><span>支出: </span><span>支出：</span><span>合计：￥{{month.total}}</span>
@@ -22,8 +22,7 @@
                 <!--                <div v-if="currentList!==day.title">-->
                 <div v-for="(item,index) in day.items" :key="index"
                      class="record">
-
-                  <span>{{tagString(item.tags)}}</span>
+                  <span>{{item.tag.name}}</span>
                   <span class="notes">{{item.notes}}</span>
                   <span>￥{{item.amount}}</span>
                 </div>
@@ -63,10 +62,6 @@
 
     }
 
-    a() {
-      console.log(this.monthRecordList);
-    }
-
     showList(title: string) {
       if (this.currentList === title) {
         this.currentList = '';
@@ -90,12 +85,6 @@
       return this.$store.state.yearRecordList;
     }
 
-    tagString(tags: Tag[]) {
-      const tag = tags;
-      // console.log(tag);
-      // const name = tag[0].name;
-      // return name;
-    }
 
     beautify(title: string) {
       const dayValue = dayjs(title);

@@ -1,5 +1,5 @@
 type RecordItem = {
-  tags: Tag[];
+  tag: Tag[];
   notes: string;
   type: string;
   amount: number;
@@ -33,12 +33,12 @@ type DataSourceItem = {
   value: string;
 }
 type Result = {
-  title: any;
+  title: string;
   total?: number;
   items: RecordItem[];
 }
 type Resultwrapper={
-  title: any;
+  title: string;
   total?: number;
   items: Result[];
 }

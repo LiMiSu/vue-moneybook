@@ -14,7 +14,7 @@
     </header>
     <main class="addmain">
 
-      <ShowTags :value.sync="$store.state.record.tags"/>
+      <ShowTags :value.sync="$store.state.record.tag"/>
     </main>
     <footer class="addfooter">
 
