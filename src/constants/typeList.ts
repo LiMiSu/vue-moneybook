@@ -1,6 +1,6 @@
 const typeList = Object.freeze([
-  {text: 'in', value: '+'},
   {text: 'out', value: '-'},
+  {text: 'in', value: '+'},
 ]);
 
 export default typeList;

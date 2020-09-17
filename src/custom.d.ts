@@ -15,9 +15,9 @@ type RootState = {
   record: RecordItem;
   recordList: RecordItem[];
   tagList: Tag[];
-  dayRecordList: Result[];
-  monthRecordList: Resultwrapper[];
-  yearRecordList: Resultwrapper[];
+  dayRecordList: DayResult[];
+  monthRecordList: MonthResult[];
+  yearRecordList: YearResult[];
   currentTag?: Tag | string;
   isHave: boolean;
   showBody: boolean;
@@ -32,13 +32,18 @@ type DataSourceItem = {
   text: string;
   value: string;
 }
-type Result = {
+type DayResult = {
   title: string;
   total?: number;
   items: RecordItem[];
 }
-type Resultwrapper={
+type MonthResult={
   title: string;
   total?: number;
-  items: Result[];
+  items: DayResult[];
+}
+type YearResult={
+  title: string;
+  total?: number;
+  items: MonthResult[];
 }

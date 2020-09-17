@@ -113,7 +113,7 @@ const store = new Vuex.Store({
       if (newRecordList.length === 0) {
         return [];
       }
-      const dayResult: Result[] = [{
+      const dayResult: DayResult[] = [{
         title: dayjs(newRecordList[0].createdAt).format('YYYY-M-D'),
         items: [newRecordList[0]]
       }];
@@ -133,17 +133,17 @@ const store = new Vuex.Store({
       });
       state.dayRecordList = dayResult;
     },
-    createdMonthRecordList(state, payload: { dayRecordList: Result[]; type: string }) {
+    createdMonthRecordList(state, payload: { dayRecordList: DayResult[]; type: string }) {
       const {dayRecordList, type} = payload;
-      const newRecordList: any = clone(dayRecordList)
+      const newRecordList: DayResult[] = clone(dayRecordList)
         .filter(item => item.items.filter(item => item.type === type))
-        .sort((a: Result, b: Result) =>
+        .sort((a: DayResult, b: DayResult) =>
           dayjs(b.title).valueOf() - dayjs(a.title).valueOf()
         );
       if (newRecordList.length === 0) {
         return [];
       }
-      const monthResult: Resultwrapper[] = [{
+      const monthResult: MonthResult[] = [{
         title: dayjs(newRecordList[0].title).format('YYYY-M'),
         items: [newRecordList[0]]
       }];
@@ -163,17 +163,17 @@ const store = new Vuex.Store({
       });
       state.monthRecordList = monthResult;
     },
-    createdYearRecordList(state, payload: { monthRecordList: Resultwrapper[]; type: string }) {
+    createdYearRecordList(state, payload: { monthRecordList: MonthResult[]; type: string }) {
       const {monthRecordList, type} = payload;
-      const newRecordList: any = clone(monthRecordList)
+      const newRecordList: MonthResult[] = clone(monthRecordList)
         .filter(item => item.items.filter(item => item.items.filter(item=>item.type === type)))
-        .sort((a: Resultwrapper, b: Resultwrapper) =>
+        .sort((a: MonthResult, b: MonthResult) =>
           dayjs(b.title).valueOf() - dayjs(a.title).valueOf()
         );
       if (newRecordList.length === 0) {
         return [];
       }
-      const yearResult: Resultwrapper[] = [{
+      const yearResult: YearResult[] = [{
         title: dayjs(newRecordList[0].title).format('YYYY'),
         items: [newRecordList[0]]
       }];

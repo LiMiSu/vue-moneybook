@@ -7,7 +7,6 @@
 
 
       <MoneyType @click.native="a" class-prefix="type" :data-source="typeList" :value.sync="type"/>
-      <!--      <MoneyType class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>-->
       <div class="statisticsList">
         <div v-if="yearRecordList.length>0">
           <div v-for="year in yearRecordList" :key="year.title">
@@ -52,9 +51,7 @@
     components: {Button, Echarts, MoneyType},
   })
   export default class Detail extends Vue {
-    type = '+';
-    interval = 'day';
-    intervalList = intervalList;
+    type = '-';
     typeList = typeList;
     currentList = '';
 
@@ -63,9 +60,7 @@
     }
 
     a() {
-      console.log(this.yearRecordList.length);
-      // console.log(this.$store.state.monthRecordList);
-      // console.log(this.$store.state.dayRecordList);
+      console.log(this.$store.state.yearRecordList);
     }
 
     showList(title: string) {
@@ -88,7 +83,9 @@
 
     get yearRecordList() {
       this.$store.commit('createdYearRecordList', {monthRecordList: this.monthRecordList, type: this.type});
-      return this.$store.state.yearRecordList;
+      return this.$store.state.yearRecordList.filter((item: YearResult) => {
+        return item.items[0].items[0].items[0].type === this.type;
+      });
     }
 
 
