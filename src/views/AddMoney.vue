@@ -1,7 +1,7 @@
 <template>
   <div class="addMoney-wrapper">
     <header>
-      <div class="addheader" >
+      <div class="addheader">
         <Icon name="left" class="left" @click="goBack"></Icon>
         <div class="header">
           记一笔
@@ -18,13 +18,6 @@
     </main>
     <footer class="addfooter">
 
-      <div class="message amount">
-        <div class="text"><span>{{this.$store.state.record.type==='-'?'支出':'收入'}}金额</span></div>
-        <div class="input"><label>
-          <input type="text">
-        </label></div>
-      </div>
-
       <div v-if="$store.state.showBody" class="cover">
         <div class="top" @click="$store.state.showBody=!$store.state.showBody"></div>
         <div class="daychoose">
@@ -34,10 +27,12 @@
           </div>
         </div>
       </div>
-      <div>
+      <div v-if="this.$store.state.currentTag">
         <div class="notes">
+          <Icon :name="$store.state.currentTag.tagicon" class="item"></Icon>
+          <span class="item">{{$store.state.currentTag.name}}</span>
           <label>
-            <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="在这里输入备注"/>
+            <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="写点备注..." class="item"/>
           </label>
         </div>
         <NumberPad :value.sync="$store.state.record.amount" @submit="saveRecord"></NumberPad>
@@ -72,8 +67,9 @@
       this.$store.commit('createRecord', this.$store.state.record);
       this.$store.state.record.notes = '';
     }
-    goBack(){
-      this.$router.replace('/main')
+
+    goBack() {
+      this.$router.replace('/main');
     }
   }
 </script>
@@ -150,51 +146,16 @@
     }
 
 
-    .message {
-      border-bottom: 1px dotted rgb(222, 225, 230);
-      display: flex;
-      justify-content: space-between;
-      padding: 0 22px;
-
-      .text {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 10vh;
-      }
-
-      .input {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 10vh;
-
-        input {
-          border: 1px solid rgb(230, 230, 230);
-          border-radius: 4px;
-          padding: 3px 16px;
-          background: #ffffff;
-        }
-      }
-    }
-
     .notes {
-      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      padding: 10px 16px;
+      background: rgb(246, 234, 212);
+      border-bottom: 1px solid #d9d9d9;
 
-      .text {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 5vh;
-      }
-
-      textarea {
-        border: 1px solid rgb(230, 230, 230);
-        border-radius: 4px;
-        padding: 3px 16px;
-        background: #ffffff;
-        resize: none;
-        width: 100%;
+      .item {
+        margin-right: 5px;
       }
     }
   }

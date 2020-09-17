@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <label class="formItem">
-      <span class="name">{{fieldName}}</span>
+      <Icon name="notes" class="notes"></Icon>
       <input
         :type="type || 'text'"
         :value="tagName||value"
@@ -27,23 +27,23 @@
 </script>
 
 <style lang="scss" scoped>
-  .wrapper{
-    border-bottom: 1px solid  #d9d9d9;
-  }
   .formItem {
     font-size: 14px;
-    padding-left: 16px;
     display: flex;
     align-items: center;
-
-    .name {
-      padding-right: 16px;
-    }
+.notes{
+  width: 34px;
+  height: 34px;
+  margin-right: 16px;
+}
+    /*.name {*/
+    /*
+    /*}*/
 
     input {
       height: 40px;
       flex-grow: 1;
-      padding-right: 16px;
+      /*background: #ffffff;*/
     }
   }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="inputNumber"  :class="[{first:one},{second:two}]">
-      <DayBook v-if="!$store.state.showBody"></DayBook>
+    <div class="inputNumber">
+      <DayBook v-if="!$store.state.showBody" class="book"></DayBook>
 
-      <span>{{output}}</span>
+      <div class="num"><span class="text">{{this.$store.state.record.type==='-'?'支出':'收入'}}：</span><span class="num-intpu" :class="[{first:one},{second:two}]">{{output}}</span></div>
     </div>
     <div class="numberPad">
       <button @click="inputContent">÷</button>
@@ -17,7 +17,7 @@
       <button @click="inputContent">4</button>
       <button @click="inputContent">5</button>
       <button @click="inputContent">6</button>
-      <button @click="clear"><Icon name="C"></Icon></button>
+      <button @click="clear">C</button>
       <button @click="inputContent">1</button>
       <button @click="inputContent">2</button>
       <button @click="inputContent">3</button>
@@ -81,11 +81,11 @@
       this.lock = true;
       const input = (event.target as HTMLButtonElement).textContent!;
 
-      if (this.output.length === 12) {
+      if (this.output.length === 9) {
         this.one = true;
-      } else if (this.output.length === 16) {
+      } else if (this.output.length === 12) {
         this.two = true;
-      } else if (this.output.length === 22) {
+      } else if (this.output.length === 19) {
         window.alert('输入金额过长');
         return;
       }  //输入过长
@@ -155,10 +155,10 @@
         this.output = '';
         this.isOver = true;
       }
-      if (this.output.length < 16) {
+      if (this.output.length < 12) {
         this.two = false;
       }
-      if (this.output.length < 12) {
+      if (this.output.length < 9) {
         this.one = false;
       }
       this.output += input;
@@ -170,10 +170,10 @@
       } else {
         this.output = this.output.slice(0, -1);
       }
-      if (this.output.length < 16) {
+      if (this.output.length < 12) {
         this.two = false;
       }
-      if (this.output.length < 12) {
+      if (this.output.length < 9) {
         this.one = false;
       }
     }
@@ -227,10 +227,10 @@
         this.output = this.output.slice(0, this.output.length - 1);
       }
       this.isOver = false;
-      if (this.output.length < 16) {
+      if (this.output.length < 12) {
         this.two = false;
       }
-      if (this.output.length < 12) {
+      if (this.output.length < 9) {
         this.one = false;
       }
     }
@@ -253,6 +253,10 @@
         window.alert('负值不能入账哦,请重新输入呢');
         return;
       }
+      if (!this.$store.state.currentTag){
+        window.alert('选择一项标签会更好分类哦');
+        return;
+      }
       this.$emit('update:value', moneyValue);//把输入的字符串变成数字记入账单
       this.$emit('submit', moneyValue);
       this.output = '0';
@@ -262,48 +266,47 @@
 
 <style lang="scss" scoped>
   @import "~@/assets/style/helper.scss";
-
-  .icon-data {
-
-    left: 5px;
-    top: 3px;
-    font-size: 30px;
-  }
-
-
-
   %addMoneyStyle {
     background: rgb(246,234,212);
-    color: blue;
-    font-size: 22px;
-    font-weight: bold;
   }
 
   .inputNumber {
-    @extend %innerShadow;
+    //@extend %innerShadow;
     @extend %addMoneyStyle;
-    font-size: 36px;
     font-family: Consolas, monospace;
-    padding: 7px;
+    padding: 16px;
     height: 60px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     word-break: break-all;
     overflow: hidden;
+    .num{
+      display: flex;
+      align-items: center;
+      .text{
+        font-size: 16px;
+      }
+      .num-intpu{
+        font-size: 36px;
+        &.first {
+          font-size: 24px;
+        }
 
-    &.first {
-      font-size: 30px;
+        &.second {
+          font-size: 18px;
+        }
+      }
     }
+.book{
+  margin-left: 10px;
+}
 
-    &.second {
-      font-size: 24px;
-    }
   }
 
   .numberPad {
     @extend %clearFix;
-
+    font-size: 22px;
     button {
       @extend %addMoneyStyle;
       width: 25%;

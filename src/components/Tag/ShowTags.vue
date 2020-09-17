@@ -12,7 +12,7 @@
            v-for="tag in newTagList"
            :key="tag.id">
         <Icon class="tagIcon" :name=tag.tagicon
-              :class="{selected: currenttag===tag}"
+              :class="{selected: currentTag===tag}"
               @click="toggle(tag)">
         </Icon>
         <span :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
@@ -30,16 +30,15 @@
 
   @Component
   export default class Note extends mixins(TagHelper) {
-    currenttag: any = '';
-
     created() {
       this.$store.commit('fetchTags');
     }
 
     beforeUpdate() {
-      if (this.$store.state.record.type===this.currenttag.type){
-        this.$emit('update:value', this.currenttag);
-      }else {
+      if (this.currentTag.type&&this.$store.state.record.type === this.currentTag.type) {
+        this.$emit('update:value', this.currentTag);
+      } else {
+        this.currentTag = '';
         this.$emit('update:value', []);
       }
     }
@@ -53,13 +52,21 @@
       return clone(tagList).filter((item: Tag) => item.type === this.$store.state.record.type);
     }
 
+    get currentTag() {
+      return this.$store.state.currentTag;
+    }
+
+    set currentTag(tag) {
+      this.$store.state.currentTag = tag;
+    }
+
 
     toggle(tag: Tag) {
-      if (this.currenttag === tag) {
-        this.currenttag = '';
+      if (this.currentTag === tag) {
+        this.currentTag = '';
         this.$emit('update:value', []);
       } else {
-        this.currenttag = tag;
+        this.currentTag = tag;
       }
     }
 

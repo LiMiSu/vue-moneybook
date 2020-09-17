@@ -17,7 +17,7 @@ const store = new Vuex.Store({
     dayRecordList: [],
     monthRecordList: [],
     yearRecordList: [],
-    currentTag: undefined,
+    currentTag: '',
     isHave: true,
     showBody: false,
     numberShow: false,
@@ -31,9 +31,9 @@ const store = new Vuex.Store({
     },
     createRecord(state, record: RecordItem) {
       const recordDeep: RecordItem = clone(record);
-      if (!recordDeep.tags || recordDeep.tags.length === 0) {
-        return window.alert('选择一项标签会更好分类哦');
-      }
+      // if (!recordDeep.tags || recordDeep.tags.length === 0) {
+      //   return window.alert('选择一项标签会更好分类哦');
+      // }
       if (!recordDeep.amount || recordDeep.amount === 0) {
         return window.alert('请输入金额');
       }
