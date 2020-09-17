@@ -69,15 +69,16 @@
     }
 
     created() {
+      console.log(2);
       if (this.$route.params.id) {
         const id = this.$route.params.id;
         this.$store.commit('fetchTags');
         this.$store.commit('setCurrentTag', id);
-        console.log(this.$store.state.currentTag);
         this.valueDat = this.currentTag.name;
         if (!this.currentTag) {
           this.$router.replace('/404');
         }
+        console.log(3);
       }
     }
 
@@ -111,6 +112,7 @@
     }
 
     goBack() {
+      this.$store.state.showAdd = false;
       this.$router.replace('/managetag');
     }
 
@@ -142,6 +144,7 @@
     }
 
     back() {
+      this.$store.state.showAdd = false;
       this.$router.replace('/managetag');
     }
 

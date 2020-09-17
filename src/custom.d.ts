@@ -21,7 +21,6 @@ type RootState = {
   currentTag?: Tag|string;
   isHave: boolean;
   showBody: boolean;
-  numberShow: boolean;
   showAdd: boolean;
 }
 type GetDay = {

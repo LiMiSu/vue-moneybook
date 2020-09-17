@@ -92,12 +92,14 @@
     tagChang(tag: any) {
       this.$store.state.showAdd = false;
       if (this.currenttag === tag) {
-        this.$router.replace('/managetag');
         this.currenttag = '';
+        // this.$router.replace('/managetag');
       } else {
         this.currenttag = tag;
+        // this.$router.replace('/addrewrite');
+        console.log(1);
+        console.log(this.currenttag);
         this.$router.replace('/addrewrite/' + tag.id);
-        // this.$router.replace('/addtags');
       }
     }
 

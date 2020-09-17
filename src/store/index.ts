@@ -20,7 +20,6 @@ const store = new Vuex.Store({
     currentTag: '',
     isHave: true,
     showBody: false,
-    numberShow: false,
     showAdd: false
   } as RootState,
 
