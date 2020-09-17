@@ -16,9 +16,9 @@ type RootState = {
   recordList: RecordItem[];
   tagList: Tag[];
   dayRecordList: Result[];
-  monthRecordList: Result[];
-  yearRecordList: Result[];
-  currentTag?: Tag|string;
+  monthRecordList: Resultwrapper[];
+  yearRecordList: Resultwrapper[];
+  currentTag?: Tag | string;
   isHave: boolean;
   showBody: boolean;
   showAdd: boolean;
@@ -36,4 +36,9 @@ type Result = {
   title: any;
   total?: number;
   items: RecordItem[];
+}
+type Resultwrapper={
+  title: any;
+  total?: number;
+  items: Result[];
 }

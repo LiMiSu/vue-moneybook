@@ -132,18 +132,17 @@ const store = new Vuex.Store({
         }, 0);
       });
       state.dayRecordList = dayResult;
-      // console.log(dayResult);
     },
-    createdMonthRecordList(state, payload: { dayRecordList: Result[]; type: string }) {
+    createdMonthRecordList(state, payload: { dayRecordList: Resultwrapper[]; type: string }) {
       const {dayRecordList, type} = payload;
       const newRecordList: any = clone(dayRecordList)
-        .sort((a: Result, b: Result) =>
+        .sort((a: Resultwrapper, b: Resultwrapper) =>
           dayjs(b.title).valueOf() - dayjs(a.title).valueOf()
         );
       if (newRecordList.length === 0) {
         return [];
       }
-      const monthResult: Result[] = [{
+      const monthResult: Resultwrapper[] = [{
         title: dayjs(newRecordList[0].title).format('YYYY-M'),
         items: [newRecordList[0]]
       }];
@@ -158,21 +157,21 @@ const store = new Vuex.Store({
       }
       monthResult.forEach(group => {
         group.total = group.items.reduce((sum, item) => {
-          return sum + item.amount;
+          return sum + item.total!;
         }, 0);
       });
-      state.dayRecordList = monthResult;
+      state.monthRecordList = monthResult;
     },
-    createdYearRecordList(state, payload: { monthRecordList: Result[]; type: string }) {
+    createdYearRecordList(state, payload: { monthRecordList: Resultwrapper[]; type: string }) {
       const {monthRecordList, type} = payload;
       const newRecordList: any = clone(monthRecordList)
-        .sort((a: Result, b: Result) =>
+        .sort((a: Resultwrapper, b: Resultwrapper) =>
           dayjs(b.title).valueOf() - dayjs(a.title).valueOf()
         );
       if (newRecordList.length === 0) {
         return [];
       }
-      const yearResult: Result[] = [{
+      const yearResult: Resultwrapper[] = [{
         title: dayjs(newRecordList[0].title).format('YYYY'),
         items: [newRecordList[0]]
       }];
@@ -187,11 +186,10 @@ const store = new Vuex.Store({
       }
       yearResult.forEach(group => {
         group.total = group.items.reduce((sum, item) => {
-          return sum + item.amount;
+          return sum + item.total!;
         }, 0);
       });
-      state.dayRecordList = yearResult;
-      // console.log(yearResult);
+      state.yearRecordList = yearResult;
     },
   }
 });
