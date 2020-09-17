@@ -83,7 +83,7 @@
       this.currenttag = '';
       this.$store.state.showAdd = !this.$store.state.showAdd;
       if (this.$store.state.showAdd) {
-        this.$router.replace('/addtags');
+        this.$router.replace('/rewrite');
       } else {
         this.$router.replace('/managetag');
       }

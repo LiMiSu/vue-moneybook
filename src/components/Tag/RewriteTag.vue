@@ -6,9 +6,7 @@
       <span class="rightIcon"></span>
     </div>
     <div class="form-wrapper">
-
-
-      <label>
+      <label v-if="$route.params.id">
         <Input
           :tagName="currentTag.name"
           :value.sync="valueDat"
@@ -16,7 +14,13 @@
           placeholder="标签名不要超过4个字哦"
         />
       </label>
-
+      <label v-else>
+        <Input
+          :value.sync="value"
+          field-name="标签名"
+          placeholder="1-4个字符"
+        />
+      </label>
       <div class="icon-choose">
         <div v-for="tag in rewriteTagList" :key="tag.icon" class="wrapper">
           <Icon
@@ -26,12 +30,14 @@
           ></Icon>
         </div>
       </div>
-
-
     </div>
-    <div class="button-wrapper">
+    <div class="button-wrapper" v-if="$route.params.id">
       <Button @click="removeTag">删除</Button>
       <Button @click.native="updateTag">更改</Button>
+    </div>
+    <div class="button-wrapper" v-else>
+      <Button @click.native="back">取消</Button>
+      <Button @click.native="createTag">添加</Button>
     </div>
   </div>
 
@@ -49,25 +55,32 @@
   })
 
   export default class EditLabel extends Vue {
+    value = '';
     valueDat!: string;
     currenttag = '';
-    icon=''
+    icon = '';
+
     get rewriteTagList() {
       return addTag.filter(item => item.type === this.$store.state.record.type);
     }
+
     get currentTag() {
       return this.$store.state.currentTag;
     }
 
     created() {
-      const id = this.$route.params.id;
-      this.$store.commit('fetchTags');
-      this.$store.commit('setCurrentTag', id);
-      this.valueDat = this.currentTag.name;
-      if (!this.currentTag) {
-        this.$router.replace('/404');
+      if (this.$route.params.id) {
+        const id = this.$route.params.id;
+        this.$store.commit('fetchTags');
+        this.$store.commit('setCurrentTag', id);
+        console.log(this.$store.state.currentTag);
+        this.valueDat = this.currentTag.name;
+        if (!this.currentTag) {
+          this.$router.replace('/404');
+        }
       }
     }
+
     tagChang(tag: any) {
       if (this.currenttag === tag) {
         this.currenttag = '';
@@ -77,12 +90,17 @@
         this.icon = tag;
       }
     }
+
     updateTag() {
       if (this.currentTag) {
-        if(this.icon&&this.valueDat!==this.currentTag.name){
-          this.currentTag.tagicon=this.icon
+        if (this.icon && this.valueDat !== this.currentTag.name) {
+          this.currentTag.tagicon = this.icon;
         }
-        this.$store.commit('updateTag', {id: this.currentTag.id, name: this.valueDat, tagicon: this.currentTag.tagicon||this.icon});
+        this.$store.commit('updateTag', {
+          id: this.currentTag.id,
+          name: this.valueDat,
+          tagicon: this.currentTag.tagicon || this.icon
+        });
       }
     }
 
@@ -95,6 +113,38 @@
     goBack() {
       this.$router.replace('/managetag');
     }
+
+
+    createTag() {
+
+      if (this.value) {
+        if (!this.icon) {
+          window.alert('请选泽一个标签');
+          return;
+        }
+        if (this.value.length > 4) {
+          window.alert('标签名不要超过4个字哦');
+          return;
+        }
+        this.$store.commit('createTag', {name: this.value, tagicon: this.icon, type: this.$store.state.record.type});
+        if (!this.$store.state.isHave) {
+          window.alert('已存在');
+          this.$router.replace('/managetag');
+          this.$store.state.showAdd = false;
+          return;
+        }
+        window.alert('成功');
+        this.$router.replace('/managetag');
+        this.$store.state.showAdd = false;
+      } else if (this.value === '') {
+        window.alert('标签名不能为空');
+      }
+    }
+
+    back() {
+      this.$router.replace('/managetag');
+    }
+
   }
 
 </script>
@@ -132,10 +182,12 @@
   .form-wrapper {
     /*background: palevioletred;*/
     margin-top: 8px;
+
     .icon-choose {
       display: flex;
       padding: 16px 0 16px 16px;
-      .icon{
+
+      .icon {
         margin-right: 16px;
         padding: 2px 4px;
         $bg: #d9d9d9;
@@ -146,6 +198,7 @@
         width: 45px;
         line-height: $h;
         text-align: center;
+
         &.selected {
           background: #DE7873;
           color: white;

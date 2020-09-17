@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <div v-if="this.$store.state.currentTag">
+      <div v-if="$store.state.currentTag">
         <div class="notes">
           <Icon :name="$store.state.currentTag.tagicon" class="item"></Icon>
           <span class="item">{{$store.state.currentTag.name}}</span>
@@ -61,6 +61,7 @@
 
     created() {
       this.$store.commit('fetchRecords');
+      this.$store.state.currentTag=''
     }
 
     saveRecord() {

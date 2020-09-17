@@ -8,13 +8,17 @@
     <div class="form-wrapper">
 
 
+
       <label>
         <Input
           :value.sync="value"
           field-name="标签名"
-          placeholder="标签名不要超过4个字哦"
+          placeholder="1-4个字符"
         />
       </label>
+
+
+
 
       <div class="icon-choose">
         <div v-for="tag in addTagList" :key="tag.icon" class="wrapper">
@@ -28,6 +32,9 @@
 
 
     </div>
+
+
+
     <div class="button-wrapper">
       <Button @click.native="back">取消</Button>
       <Button @click.native="createTag">添加</Button>
@@ -49,6 +56,9 @@
     value = '';
     icon = '';
     currenttag = '';
+    created() {
+      console.log(this.$route)
+    }
 
     get addTagList() {
       return addTag.filter(item => item.type === this.$store.state.record.type);

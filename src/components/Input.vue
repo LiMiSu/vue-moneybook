@@ -1,7 +1,8 @@
 <template>
   <div class="wrapper">
     <label class="formItem">
-      <Icon name="notes" class="notes"></Icon>
+      <Icon v-if="fieldName==='备注'" name="notes" class="notes"></Icon>
+      <span v-else class="name">{{fieldName}}</span>
       <input
         :type="type || 'text'"
         :value="tagName||value"
@@ -36,9 +37,9 @@
   height: 34px;
   margin-right: 16px;
 }
-    /*.name {*/
-    /*
-    /*}*/
+    .name {
+      padding: 0 16px 0 10px;
+    }
 
     input {
       height: 40px;
