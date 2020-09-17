@@ -6,12 +6,13 @@
     <template #main>
 
 
-      <MoneyType class-prefix="type" :data-source="typeList" :value.sync="type"/>
+      <MoneyType @click.native="a" class-prefix="type" :data-source="typeList" :value.sync="type"/>
       <!--      <MoneyType class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>-->
       <div class="statisticsList">
         <div v-if="yearRecordList.length>0">
           <div v-for="year in yearRecordList" :key="year.title">
-            <h2 class="year-title"><span>{{year.title}}</span><span>支出: </span><span>支出：</span><span>合计：￥{{year.total}}</span>
+            <h2 class="year-title">
+              <span>{{year.title}}</span><span>支出: </span><span>支出：</span><span>合计：￥{{year.total}}</span>
             </h2>
             <div v-for="month in year.items" :key="month.title">
               <h3 class="month-title"><span>{{month.title}}</span><span>支出: </span><span>支出：</span><span>合计：￥{{month.total}}</span>
@@ -19,14 +20,14 @@
               <div v-for="day in month.items" :key="day.title">
                 <h3 class="day-title" @click="showList(day.title)">{{beautify(day.title)}}<span>￥{{day.total}}</span>
                 </h3>
-                <!--                <div v-if="currentList!==day.title">-->
-                <div v-for="(item,index) in day.items" :key="index"
-                     class="record">
-                  <span>{{item.tag.name}}</span>
-                  <span class="notes">{{item.notes}}</span>
-                  <span>￥{{item.amount}}</span>
+                <div v-if="currentList!==day.title">
+                  <div v-for="(item,index) in day.items" :key="index"
+                       class="record">
+                    <span>{{item.tag.name}}</span>
+                    <span class="notes">{{item.notes}}</span>
+                    <span>￥{{item.amount}}</span>
+                  </div>
                 </div>
-                <!--                </div>-->
               </div>
             </div>
           </div>
@@ -59,7 +60,12 @@
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
+    }
 
+    a() {
+      console.log(this.yearRecordList.length);
+      // console.log(this.$store.state.monthRecordList);
+      // console.log(this.$store.state.dayRecordList);
     }
 
     showList(title: string) {
