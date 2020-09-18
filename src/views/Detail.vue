@@ -7,21 +7,30 @@
       <MoneyType @click.native="a" class-prefix="type" :data-source="detailList" :value.sync="type"/>
       <div class="statisticsList">
         <div v-if="yearRecordList.length>0">
-          <h1>{{type}} {{total}}</h1>
+          <h1 v-if="yearRecordList.length>=2" class="total">{{allTotal}}</h1>
           <div v-for="year in yearRecordList" :key="year.title">
             <h2 @click="year.show=!year.show" class="year-title">
-              <span>{{year.title}}</span><span>{{type}} {{year.total}}</span>
+              <span>{{year.title}}</span>
+              <span v-if="type==='1'">+</span>
+              <span v-if="type==='1'">-</span>
+              <span>{{type==='+'?type:''}}{{year.total}}</span>
             </h2>
             <div v-if="year.show">
               <div v-for="month in year.items" :key="month.title">
                 <h3 @click="month.show=!month.show" class="month-title">
-                  <span>{{beautifyMonth(month.title)}}</span><span>{{type}} {{month.total}}</span>
+                  <span>{{beautifyMonth(month.title)}}</span>
+                  <span v-if="type==='1'">+</span>
+                  <span v-if="type==='1'">-</span>
+                  <span>{{type==='+'?type:''}}{{month.total}}</span>
                 </h3>
                 <div v-if="month.show">
                   <div v-for="day in month.items" :key="day.title">
-                    <h4 class="day-title" @click="day.show=!day.show">
-                      {{beautifyDay(day.title)}}<span>{{type}} {{day.total}}</span>
-                    </h4>
+                    <div class="day-title" @click="day.show=!day.show">
+                      <span>{{beautifyDay(day.title)}}</span>
+                      <span v-if="type==='1'">+</span>
+                      <span v-if="type==='1'">-</span>
+                      <span>{{type==='+'?type:''}}{{day.total}}</span>
+                    </div>
                     <div v-if="day.show">
                       <div v-for="(item,index) in day.items" :key="index"
                            class="record">
@@ -30,7 +39,7 @@
                           <span class="name">{{item.tag.name}}</span>
                         </div>
                         <span class="notes">{{item.notes}}</span>
-                        <span class="amount">{{type}} {{item.amount}}</span>
+                        <span class="amount">{{showType(item)}}{{item.amount}}</span>
                       </div>
                     </div>
                   </div>
@@ -60,14 +69,16 @@
   export default class Detail extends Vue {
     type = '-';
     detailList = detail;
+    amount = 0;
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
     }
 
     a() {
-      console.log(this.total);
+      console.log(1);
     }
+
 
     get dayRecordList() {
       this.$store.commit('createdDayRecordList', {recordList: this.$store.state.recordList, type: this.type});
@@ -81,19 +92,29 @@
 
     get yearRecordList() {
       this.$store.commit('createdYearRecordList', {monthRecordList: this.monthRecordList, type: this.type});
-      // if (this.type === '1') {
-      //   return this.$store.state.yearRecordList;
-      // } else if(this.type === '-'||this.type === '+'){
+      if (this.type === '1') {
+        return this.$store.state.yearRecordList;
+      }
       return this.$store.state.yearRecordList.filter((item: YearResult) => item.items[0].items[0].items[0].type === this.type);
-      // }
     }
 
-    get total() {
+    get allTotal() {
       const total = (this.yearRecordList as YearResult[]).reduce((sum, group) => {
         return sum + group.total!;
       }, 0);
-      return total;
+      return this.yearRecordList.length >= 2 ? this.type + total : '';
     }
+
+
+    showType(item: RecordItem) {
+      if (item.type==='+') {
+        this.amount = item.amount;
+        return item.type;
+      } else {
+        return '';
+      }
+    }
+
 
     beautifyDay(title: string) {
       const dayValue = dayjs(title);
@@ -153,6 +174,11 @@
 
     .day-title {
       @extend %item;
+    }
+
+    .total {
+      @extend %title;
+      background: darkviolet;
     }
 
     .record {

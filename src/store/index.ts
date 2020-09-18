@@ -29,6 +29,9 @@ const store = new Vuex.Store({
       state.recordList = JSON.parse(window.localStorage.getItem('recordList') || '[]') as RecordItem[];
     },
     createRecord(state, record: RecordItem) {
+      if (record.type === '-') {
+        record.amount = -record.amount;
+      }
       const recordDeep: RecordItem = clone(record);
       // if (!recordDeep.tags || recordDeep.tags.length === 0) {
       //   return window.alert('选择一项标签会更好分类哦');
@@ -105,7 +108,10 @@ const store = new Vuex.Store({
 
     createdDayRecordList(state, payload: { recordList: RecordItem[]; type: string }) {
       const {recordList, type} = payload;
-      const newRecordList: RecordItem[] = clone(recordList)
+      const newRecordList: RecordItem[] = type === '1' ? clone(recordList)
+        .sort((a: RecordItem, b: RecordItem) =>
+          dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
+        ) : clone(recordList)
         .filter((item) => item.type === type)
         .sort((a: RecordItem, b: RecordItem) =>
           dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
@@ -114,7 +120,7 @@ const store = new Vuex.Store({
         return [];
       }
       const dayResult: DayResult[] = [{
-        show:true,
+        show: true,
         title: dayjs(newRecordList[0].createdAt).format('YYYY-M-D'),
         items: [newRecordList[0]]
       }];
@@ -124,7 +130,7 @@ const store = new Vuex.Store({
         if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {
           last.items.push(current);
         } else {
-          dayResult.push({show:true,title: dayjs(current.createdAt).format('YYYY-M-D'), items: [current]});
+          dayResult.push({show: true, title: dayjs(current.createdAt).format('YYYY-M-D'), items: [current]});
         }
       }
       dayResult.forEach(group => {
@@ -145,7 +151,7 @@ const store = new Vuex.Store({
         return [];
       }
       const monthResult: MonthResult[] = [{
-        show:true,
+        show: true,
         title: dayjs(newRecordList[0].title).format('YYYY-M'),
         items: [newRecordList[0]]
       }];
@@ -155,7 +161,7 @@ const store = new Vuex.Store({
         if (dayjs(last.title).isSame(dayjs(current.title), 'month')) {
           last.items.push(current);
         } else {
-          monthResult.push({show:true,title: dayjs(current.title).format('YYYY-M'), items: [current]});
+          monthResult.push({show: true, title: dayjs(current.title).format('YYYY-M'), items: [current]});
         }
       }
       monthResult.forEach(group => {
@@ -176,7 +182,7 @@ const store = new Vuex.Store({
         return [];
       }
       const yearResult: YearResult[] = [{
-        show:true,
+        show: true,
         title: dayjs(newRecordList[0].title).format('YYYY'),
         items: [newRecordList[0]]
       }];
@@ -186,7 +192,7 @@ const store = new Vuex.Store({
         if (dayjs(last.title).isSame(dayjs(current.title), 'year')) {
           last.items.push(current);
         } else {
-          yearResult.push({show:true,title: dayjs(current.title).format('YYYY'), items: [current]});
+          yearResult.push({show: true, title: dayjs(current.title).format('YYYY'), items: [current]});
         }
       }
       yearResult.forEach(group => {
