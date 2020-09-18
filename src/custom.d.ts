@@ -33,16 +33,19 @@ type DataSourceItem = {
   value: string;
 }
 type DayResult = {
+  show: boolean;
   title: string;
   total?: number;
   items: RecordItem[];
 }
 type MonthResult={
+  show: boolean;
   title: string;
   total?: number;
   items: DayResult[];
 }
 type YearResult={
+  show: boolean;
   title: string;
   total?: number;
   items: MonthResult[];

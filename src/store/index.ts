@@ -114,6 +114,7 @@ const store = new Vuex.Store({
         return [];
       }
       const dayResult: DayResult[] = [{
+        show:true,
         title: dayjs(newRecordList[0].createdAt).format('YYYY-M-D'),
         items: [newRecordList[0]]
       }];
@@ -123,7 +124,7 @@ const store = new Vuex.Store({
         if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {
           last.items.push(current);
         } else {
-          dayResult.push({title: dayjs(current.createdAt).format('YYYY-M-D'), items: [current]});
+          dayResult.push({show:true,title: dayjs(current.createdAt).format('YYYY-M-D'), items: [current]});
         }
       }
       dayResult.forEach(group => {
@@ -144,6 +145,7 @@ const store = new Vuex.Store({
         return [];
       }
       const monthResult: MonthResult[] = [{
+        show:true,
         title: dayjs(newRecordList[0].title).format('YYYY-M'),
         items: [newRecordList[0]]
       }];
@@ -153,7 +155,7 @@ const store = new Vuex.Store({
         if (dayjs(last.title).isSame(dayjs(current.title), 'month')) {
           last.items.push(current);
         } else {
-          monthResult.push({title: dayjs(current.title).format('YYYY-M'), items: [current]});
+          monthResult.push({show:true,title: dayjs(current.title).format('YYYY-M'), items: [current]});
         }
       }
       monthResult.forEach(group => {
@@ -174,6 +176,7 @@ const store = new Vuex.Store({
         return [];
       }
       const yearResult: YearResult[] = [{
+        show:true,
         title: dayjs(newRecordList[0].title).format('YYYY'),
         items: [newRecordList[0]]
       }];
@@ -183,7 +186,7 @@ const store = new Vuex.Store({
         if (dayjs(last.title).isSame(dayjs(current.title), 'year')) {
           last.items.push(current);
         } else {
-          yearResult.push({title: dayjs(current.title).format('YYYY'), items: [current]});
+          yearResult.push({show:true,title: dayjs(current.title).format('YYYY'), items: [current]});
         }
       }
       yearResult.forEach(group => {

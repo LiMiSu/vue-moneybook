@@ -9,20 +9,20 @@
         <div v-if="yearRecordList.length>0">
           <h1>{{type}} {{total}}</h1>
           <div v-for="year in yearRecordList" :key="year.title">
-            <h2 @click="showList(year.title)" class="year-title">
+            <h2 @click="year.show=!year.show" class="year-title">
               <span>{{year.title}}</span><span>{{type}} {{year.total}}</span>
             </h2>
-            <div v-if="currentList!==year.title">
+            <div v-if="year.show">
               <div v-for="month in year.items" :key="month.title">
-                <h3 @click="showList(year.title)" class="month-title">
+                <h3 @click="month.show=!month.show" class="month-title">
                   <span>{{beautifyMonth(month.title)}}</span><span>{{type}} {{month.total}}</span>
                 </h3>
-                <div v-if="currentList!==year.title">
+                <div v-if="month.show">
                   <div v-for="day in month.items" :key="day.title">
-                    <h4 class="day-title" @click="showList(day.title)">
+                    <h4 class="day-title" @click="day.show=!day.show">
                       {{beautifyDay(day.title)}}<span>{{type}} {{day.total}}</span>
                     </h4>
-                    <div v-if="currentList!==day.title">
+                    <div v-if="day.show">
                       <div v-for="(item,index) in day.items" :key="index"
                            class="record">
                         <div class="left">
@@ -59,7 +59,6 @@
   })
   export default class Detail extends Vue {
     type = '-';
-    currentList = '';
     detailList = detail;
 
     beforeCreate() {
@@ -68,14 +67,6 @@
 
     a() {
       console.log(this.total);
-    }
-
-    showList(title: string) {
-      if (this.currentList === title) {
-        this.currentList = '';
-      } else {
-        this.currentList = title;
-      }
     }
 
     get dayRecordList() {
