@@ -4,7 +4,7 @@
       明细
     </template>
     <template #main>
-      <MoneyType @click.native="a" class-prefix="type" :data-source="detailList" :value.sync="type"/>
+      <MoneyType class-prefix="type" :data-source="detailList" :value.sync="type"/>
       <div class="statisticsList">
         <div v-if="yearRecordList.length>0">
           <h1 v-if="yearRecordList.length>=2" class="total">{{allTotal}}</h1>
@@ -67,17 +67,13 @@
     components: {Button, Echarts, MoneyType},
   })
   export default class Detail extends Vue {
-    type = '-';
+    type = '1';
     detailList = detail;
-    amount = 0;
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
     }
 
-    a() {
-      console.log(1);
-    }
 
 
     get dayRecordList() {
@@ -102,13 +98,12 @@
       const total = (this.yearRecordList as YearResult[]).reduce((sum, group) => {
         return sum + group.total!;
       }, 0);
-      return this.yearRecordList.length >= 2 ? this.type + total : '';
+      return this.yearRecordList.length >= 2 ? (this.type === '+' ? this.type : '') + total : '';
     }
 
 
     showType(item: RecordItem) {
-      if (item.type==='+') {
-        this.amount = item.amount;
+      if (item.type === '+') {
         return item.type;
       } else {
         return '';

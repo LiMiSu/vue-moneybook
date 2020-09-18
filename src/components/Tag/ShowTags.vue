@@ -40,6 +40,7 @@
       } else {
         this.currentTag = '';
         this.$emit('update:value', []);
+        this.$store.state.record.createdAt = new Date().toISOString();
       }
     }
 

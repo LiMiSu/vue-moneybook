@@ -3,7 +3,8 @@
     <div class="inputNumber">
       <DayBook v-if="!$store.state.showBody" class="book"></DayBook>
 
-      <div class="num"><span class="text">{{this.$store.state.record.type==='-'?'支出':'收入'}}：</span><span class="num-intpu" :class="[{first:one},{second:two}]">{{output}}</span></div>
+      <div class="num"><span class="text">{{this.$store.state.record.type==='-'?'支出':'收入'}}：</span><span
+        class="num-intpu" :class="[{first:one},{second:two}]">{{output}}</span></div>
     </div>
     <div class="numberPad">
       <button @click="inputContent">÷</button>
@@ -13,7 +14,9 @@
       <button @click="inputContent">7</button>
       <button @click="inputContent">8</button>
       <button @click="inputContent">9</button>
-      <button @click="remove"><Icon name="remove"></Icon></button>
+      <button @click="remove">
+        <Icon name="remove"></Icon>
+      </button>
       <button @click="inputContent">4</button>
       <button @click="inputContent">5</button>
       <button @click="inputContent">6</button>
@@ -49,8 +52,9 @@
     one = false;
     two = false;
     lock = true;
-    created(){
-      this.output='0'
+
+    created() {
+      this.output = '0';
     }
 
     get recordList() {
@@ -253,7 +257,7 @@
         window.alert('负值不能入账哦,请重新输入呢');
         return;
       }
-      if (!this.$store.state.currentTag){
+      if (!this.$store.state.currentTag) {
         window.alert('选择一项标签会更好分类哦');
         return;
       }
@@ -266,8 +270,9 @@
 
 <style lang="scss" scoped>
   @import "~@/assets/style/helper.scss";
+
   %addMoneyStyle {
-    background: rgb(246,234,212);
+    background: rgb(246, 234, 212);
   }
 
   .inputNumber {
@@ -281,14 +286,18 @@
     align-items: center;
     word-break: break-all;
     overflow: hidden;
-    .num{
+
+    .num {
       display: flex;
       align-items: center;
-      .text{
+
+      .text {
         font-size: 16px;
       }
-      .num-intpu{
+
+      .num-intpu {
         font-size: 36px;
+
         &.first {
           font-size: 24px;
         }
@@ -298,15 +307,17 @@
         }
       }
     }
-.book{
-  margin-left: 10px;
-}
+
+    .book {
+      margin-left: 10px;
+    }
 
   }
 
   .numberPad {
     @extend %clearFix;
     font-size: 22px;
+
     button {
       @extend %addMoneyStyle;
       width: 25%;
