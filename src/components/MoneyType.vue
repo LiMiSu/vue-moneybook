@@ -6,8 +6,6 @@
          :class="liClass(tab)"
          @click="select(tab)"
     >
-<!--      <Icon :name="tab.icon">-->
-<!--      </Icon>-->
       <span>{{tab.text}}</span>
     </div>
   </div>

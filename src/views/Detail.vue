@@ -11,24 +11,24 @@
           <div v-for="year in yearRecordList" :key="year.title">
             <h2 @click="year.show=!year.show" class="year-title">
               <span>{{year.title}}</span>
-              <span v-if="type==='1'">+</span>
-              <span v-if="type==='1'">-</span>
-              <span>{{type==='+'?type:''}}{{year.total}}</span>
+<!--              <span v-if="type==='1'">+</span>-->
+<!--              <span v-if="type==='1'">-</span>-->
+<!--              <span>{{type==='+'?type:''}}{{year.total}}</span>-->
             </h2>
             <div v-if="year.show">
               <div v-for="month in year.items" :key="month.title">
                 <h3 @click="month.show=!month.show" class="month-title">
                   <span>{{beautifyMonth(month.title)}}</span>
-                  <span v-if="type==='1'">+</span>
-                  <span v-if="type==='1'">-</span>
-                  <span>{{type==='+'?type:''}}{{month.total}}</span>
+<!--                  <span v-if="type==='1'">+</span>-->
+<!--                  <span v-if="type==='1'">-</span>-->
+<!--                  <span>{{type==='+'?type:''}}{{month.total}}</span>-->
                 </h3>
                 <div v-if="month.show">
                   <div v-for="day in month.items" :key="day.title">
                     <div class="day-title" @click="day.show=!day.show">
                       <span>{{beautifyDay(day.title)}}</span>
-                      <span v-if="type==='1'">+</span>
-                      <span v-if="type==='1'">-</span>
+<!--                      <span v-if="type==='1'">+</span>-->
+<!--                      <span v-if="type==='1'">-</span>-->
                       <span>{{type==='+'?type:''}}{{day.total}}</span>
                     </div>
                     <div v-if="day.show">
@@ -75,7 +75,6 @@
     }
 
 
-
     get dayRecordList() {
       this.$store.commit('createdDayRecordList', {recordList: this.$store.state.recordList, type: this.type});
       return this.$store.state.dayRecordList;
@@ -112,17 +111,7 @@
 
 
     beautifyDay(title: string) {
-      const dayValue = dayjs(title);
-      const now = dayjs();
-      if (dayValue.isSame(now, 'day')) {
-        return '今天';
-      } else if (dayValue.isSame(now.subtract(1, 'day'), 'day')) {
-        return '昨天';
-      } else if (dayValue.isSame(now.subtract(2, 'day'), 'day')) {
-        return '前天';
-      } else {
-        return dayValue.format('D / M');
-      }
+      return dayjs(title).format('D日');
     }
 
     beautifyMonth(title: string) {
@@ -134,26 +123,32 @@
 <style lang="scss" scoped>
   %title {
     width: 100%;
-    min-height: 30px;
+    min-height: 16px;
     display: flex;
-    justify-content: space-between;
+
     align-items: center;
-    padding: 16px;
+    padding: 3px;
+    color: #999;
+    font-size: 14px;
   }
 
   .year-title {
     @extend %title;
-    background: #DE7873;
+    background: rgb(246,234,212);
+    justify-content: center;
   }
 
   .month-title {
     @extend %title;
-    background: goldenrod;
+    background: rgb(246,234,212);
+    justify-content: center;
   }
 
   .day-title {
     @extend %title;
-    background: lightgreen;
+    background: rgb(246,234,212);
+    justify-content: space-between;
+
   }
 
   %item {
@@ -168,7 +163,8 @@
     overflow-y: auto;
 
     .day-title {
-      @extend %item;
+      background: rgb(246,234,212);
+      @extend %title;
     }
 
     .total {
@@ -203,8 +199,8 @@
       }
 
       .amount {
-        color: #999;
-        /*font-size: 14px;*/
+        /*color: #999;*/
+        font-size: 18px;
       }
     }
 

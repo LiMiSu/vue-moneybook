@@ -8,7 +8,11 @@
         <MoneyType class-prefix="type" :data-source="typeList" :value.sync="type"/>
         <!--      <MoneyType class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>-->
       </div>
-      <Echarts :option="option"/>
+      <div class="echarts-wrapper" ref="echartsscroll">
+        <div class="echarts">
+          <Echarts :option="option"/>
+        </div>
+      </div>
     </template>
   </NavStyle>
 </template>
@@ -31,37 +35,36 @@
     intervalList = intervalList;
     typeList = typeList;
 
+    mounted() {
+      (this.$refs.echartsscroll as HTMLDivElement).scrollLeft = 99999;
+    }
+
     get option() {
       return {
-        xAxis: {
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [{
-          data: [120, 200, 150, 80, 70, 110, 130],
-          type: 'line',
-          symbol: 'triangle',
-          symbolSize: 20,
-          lineStyle: {
-            color: 'green',
-            width: 4,
-            type: 'dashed'
+          xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
           },
-          itemStyle: {
-            borderWidth: 3,
-            borderColor: 'yellow',
-            color: 'blue'
-          }
-        }]
+          yAxis: {
+            type: 'value'
+          },
+          series: [{
+            data: [120, 200, 150, 80, 70, 110, 130],
+            type: 'bar'
+          }]
       };
     }
   }
 </script>
 
 <style lang="scss" scoped>
+  .echarts-wrapper {
+    overflow: auto;
+  }
+
+  /*.echarts {*/
+  /*  width: 500%;*/
+  /*}*/
 
 
 </style>
