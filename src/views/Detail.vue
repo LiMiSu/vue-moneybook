@@ -74,7 +74,6 @@
       this.$store.commit('fetchRecords');
     }
 
-
     get dayRecordList() {
       this.$store.commit('createdDayRecordList', {recordList: this.$store.state.recordList, type: this.type});
       return this.$store.state.dayRecordList;
