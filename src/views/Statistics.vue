@@ -8,10 +8,11 @@
         <MoneyType class-prefix="type" :data-source="typeList" :value.sync="type"/>
         <!--      <MoneyType class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>-->
       </div>
-      <div class="echarts-wrapper" ref="echartsscroll">
-        <div class="echarts">
+      <div class="echarts-wrapper">
+        <div class="echarts" v-if="dayRecordList.length>0">
           <Echarts :option="option"/>
         </div>
+        <div class="noResult" v-else>目前没有相关记录</div>
       </div>
     </template>
   </NavStyle>
@@ -31,7 +32,7 @@
     components: {Button, Echarts, MoneyType},
   })
   export default class Statistics extends Vue {
-    type = '+';
+    type = '-';
     interval = 'day';
     intervalList = intervalList;
     typeList = typeList;
@@ -47,19 +48,24 @@
 
     get dayRecordList() {
       this.$store.commit('createdDayRecordList', {recordList: this.recordList, type: this.type});
-      return this.$store.state.dayRecordList;
+      return (this.$store.state.dayRecordList as DayResult[]).filter(item => item.items[0].type===this.type);
+
     }
 
     get keyValueList() {
-      const today = new Date();
+      console.log(this.dayRecordList);
+      const today = this.$store.state.record.createdAt;
+      const monthLength = dayjs(today).daysInMonth();
       const array = [];
-      for (let i = 0; i <= 29; i++) {
-        const date = dayjs(today).subtract(i, 'day').format('YYYY-MM-DD');
+      for (let i = 1; i <= monthLength; i++) {
+        const date = dayjs(today).date(i).format('YYYY-MM-DD');
         const found = (this.dayRecordList as DayResult[]).filter(item => dayjs(item.title).format('YYYY-MM-DD') === date);
-        const value = found.reduce((sum, item) => {
+        let value = found.reduce((sum, item) => {
           return sum + item.total!;
         }, 0);
-        array.push({date: date, value: value ? value : 0});
+        value = value < 0 ? -value : value;
+        const valueType =
+          array.push({date: date, value: value ? value : 0});
       }
       array.sort((a, b) => {
         if (a.date > b.date) {
@@ -102,7 +108,11 @@
   .echarts-wrapper {
     overflow: auto;
   }
-
+  .noResult {
+    padding: 16px;
+    text-align: center;
+    color: #999;
+  }
   /*.echarts {*/
   /*  width: 500%;*/
   /*}*/

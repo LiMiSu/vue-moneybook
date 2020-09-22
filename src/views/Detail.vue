@@ -206,6 +206,7 @@
     .noResult {
       padding: 16px;
       text-align: center;
+      color: #999;
     }
   }
 
