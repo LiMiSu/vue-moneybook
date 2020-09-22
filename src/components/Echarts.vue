@@ -1,6 +1,5 @@
 <template>
   <div ref="container" class="content">
-
   </div>
 </template>
 
@@ -32,6 +31,6 @@
 <style lang="scss" scoped>
   .content {
     max-width: 100%;
-    min-height: 30vh;
+    min-height: 40vh;
   }
 </style>

@@ -14,6 +14,9 @@
         </div>
         <div class="noResult" v-else>目前没有相关记录</div>
       </div>
+      <div class="data-wrapper">
+        {{recordByTag}}
+      </div>
     </template>
   </NavStyle>
 </template>
@@ -48,8 +51,29 @@
 
     get dayRecordList() {
       this.$store.commit('createdDayRecordList', {recordList: this.recordList, type: this.type});
-      return (this.$store.state.dayRecordList as DayResult[]).filter(item => item.items[0].type===this.type);
+      return (this.$store.state.dayRecordList as DayResult[]).filter(item => item.items[0].type === this.type);
+    }
 
+    get recordByTag() {
+      const result = this.dayRecordList.map(item => {
+        const array = [{
+          name: item.items[0].tag.name,
+          num: item.items[0].amount
+        }
+        ];
+        for (let i = 1; i < item.items.length; i++) {
+          const current = {name: item.items[i].tag.name, num: item.items[i].amount};
+          const last = array[array.length - 1];
+          if (last.name === current.name) {
+            last.num += current.num;
+          } else {
+            array.push(current);
+          }
+        }
+        return array
+      });
+      console.log(result);
+      return result;
     }
 
     get keyValueList() {
@@ -83,17 +107,79 @@
       const keys = this.keyValueList.map(item => item.date);
       const values = this.keyValueList.map(item => item.value);
       return {
+        grid: {
+          left: '12%',
+          right: '6%'
+        },
+        tooltip: {
+          show: true,
+          trigger: 'axis',
+          axisPointer: {
+            type: 'line',
+            animation: true
+          }
+        },
+        itemStyle: {
+          color: 'red'
+        },
         xAxis: {
           type: 'category',
           data: keys,
           axisLabel: {
             formatter: function (value: string, index: number) {
-              return value.substr(5);
+              return value.substr(8);
+            },
+            color: '#ccc',
+            fontSize: 10
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#ccc'
+            }
+          },
+          axisPointer: {
+            label: {
+              show: true
             }
           }
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          axisLabel: {
+            formatter: function (value: string, index: number) {
+              if (value.toString().length === 5) {
+                value = +value / 10000 + '万';
+              } else if (value.toString().length === 6) {
+                value = +value / 100000 + '十万';
+              } else if (value.toString().length === 7) {
+                value = +value / 1000000 + '百万';
+              } else if (value.toString().length === 8) {
+                value = +value / 10000000 + '千万';
+              } else if (value.toString().length === 9) {
+                value = +value / 100000000 + '亿';
+              } else if (value.toString().length === 10) {
+                value = +value / 1000000000 + '十亿';
+              } else if (value.toString().length === 11) {
+                value = +value / 10000000000 + '百亿';
+              } else if (value.toString().length === 12) {
+                value = +value / 100000000000 + '千亿';
+              } else if (value.toString().length >= 13) {
+                value = '...亿';
+              }
+              return value;
+            },
+            color: '#ccc',
+            fontSize: 10,
+            width: '40%',
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#ccc',
+            }
+          },
+          axisTick: {
+            show: false
+          }
         },
         series: [{
           data: values,
@@ -108,14 +194,17 @@
   .echarts-wrapper {
     overflow: auto;
   }
+
   .noResult {
     padding: 16px;
     text-align: center;
     color: #999;
   }
-  /*.echarts {*/
-  /*  width: 500%;*/
-  /*}*/
+
+  .echarts {
+    width: 100%;
+    height: 50vh;
+  }
 
 
 </style>

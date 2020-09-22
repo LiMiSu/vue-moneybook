@@ -11,7 +11,18 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    record: {tag: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()},
+    record: {
+      tag: {
+        id: '',
+        name: '',
+        tagicon: '',
+        type: ''
+      },
+      notes: '',
+      type: '-',
+      amount: 0,
+      createdAt: new Date().toISOString()
+    },
     recordList: [],
     tagList: [],
     dayRecordList: [],
