@@ -10,12 +10,17 @@
       </div>
       <div class="echarts-wrapper">
         <div class="echarts" v-if="dayRecordList.length>0">
-          <Echarts :option="option"/>
+          <!--          <Echarts :option="columnOption"/>-->
+          <Echarts :option="circleOption"/>
         </div>
         <div class="noResult" v-else>目前没有相关记录</div>
       </div>
       <div class="data-wrapper">
-        {{recordByTag}}
+        <div v-for="record in recordByTag" :key="record.num">
+          <Icon :name="record.icon"></Icon>
+          <span>{{record.name}}</span><span>{{recordByTagTotalPercent(record.num)}}</span><span>{{record.num}}</span>
+        </div>
+        <!--        <div v-for=""></div>-->
       </div>
     </template>
   </NavStyle>
@@ -51,36 +56,64 @@
 
     get dayRecordList() {
       this.$store.commit('createdDayRecordList', {recordList: this.recordList, type: this.type});
-      return (this.$store.state.dayRecordList as DayResult[]).filter(item => item.items[0].type === this.type);
+      return (this.$store.state.dayRecordList as DayResult[]).filter(item => item.items[0].type === this.type);//解决一条账单时不分支收问题
     }
 
     get recordByTag() {
-      type Array = {
-        name: string;
-        num: number;
-      }
-      const result: Array[] = [];
+
+      const result: RecordByTag[] = [];
       this.dayRecordList.map(item => {
-        result[0] = {
-          name: item.items[0].tag.name,
-          num: item.items[0].amount
-        };
-        for (let i = 1; i < item.items.length; i++) {
-          const current = {name: item.items[i].tag.name, num: item.items[i].amount};
-          const last = result[result.length - 1];
-          if (last.name === current.name) {
-            last.num += current.num;
-          } else {
-            result.push(current);
+        for (let i = 0; i < item.items.length; i++) {
+          const current = {icon: item.items[i].tag.tagicon, name: item.items[i].tag.name, num: item.items[i].amount};
+          result.push(current);
+        }
+        for (let i = 0; i < result.length; i++) {
+          for (let f = i + 1; f < result.length; f++) {
+            if (result[f].name === result[i].name) {
+              result[i].num += result[f].num;
+              result.splice(f, 1);
+              f--;
+            }
           }
         }
       });
-      console.log(result);
       return result;
     }
 
+    get RecordSameTagListResult() {
+      const result: RecordSameTagListResult[] = [];
+      this.dayRecordList.map(item => {
+        for (let i = 0; i < item.items.length; i++) {
+          const current: RecordSameTagListResult = {
+            name: item.items[i].tag.name,
+            recordList: [{name: item.items[i].tag.name, num: item.items[i].amount}]
+          };
+          result.push(current);
+          for (let i = 0; i < result.length; i++) {
+            for (let f = i + 1; f < result.length; f++) {
+              if (result[f].name === result[i].name) {
+                result[i].recordList.push(result[f].recordList[0]);
+                result.splice(f, 1);
+                f--;
+              }
+            }
+          }
+        }
+      });
+      return result;
+    }
+
+    get recordByTagTotal() {
+      return this.recordByTag.reduce((sum, item) => {
+        return sum + Math.abs(item.num);
+      }, 0);
+    }
+
+    recordByTagTotalPercent(value: number) {
+      return parseFloat((Math.abs(value) / this.recordByTagTotal * 100).toFixed(2)) + '%';
+    }
+
     get keyValueList() {
-      // console.log(this.dayRecordList);
       const today = this.$store.state.record.createdAt;
       const monthLength = dayjs(today).daysInMonth();
       const array = [];
@@ -91,8 +124,7 @@
           return sum + item.total!;
         }, 0);
         value = value < 0 ? -value : value;
-        const valueType =
-          array.push({date: date, value: value ? value : 0});
+        array.push({date: date, value: value ? value : 0});
       }
       array.sort((a, b) => {
         if (a.date > b.date) {
@@ -106,7 +138,48 @@
       return array;
     }
 
-    get option() {
+    get circleOption() {
+      const tag = this.recordByTag.map(item => item.name);
+      const record = this.recordByTag.map(item => {
+        return {value: Math.abs(item.num), name: item.name};
+      });
+      return {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 10,
+          data: tag
+        },
+        series: [
+          {
+            name: this.type === '-' ? '支出金额' : '收入金额',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '30',
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: record
+          }
+        ]
+      };
+    }
+
+    get columnOption() {
       const keys = this.keyValueList.map(item => item.date);
       const values = this.keyValueList.map(item => item.value);
       return {

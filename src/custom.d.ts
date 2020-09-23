@@ -50,3 +50,16 @@ type YearResult={
   total?: number;
   items: MonthResult[];
 }
+type RecordByTag = {
+  icon: string;
+  name: string;
+  num: number;
+}
+type RecordSameTagList = {
+  name: string;
+  num: number;
+}
+type RecordSameTagListResult = {
+  name: string;
+  recordList: recordSameTagList[];
+}
