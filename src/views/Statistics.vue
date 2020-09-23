@@ -55,29 +55,32 @@
     }
 
     get recordByTag() {
-      const result = this.dayRecordList.map(item => {
-        const array = [{
+      type Array = {
+        name: string;
+        num: number;
+      }
+      const result: Array[] = [];
+      this.dayRecordList.map(item => {
+        result[0] = {
           name: item.items[0].tag.name,
           num: item.items[0].amount
-        }
-        ];
+        };
         for (let i = 1; i < item.items.length; i++) {
           const current = {name: item.items[i].tag.name, num: item.items[i].amount};
-          const last = array[array.length - 1];
+          const last = result[result.length - 1];
           if (last.name === current.name) {
             last.num += current.num;
           } else {
-            array.push(current);
+            result.push(current);
           }
         }
-        return array
       });
       console.log(result);
       return result;
     }
 
     get keyValueList() {
-      console.log(this.dayRecordList);
+      // console.log(this.dayRecordList);
       const today = this.$store.state.record.createdAt;
       const monthLength = dayjs(today).daysInMonth();
       const array = [];
