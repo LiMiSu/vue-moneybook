@@ -11,16 +11,26 @@
       <div class="echarts-wrapper">
         <div class="echarts" v-if="dayRecordList.length>0">
           <!--          <Echarts :option="columnOption"/>-->
-          <Echarts :option="circleOption"/>
+          <Echarts :option="circleOption" :getText="getText"/>
         </div>
         <div class="noResult" v-else>目前没有相关记录</div>
       </div>
       <div class="data-wrapper">
-        <div v-for="record in recordByTag" :key="record.num">
-          <Icon :name="record.icon"></Icon>
-          <span>{{record.name}}</span><span>{{recordByTagTotalPercent(record.num)}}</span><span>{{record.num}}</span>
+        <!--        <div v-for="record in recordByTag" :key="record.name">-->
+        <!--          <Icon :name="record.icon"></Icon>-->
+        <!--          <span>{{record.name}}</span><span>{{recordByTagTotalPercent(record.num)}}</span><span>{{record.num}}</span>-->
+        <!--        </div>-->
+        <div v-for="result in RecordSameTagListResult" :key="result.name">
+          <div v-if="showRecordSameTagListResult(result.name)">
+            <div>
+              <Icon :name="result.icon"></Icon>
+              <span>{{result.name}}</span><span>{{recordByTagTotalPercent(result.total)}}</span><span>{{result.total}}</span>
+            </div>
+            <div v-for="item in result.recordList" :key="item.num">
+              {{item.name}}{{item.num}}
+            </div>
+          </div>
         </div>
-        <!--        <div v-for=""></div>-->
       </div>
     </template>
   </NavStyle>
@@ -35,6 +45,7 @@
   import Echarts from '@/components/Echarts.vue';
   import intervalList from '@/constants/intervalList';
   import dayjs from 'dayjs';
+  import echarts from 'echarts';
 
   @Component({
     components: {Button, Echarts, MoneyType},
@@ -44,10 +55,22 @@
     interval = 'day';
     intervalList = intervalList;
     typeList = typeList;
+    text='';
+    // showRecordSameTagListResult=false
 
-
+    getText(value: string) {
+      this.text = value.slice(5).split(':')[0];
+    }
+    showRecordSameTagListResult(item: string){
+      return item===this.text
+    }
     beforeCreate() {
       this.$store.commit('fetchRecords');
+    }
+
+    mounted() {
+      this.text='医疗'
+      // console.log(this.text);
     }
 
     get recordList() {
@@ -85,6 +108,8 @@
       this.dayRecordList.map(item => {
         for (let i = 0; i < item.items.length; i++) {
           const current: RecordSameTagListResult = {
+            total: item.items[i].amount,
+            icon: item.items[i].tag.tagicon,
             name: item.items[i].tag.name,
             recordList: [{name: item.items[i].tag.name, num: item.items[i].amount}]
           };
@@ -93,6 +118,7 @@
             for (let f = i + 1; f < result.length; f++) {
               if (result[f].name === result[i].name) {
                 result[i].recordList.push(result[f].recordList[0]);
+                result[i].total += result[f].recordList[0].num;
                 result.splice(f, 1);
                 f--;
               }

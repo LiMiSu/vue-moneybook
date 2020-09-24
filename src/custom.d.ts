@@ -60,6 +60,8 @@ type RecordSameTagList = {
   num: number;
 }
 type RecordSameTagListResult = {
+  total: number;
+  icon: string;
   name: string;
-  recordList: recordSameTagList[];
+  recordList: RecordSameTagList[];
 }
