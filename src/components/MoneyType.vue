@@ -33,9 +33,15 @@
         [this.classPrefix + '-type']: this.classPrefix, selected: tab.value === this.value
       };
     }
+    @Prop(String)
+    readonly showvalue!: string;
 
     select(tab: DataSourceItem) {
       this.$emit('update:value', tab.value);
+      this.$emit('update:showvalue', tab.text);
+      if (this.$store.state.showtype){
+        this.$store.state.showtype=!this.$store.state.showtype
+      }
     }
   }
 </script>
@@ -62,15 +68,6 @@
         width: 24px;
         height: 24px;
       }
-      /*&.selected::after {*/
-      /*  content: '';*/
-      /*  position: absolute;*/
-      /*  bottom: 0;*/
-      /*  left: 0;*/
-      /*  width: 100%;*/
-      /*  height: 4px;*/
-      /*  background: #333;*/
-      /*}*/
     }
   }
 </style>

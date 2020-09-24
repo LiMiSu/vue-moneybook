@@ -1,10 +1,14 @@
 <template>
   <NavStyle>
     <template #header>
-      明细
+      <div @click="$store.state.showtype=!$store.state.showtype" class="nav-wrapper">
+        <span>明细</span><span class="value">({{showvalue}}</span><Icon name="up" v-if="$store.state.showtype"></Icon><Icon name="down" v-else></Icon>)
+      </div>
     </template>
     <template #main>
-      <MoneyType class-prefix="type" :data-source="detailList" :value.sync="type"/>
+      <div v-if="$store.state.showtype" class="type-wrapper">
+        <MoneyType class-prefix="detail" :data-source="detailList" :value.sync="type" :showvalue.sync="showvalue"/>
+      </div>
       <div class="statisticsList">
         <div v-if="yearRecordList.length>0">
           <h1 v-if="yearRecordList.length>=2" class="total">{{allTotal}}</h1>
@@ -48,7 +52,7 @@
             </div>
           </div>
         </div>
-        <div class="noResult" v-else>目前没有相关记录</div>
+        <div class="noResult" v-else>-目前还没有{{showvalue==='全部'?'记账':showvalue}}记录哦-</div>
       </div>
     </template>
   </NavStyle>
@@ -67,8 +71,9 @@
     components: {Button, Echarts, MoneyType},
   })
   export default class Detail extends Vue {
-    type = '1';
+    type = '-';
     detailList = detail;
+    showvalue='支出'
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
@@ -120,6 +125,34 @@
 </script>
 
 <style lang="scss" scoped>
+  .nav-wrapper{
+    display: flex;
+    align-items: center;
+    .value{
+      margin: 0 3px 0 6px;
+    }
+    .icon{
+      width: 11px;
+      height: 12px;
+      /*font-size: 16px;*/
+    }
+  }
+  .type-wrapper{
+    position: absolute;
+    top: 6vh;
+    left: 0px;
+    width: 100%;
+    height: 94vh;
+    background: rgba(205,205,205,0.5);
+  }
+  ::v-deep .detail-tabs{
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    .tabs-type{
+      width: 100%;
+    }
+  }
   %title {
     width: 100%;
     min-height: 16px;

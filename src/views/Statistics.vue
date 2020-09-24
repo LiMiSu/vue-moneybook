@@ -1,36 +1,66 @@
 <template>
   <NavStyle>
     <template #header>
-      统计
+      <div @click="$store.state.showtype=!$store.state.showtype" class="nav">
+        <span>统计</span><span class="value">({{showvalue}}</span>
+        <Icon name="up" v-if="$store.state.showtype"></Icon>
+        <Icon name="down" v-else></Icon>
+        )
+      </div>
     </template>
     <template #main>
-      <div>
-        <MoneyType class-prefix="type" :data-source="typeList" :value.sync="type"/>
-        <!--      <MoneyType class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>-->
+      <div v-if="$store.state.showtype" class="type-wrapper">
+        <MoneyType class-prefix="statistics-nav" :data-source="typeList" :value.sync="type"
+                   :showvalue.sync="showvalue"/>
       </div>
+      <MoneyType class-prefix="statistics" :data-source="intervalList" :value.sync="interval"/>
+
+<!--      <div class="nav-wrapper">-->
+
+<!--        <div>2020</div>-->
+<!--        <div class="iconlist">-->
+<!--          <div><span>柱状图：</span>-->
+<!--            <Icon name="shu"></Icon>-->
+<!--          </div>-->
+<!--          <div><span>饼图：</span>-->
+<!--            <Icon name="yuan"></Icon>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
       <div class="echarts-wrapper">
         <div class="echarts" v-if="dayRecordList.length>0">
-          <!--          <Echarts :option="columnOption"/>-->
-          <Echarts :option="circleOption" :getText="getText"/>
-        </div>
-        <div class="noResult" v-else>目前没有相关记录</div>
-      </div>
-      <div class="data-wrapper">
-        <!--        <div v-for="record in recordByTag" :key="record.name">-->
-        <!--          <Icon :name="record.icon"></Icon>-->
-        <!--          <span>{{record.name}}</span><span>{{recordByTagTotalPercent(record.num)}}</span><span>{{record.num}}</span>-->
-        <!--        </div>-->
-        <div v-for="result in RecordSameTagListResult" :key="result.name">
-          <div v-if="result.name===text">
-            <div>
-              <Icon :name="result.icon"></Icon>
-              <span>{{result.name}}</span><span>{{recordByTagTotalPercent(result.total)}}</span><span>{{result.total}}</span>
-            </div>
-            <div v-for="item in result.recordList" :key="item.num">
-              {{item.name}}{{item.num}}
+          <div class="nav-wrapper">
+            <div>2020</div>
+            <div class="iconlist">
+              <div><span>柱状图：</span>
+                <Icon name="shu"></Icon>
+              </div>
+              <div><span>饼图：</span>
+                <Icon name="yuan"></Icon>
+              </div>
             </div>
           </div>
+          <Echarts :option="columnOption"/>
+          <!--          <Echarts :option="circleOption" :getText="getText"/>-->
         </div>
+        <div class="noResult" v-else>-目前还没有{{showvalue}}记录哦-</div>
+      </div>
+      <div class="data-wrapper">
+        <div v-for="record in recordByTag" :key="record.name">
+          <Icon :name="record.icon"></Icon>
+          <span>{{record.name}}</span><span>{{recordByTagTotalPercent(record.num)}}</span><span>{{record.num}}</span>
+        </div>
+        <!--        <div class="result" v-for="result in RecordSameTagListResult" :key="result.name">-->
+        <!--          <div class="result-show" v-if="result.name===text">-->
+        <!--            <div>-->
+        <!--              <Icon :name="result.icon"></Icon>-->
+        <!--              <span>{{result.name}}</span><span>{{recordByTagTotalPercent(result.total)}}</span><span>{{result.total}}</span>-->
+        <!--            </div>-->
+        <!--            <div v-for="item in result.recordList" :key="item.num">-->
+        <!--              {{item.name}}{{item.num}}-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
       </div>
     </template>
   </NavStyle>
@@ -52,10 +82,12 @@
   })
   export default class Statistics extends Vue {
     type = '-';
-    interval = 'day';
+    showvalue = '支出';
+    interval = 'month';
     intervalList = intervalList;
     typeList = typeList;
-    text='';
+    text = '';
+
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
@@ -163,9 +195,12 @@
           formatter: '{a} <br/>{b}: {c} ({d}%)'
         },
         legend: {
+          type: 'scroll',
           orient: 'vertical',
           left: 10,
-          data: tag
+          data: tag,
+          top: 'middle',
+          selectedMode: false
         },
         series: [
           {
@@ -192,16 +227,18 @@
         ]
       };
     }
+
     getText(value: string) {
       this.text = value;
     }
+
     get columnOption() {
       const keys = this.keyValueList.map(item => item.date);
       const values = this.keyValueList.map(item => item.value);
       return {
         grid: {
           left: '12%',
-          right: '6%'
+          right: '10%'
         },
         tooltip: {
           show: true,
@@ -212,7 +249,7 @@
           }
         },
         itemStyle: {
-          color: 'red'
+          // color: 'blue'
         },
         xAxis: {
           type: 'category',
@@ -221,12 +258,12 @@
             formatter: function (value: string, index: number) {
               return value.substr(8);
             },
-            color: '#ccc',
+            // color: '#ccc',
             fontSize: 10
           },
           axisLine: {
             lineStyle: {
-              color: '#ccc'
+              // color: '#ccc'
             }
           },
           axisPointer: {
@@ -260,13 +297,13 @@
               }
               return value;
             },
-            color: '#ccc',
+            // color: '#ccc',
             fontSize: 10,
             width: '40%',
           },
           axisLine: {
             lineStyle: {
-              color: '#ccc',
+              // color: '#ccc',
             }
           },
           axisTick: {
@@ -275,7 +312,7 @@
         },
         series: [{
           data: values,
-          type: 'bar'
+          type: 'bar',
         }]
       };
     }
@@ -283,6 +320,61 @@
 </script>
 
 <style lang="scss" scoped>
+  .nav {
+    display: flex;
+    align-items: center;
+
+    .value {
+      margin: 0 3px 0 6px;
+    }
+
+    .icon {
+      width: 11px;
+      height: 12px;
+      /*font-size: 16px;*/
+    }
+  }
+
+  .type-wrapper {
+    position: absolute;
+    top: 6vh;
+    left: 0px;
+    width: 100%;
+    height: 94vh;
+    background: rgba(205, 205, 205, 0.5);
+  }
+
+  ::v-deep .statistics-nav-tabs {
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+
+    .tabs-type {
+      width: 100%;
+    }
+  }
+
+  .nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+
+    .iconlist {
+      div {
+        display: flex;
+        align-items: flex-end;
+        .icon {
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+
+    /*::v-deep .statistics-tabs {*/
+    /*  width: 40%;*/
+    /*}*/
+  }
+
   .echarts-wrapper {
     overflow: auto;
   }

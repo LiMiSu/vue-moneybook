@@ -31,7 +31,8 @@ const store = new Vuex.Store({
     currentTag: '',
     isHave: true,
     showBody: false,
-    showAdd: false
+    showAdd: false,
+    showtype: false,
   } as RootState,
 
   mutations: {

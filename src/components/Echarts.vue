@@ -1,5 +1,7 @@
 <template>
-  <div ref="container" class="content" @click="transferText" rel="echarts">
+  <div>
+    <div ref="container" class="content" v-if="getText" @click="transferText"></div>
+    <div ref="container" class="content" v-else></div>
   </div>
 </template>
 
@@ -11,7 +13,7 @@
   @Component
   export default class Echarts extends Vue {
     @Prop() option?: EChartOption;
-    @Prop() getText!: Function;
+    @Prop() getText?: Function;
     chart?: ECharts;
 
     mounted() {
@@ -20,7 +22,9 @@
       }
       this.chart = echarts.init(this.$refs.container as HTMLDivElement);
       this.chart.setOption(this.option!);
-      this.getText(this.tag)
+      if (this.getText) {
+        this.getText(this.tag);
+      }
     }
 
 
@@ -35,12 +39,16 @@
     @Watch('option')
     onOptionChange(newValue: EChartOption) {
       this.chart!.setOption(newValue);
-      this.getText(this.tag)
+      if (this.getText) {
+        this.getText(this.tag);
+      }
     }
 
     transferText() {
-      if((this.chart as any)._dom.innerText){
-        this.getText((this.chart as any)._dom.innerText.slice(5).split(':')[0]);
+      if ((this.chart as any)._dom.innerText) {
+        if (this.getText) {
+          this.getText((this.chart as any)._dom.innerText.slice(5).split(':')[0]);
+        }
       }
     }
   }
@@ -50,5 +58,6 @@
   .content {
     max-width: 100%;
     min-height: 40vh;
+
   }
 </style>

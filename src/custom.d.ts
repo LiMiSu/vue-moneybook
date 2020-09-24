@@ -22,6 +22,7 @@ type RootState = {
   isHave: boolean;
   showBody: boolean;
   showAdd: boolean;
+  showtype: boolean;
 }
 type GetDay = {
   year: number;
@@ -38,13 +39,13 @@ type DayResult = {
   total?: number;
   items: RecordItem[];
 }
-type MonthResult={
+type MonthResult = {
   show: boolean;
   title: string;
   total?: number;
   items: DayResult[];
 }
-type YearResult={
+type YearResult = {
   show: boolean;
   title: string;
   total?: number;

@@ -2,7 +2,8 @@
   <div class="rewrite">
     <div class="navBar">
       <Icon class="leftIcon" name="left" @click="goBack"/>
-      <span class="title">编辑标签</span>
+      <span class="title" v-if="$route.params.id">编辑标签</span>
+      <span class="title" v-else>新增标签</span>
       <span class="rightIcon"></span>
     </div>
     <div class="form-wrapper">
@@ -11,7 +12,7 @@
           :tagName="currentTag.name"
           :value.sync="valueDat"
           field-name="标签名"
-          placeholder="标签名不要超过4个字哦"
+          placeholder="1-4个字符"
         />
       </label>
       <label v-else>
