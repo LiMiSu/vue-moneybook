@@ -21,7 +21,7 @@
         <!--          <span>{{record.name}}</span><span>{{recordByTagTotalPercent(record.num)}}</span><span>{{record.num}}</span>-->
         <!--        </div>-->
         <div v-for="result in RecordSameTagListResult" :key="result.name">
-          <div v-if="showRecordSameTagListResult(result.name)">
+          <div v-if="result.name===text">
             <div>
               <Icon :name="result.icon"></Icon>
               <span>{{result.name}}</span><span>{{recordByTagTotalPercent(result.total)}}</span><span>{{result.total}}</span>
@@ -56,21 +56,9 @@
     intervalList = intervalList;
     typeList = typeList;
     text='';
-    // showRecordSameTagListResult=false
 
-    getText(value: string) {
-      this.text = value.slice(5).split(':')[0];
-    }
-    showRecordSameTagListResult(item: string){
-      return item===this.text
-    }
     beforeCreate() {
       this.$store.commit('fetchRecords');
-    }
-
-    mounted() {
-      this.text='医疗'
-      // console.log(this.text);
     }
 
     get recordList() {
@@ -204,7 +192,9 @@
         ]
       };
     }
-
+    getText(value: string) {
+      this.text = value;
+    }
     get columnOption() {
       const keys = this.keyValueList.map(item => item.date);
       const values = this.keyValueList.map(item => item.value);

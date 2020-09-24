@@ -20,6 +20,7 @@
       }
       this.chart = echarts.init(this.$refs.container as HTMLDivElement);
       this.chart.setOption(this.option!);
+      this.getText(this.tag)
     }
 
 
@@ -34,10 +35,13 @@
     @Watch('option')
     onOptionChange(newValue: EChartOption) {
       this.chart!.setOption(newValue);
+      this.getText(this.tag)
     }
 
     transferText() {
-      this.getText((this.chart as any)._dom.innerText);
+      if((this.chart as any)._dom.innerText){
+        this.getText((this.chart as any)._dom.innerText.slice(5).split(':')[0]);
+      }
     }
   }
 </script>
