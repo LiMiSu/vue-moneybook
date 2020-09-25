@@ -52,7 +52,7 @@
             </div>
           </div>
         </div>
-        <div class="noResult" v-else>- 暂无{{showvalue==='全部'?'记账':showvalue}}记录，去记一笔吧~ -</div>
+        <div class="noResult" v-else>- 暂无{{showvalue==='全部'?'记账':showvalue}}记录，去<router-link to="/addmoney"><span class="add">记一笔</span></router-link>吧~ -</div>
       </div>
     </template>
   </NavStyle>
@@ -99,7 +99,7 @@
     }
 
     get allTotal() {
-      const total = (this.yearRecordList as YearResult[]).reduce((sum, group) => {
+      const total = (this.yearRecordList as YearResult[]).reduce((sum, group: YearResult) => {
         return sum + group.total!;
       }, 0);
       return this.yearRecordList.length >= 2 ? (this.type === '+' ? this.type : '') + total : '';
@@ -141,7 +141,7 @@
   .type-wrapper{
     position: absolute;
     top: 6vh;
-    left: 0px;
+    left: 0;
     width: 100%;
     height: 94vh;
     background: rgba(205,205,205,0.5);
@@ -241,6 +241,9 @@
       padding: 16px;
       text-align: center;
       color: #999;
+      .add{
+        color: blue;
+      }
     }
   }
 

@@ -18,11 +18,8 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app');
-// router.afterEach((to,from)=>{
-//   console.log(to);
-//   console.log(from);
-// })
-//
+
+
 // if (document.documentElement.clientWidth >= 500) {
 //   window.alert('请使用手机打开本页面以保证预览效果');
 //   const img = document.createElement('img');

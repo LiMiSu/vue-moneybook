@@ -44,7 +44,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component,Watch} from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
 
   import NumberPad from '@/components/AddMoney/NumberPad.vue';
   import Input from '@/components/Input.vue';
@@ -53,7 +53,6 @@
   import typeList from '@/constants/typeList';
   import MoneyType from '@/components/MoneyType.vue';
   import Calender from '@/components/Calender.vue';
-  import {NavigationGuardNext, Route} from 'vue-router';
 
   @Component({
     components: {Calender, MoneyType, Button, ShowTags, Input, NumberPad},
@@ -65,30 +64,7 @@
     created() {
       this.$store.commit('fetchRecords');
       this.$store.state.currentTag = '';
-      console.log(this.$route);
     }
-
-    // beforeRouteEnter (to: Route, from: Route, next: NavigationGuardNext<Vue>) {
-    //   console.log(1);
-    //   console.log(to);
-    //   console.log(from);
-    //   next(()=>{
-    //     console.log(1);
-    //   })
-    // }
-    // beforeRouteUpdate  (to: Route, from: Route, next: NavigationGuardNext<Vue>) {
-    //   console.log(1);
-    //   console.log(to);
-    //   console.log(from);
-    //   next()
-    // }
-    // beforeRouteLeave  (to: Route, from: Route, next: NavigationGuardNext<Vue>) {
-    //   console.log(1);
-    //   console.log(to);
-    //   console.log(from);
-    //   next()
-    // }
-
     saveRecord() {
       this.$store.commit('createRecord', this.$store.state.record);
       this.$store.state.record.notes = '';

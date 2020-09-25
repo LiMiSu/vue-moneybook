@@ -1,8 +1,8 @@
 <template>
   <div class="year">
-    <Icon name="leftdate" @click="onChangYear('last')">+</Icon>
+    <Icon name="leftdate" @click="onChangYear('last')"></Icon>
     <div>{{show}}</div>
-    <Icon name="rigthdate" @click="onChangYear('next')">-</Icon>
+    <Icon name="rigthdate" @click="onChangYear('next')"></Icon>
   </div>
 </template>
 
@@ -30,8 +30,8 @@
 
     getShowDate() {
       const year = parseFloat(dayjs(this.chooseDate).format('YYYY'));
-      const month = parseFloat(dayjs(this.chooseDate).format('MM'));
-      const day = parseFloat(dayjs(this.chooseDate).format('DD'));
+      const month = parseFloat(dayjs(this.chooseDate).format('M'));
+      const day = parseFloat(dayjs(this.chooseDate).format('D'));
       this.showData = {year, month, day};
     }
 

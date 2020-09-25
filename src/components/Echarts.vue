@@ -21,24 +21,15 @@
         return console.error('options 为空');
       }
       this.chart = echarts.init(this.$refs.container as HTMLDivElement);
-      this.chart.setOption(this.option!);
+      this.chart.setOption(this.option);
       if (this.getText) {
         this.getText(this.tag);
       }
     }
 
-
-    get max() {
-      return Math.max(...((this.option!.series as any)[0].data as any).map((item: any) => +item.value));
-    }
-
-    get tag() {
-      return ((this.option!.series as any)[0].data as any).filter((item: any) => item.value === this.max)[0].name;
-    }
-
     @Watch('option')
     onOptionChange(newValue: EChartOption) {
-      this.chart!.setOption(newValue);
+      this.chart?.setOption(newValue);
       if (this.getText) {
         this.getText(this.tag);
       }
@@ -50,6 +41,13 @@
           this.getText((this.chart as any)._dom.innerText.slice(5).split(':')[0]);
         }
       }
+    }
+    get max() {
+      return Math.max(...((this.option?.series as any)[0].data as any).map((item: any) => +item.value));
+    }
+
+    get tag() {
+      return ((this.option?.series as any)[0].data as any).filter((item: any) => item.value === this.max)[0].name;
     }
   }
 </script>

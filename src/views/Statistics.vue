@@ -16,37 +16,20 @@
       <div class="echarts-wrapper">
         <div class="echarts" v-if="dayRecordList.length>0">
           <MoneyType class-prefix="statistics" :data-source="intervalList" :value.sync="interval"/>
-
-          <!--      <div class="nav-wrapper">-->
-
-          <!--        <div>2020</div>-->
-          <!--        <div class="iconlist">-->
-          <!--          <div><span>柱状图：</span>-->
-          <!--            <Icon name="shu"></Icon>-->
-          <!--          </div>-->
-          <!--          <div><span>饼图：</span>-->
-          <!--            <Icon name="yuan"></Icon>-->
-          <!--          </div>-->
-          <!--        </div>-->
-          <!--      </div>-->
           <div class="nav-wrapper">
+            <div class="around"></div>
             <div>
-
               <Year :chooseDate.sync="chooseYear" v-if="interval==='year'"></Year>
               <Month :chooseMonth.sync="chooseMonth" v-if="interval==='month'"></Month>
+            </div>
+            <div class="iconlist around">
+              <Icon name="yuan" v-if="showLine" @click="showLine=!showLine"></Icon>
+              <Icon name="line" v-else @click="showLine=!showLine"></Icon>
 
             </div>
-            <!--            <div class="iconlist">-->
-            <!--              <div><span>柱状图：</span>-->
-            <!--                <Icon name="shu"></Icon>-->
-            <!--              </div>-->
-            <!--              <div><span>饼图：</span>-->
-            <!--                <Icon name="yuan"></Icon>-->
-            <!--              </div>-->
-            <!--            </div>-->
           </div>
-          <Echarts :option="lineOption"/>
-          <!--          <Echarts :option="circleOption" :getText="getText"/>-->
+          <Echarts :option="lineOption" v-if="showLine"/>
+          <Echarts :option="circleOption" :getText="getText" v-else/>
 
 
           <div class="data-wrapper" v-if="recordByTagTime.length>0">
@@ -78,7 +61,10 @@
           </div>
 
         </div>
-        <div class="noResult" v-else>- 暂无{{showvalue}}记录，去<router-link to="/addmoney"><span class="add">记一笔</span></router-link>吧~ -</div>
+        <div class="noResult" v-else>- 暂无{{showvalue}}记录，去
+          <router-link to="/addmoney"><span class="add">记一笔</span></router-link>
+          吧~ -
+        </div>
       </div>
 
     </template>
@@ -109,6 +95,7 @@
     text = '';
     chooseYear = this.$store.state.record.createdAt;
     chooseMonth = this.$store.state.record.createdAt;
+    showLine = true;
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
@@ -119,12 +106,12 @@
     }
 
     initType(data: RecordItem[]) {
-      if (data[0]&&data[0].type) {
-        this.type=data[0].type
-        this.showvalue=this.type==='-'?'支出':'收入'
-      }else {
-        this.type='-';
-        this.showvalue='支出'
+      if (data[0] && data[0].type) {
+        this.type = data[0].type;
+        this.showvalue = this.type === '-' ? '支出' : '收入';
+      } else {
+        this.type = '-';
+        this.showvalue = '支出';
       }
     }
 
@@ -213,8 +200,8 @@
       const monthLength = dayjs(today).daysInMonth();
       const array = [];
       for (let i = 1; i <= monthLength; i++) {
-        const date = dayjs(today).date(i).format('YYYY-MM-DD');
-        const found = (this.dayRecordList as DayResult[]).filter(item => dayjs(item.title).format('YYYY-MM-DD') === date);
+        const date = dayjs(today).date(i).format('YYYY-M-D');
+        const found = (this.dayRecordList as DayResult[]).filter(item => dayjs(item.title).format('YYYY-M-D') === date);
         let value = found.reduce((sum, item) => {
           return sum + item.total!;
         }, 0);
@@ -237,8 +224,8 @@
       const today = this.chooseYear;
       const array = [];
       for (let i = 0; i < 12; i++) {
-        const date = dayjs(today).month(i).format('YYYY-MM');
-        const found = (this.monthRecordList as MonthResult[]).filter(item => dayjs(item.title).format('YYYY-MM') === date);
+        const date = dayjs(today).month(i).format('YYYY-M');
+        const found = (this.monthRecordList as MonthResult[]).filter(item => dayjs(item.title).format('YYYY-M') === date);
 
 
         let value = found.reduce((sum, item) => {
@@ -290,7 +277,7 @@
         yAxis: {
           type: 'value',
           axisLabel: {
-            formatter: function (value: string, index: number) {
+            formatter: function (value: string) {
               if (value.toString().length === 5) {
                 value = +value / 10000 + '万';
               } else if (value.toString().length === 6) {
@@ -468,7 +455,7 @@
   .type-wrapper {
     position: absolute;
     top: 6vh;
-    left: 0px;
+    left: 0;
     width: 100%;
     height: 94vh;
     background: rgba(205, 205, 205, 0.5);
@@ -486,18 +473,23 @@
 
   .nav-wrapper {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     padding: 16px 16px 0 16px;
 
-    .iconlist {
-      div {
-        display: flex;
-        align-items: flex-end;
+    .around {
+      width: 50px;
+      height: 100%;
+    }
 
-        .icon {
-          width: 30px;
-          height: 30px;
-        }
+    .iconlist {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid red;
+
+      .icon {
+        width: 30px;
+        height: 30px;
       }
     }
 
@@ -515,7 +507,8 @@
     padding: 16px;
     text-align: center;
     color: #999;
-    .add{
+
+    .add {
       color: blue;
     }
   }
