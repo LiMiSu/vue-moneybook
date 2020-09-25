@@ -56,7 +56,12 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/addmoney',
-    component: AddMoney
+    component: AddMoney,
+    // beforeEnter: (to, from, next) => {
+    //   console.log(to);
+    //   console.log(from);
+    //   next()
+    // }
   },
   {
     path: '/detail',
@@ -71,5 +76,16 @@ const routes: Array<RouteConfig> = [
 const router = new VueRouter({
   routes
 });
+// router.beforeEach((to, from, next)=>{
+//   console.log(to);
+//   console.log(from);
+//   next()
+// })
+// router.beforeResolve((to, from, next)=>{
+//   console.log(to);
+//   console.log(from);
+//   next()
+// })
+
 
 export default router;

@@ -33,6 +33,7 @@
       <div class="main-body">
         最新记账
         <router-link to='/addmoney'>去记一笔吧！</router-link>
+        <Calender></Calender>
       </div>
     </template>
   </NavStyle>
@@ -43,13 +44,21 @@
   import {Component} from 'vue-property-decorator';
   import Calender from '@/components/Calender.vue';
   import DayBook from '@/components/AddMoney/DayBook.vue';
+  import {NavigationGuardNext, Route} from 'vue-router';
 
 
   @Component({
-    components: {DayBook, Calender}
+    components: {DayBook, Calender},
   })
   export default class Nav extends Vue {
-
+    beforeRouteEnter (to: Route, from: Route, next: NavigationGuardNext<Vue>) {
+      console.log(1);
+      console.log(to);
+      console.log(from);
+      next(()=>{
+        console.log(1);
+      })
+    }
     // beforeCreate() {
     //   this.$store.commit('fetchDayRecordList');
     // }

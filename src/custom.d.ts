@@ -52,6 +52,7 @@ type YearResult = {
   items: MonthResult[];
 }
 type RecordByTag = {
+  title: string;
   icon: string;
   name: string;
   num: number;

@@ -52,7 +52,7 @@
             </div>
           </div>
         </div>
-        <div class="noResult" v-else>-目前还没有{{showvalue==='全部'?'记账':showvalue}}记录哦-</div>
+        <div class="noResult" v-else>- 暂无{{showvalue==='全部'?'记账':showvalue}}记录，去记一笔吧~ -</div>
       </div>
     </template>
   </NavStyle>
@@ -71,13 +71,14 @@
     components: {Button, Echarts, MoneyType},
   })
   export default class Detail extends Vue {
-    type = '-';
+    type = '1';
     detailList = detail;
-    showvalue='支出'
+    showvalue='全部'
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
     }
+
 
     get dayRecordList() {
       this.$store.commit('createdDayRecordList', {recordList: this.$store.state.recordList, type: this.type});

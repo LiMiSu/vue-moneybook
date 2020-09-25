@@ -50,6 +50,7 @@
   import Input from '@/components/Input.vue';
   import Button from '@/components/Button.vue';
   import addTag from '@/constants/addTag';
+  import {NavigationGuardNext, Route} from 'vue-router';
 
   @Component({
     components: {Button, Input},
@@ -70,7 +71,6 @@
     }
 
     created() {
-      console.log(2);
       if (this.$route.params.id) {
         const id = this.$route.params.id;
         this.$store.commit('fetchTags');
@@ -79,9 +79,9 @@
         if (!this.currentTag) {
           this.$router.replace('/404');
         }
-        console.log(3);
       }
     }
+
 
     tagChang(tag: any) {
       if (this.currenttag === tag) {

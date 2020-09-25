@@ -51,6 +51,8 @@
   import TagHelper from '@/mixins/TagHelper';
   import Days from '@/components/Calender.vue';
   import clone from '@/lib/clone';
+  import {NavigationGuardNext, Route} from 'vue-router';
+  import Vue from 'vue';
 
   @Component({
     components: {Days, Button},
@@ -97,8 +99,6 @@
       } else {
         this.currenttag = tag;
         // this.$router.replace('/addrewrite');
-        console.log(1);
-        console.log(this.currenttag);
         this.$router.replace('/addrewrite/' + tag.id);
       }
     }

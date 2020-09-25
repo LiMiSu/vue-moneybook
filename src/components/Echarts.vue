@@ -57,7 +57,7 @@
 <style lang="scss" scoped>
   .content {
     max-width: 100%;
-    min-height: 40vh;
+    min-height: 30vh;
 
   }
 </style>

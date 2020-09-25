@@ -1,11 +1,11 @@
 <template>
   <div class="date-body" :class="{[classPrefix+'-datebody']:classPrefix}">
     <div class="date-nav">
-      <Icon name="left-nav" class="date-btn icon-left-nav" @click="onChangYear('last')"></Icon>
-      <Icon name="zuo" class="date-btn icon-zuo" @click="onChangMonth('last')"></Icon>
+      <Icon name="yearleft" class="date-btn icon-left-nav" @click="onChangYear('last')"></Icon>
+      <Icon name="monthleft" class="date-btn icon-zuo" @click="onChangMonth('last')"></Icon>
       <span>{{showData.year}}年{{showData.month+1}}月{{showData.day}}日</span>
-      <Icon name="you" class="date-btn icon-you" @click="onChangMonth('next')"></Icon>
-      <Icon name="right-nav" class="date-btn icon-right-nav" @click="onChangYear('next')"></Icon>
+      <Icon name="monthright" class="date-btn icon-you" @click="onChangMonth('next')"></Icon>
+      <Icon name="yearrigth" class="date-btn icon-right-nav" @click="onChangYear('next')"></Icon>
     </div>
     <table class="data-list">
       <tr class="date-weeks">
@@ -83,6 +83,7 @@
       }
       return days;
     }
+
 
     onSelectDay(date: Date) { //选择的日期变成点击的日期
       this.$store.state.record.createdAt = date.toISOString();
@@ -176,6 +177,7 @@
       }
 
       .date-days {
+        border: 1px solid red;
         display: flex;
         justify-content: space-around;
         align-items: center;
