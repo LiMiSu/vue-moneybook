@@ -1,8 +1,8 @@
 <template>
   <div class="year">
-    <Icon name="leftdate" @click="onChangYear('last')"></Icon>
+    <div @click="changYear('last')"><Icon name="leftdate"></Icon></div>
     <div>{{show}}</div>
-    <Icon name="rigthdate" @click="onChangYear('next')"></Icon>
+    <div @click="changYear('next')"><Icon name="rigthdate"></Icon></div>
   </div>
 </template>
 
@@ -39,10 +39,10 @@
       this.getShowDate();
     }
 
-    onChangYear(type: string) {
+    changYear(type: string) {
       const moveYear = type === 'last' ? -1 : 1;
       this.showData.year += moveYear;
-      this.$emit('update:chooseDate', new Date(`${this.showData.year}-${this.showData.month}-${this.showData.day}`).toISOString());
+      this.$emit('update:chooseDate', dayjs().set('date',this.showData.day).set('month',this.showData.month-1).set('year',this.showData.year).toISOString());
     }
   }
 </script>

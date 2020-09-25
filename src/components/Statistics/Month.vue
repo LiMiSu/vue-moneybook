@@ -1,8 +1,12 @@
 <template>
   <div class="month">
-    <Icon name="leftdate" @click="onChangMonth('last')"></Icon>
+    <div @click="changMonth('last')">
+      <Icon name="leftdate"></Icon>
+    </div>
     <div>{{show}}</div>
-    <Icon name="rigthdate" @click="onChangMonth('next')"></Icon>
+    <div @click="changMonth('next')">
+      <Icon name="rigthdate"></Icon>
+    </div>
   </div>
 </template>
 
@@ -41,21 +45,17 @@
       this.getShowDate();
     }
 
-    onChangMonth(type: string) {
-      const moveMonth = type === 'last' ? 1 : 1;
-      if (this.showData.month!==0){
-        this.showData.month += moveMonth;
-        if (this.showData.month > 12) {
-          this.showData.month = 1;
-          this.showData.year++;
-        } else if (this.showData.month < 1) {
-          this.showData.month = 12;
-          this.showData.year--;
-        } else if (this.showData.month === 0) {
-          return;
-        }
-        this.$emit('update:chooseMonth', new Date(`${this.showData.year}-${this.showData.month}-${this.showData.day}`).toISOString());
+    changMonth(type: string) {
+      type === 'last' ? this.showData.month -= 1 : this.showData.month += 1;
+      if (this.showData.month > 12) {
+        this.showData.month = 1;
+        this.showData.year++;
+      } else if (this.showData.month < 1) {
+        this.showData.month = 12;
+        this.showData.year--;
       }
+      console.log(dayjs().set('date',this.showData.day).set('month',this.showData.month-1).set('year',this.showData.year).toISOString());
+      this.$emit('update:chooseMonth', dayjs().set('date',this.showData.day).set('month',this.showData.month-1).set('year',this.showData.year).toISOString());
     }
   }
 </script>
