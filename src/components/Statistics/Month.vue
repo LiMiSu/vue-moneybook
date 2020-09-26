@@ -54,7 +54,6 @@
         this.showData.month = 12;
         this.showData.year--;
       }
-      console.log(dayjs().set('date',this.showData.day).set('month',this.showData.month-1).set('year',this.showData.year).toISOString());
       this.$emit('update:chooseMonth', dayjs().set('date',this.showData.day).set('month',this.showData.month-1).set('year',this.showData.year).toISOString());
     }
   }

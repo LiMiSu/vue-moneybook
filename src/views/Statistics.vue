@@ -33,9 +33,11 @@
 
 
           <div class="data-wrapper" v-if="recordByTagTime.length>0">
-            <div>{{interval === 'year' ? showYear : showMonth}}(本位币：CNY)</div>
-            <div><span>总计</span><span>{{interval === 'year' ? yearTotal : monthTotal}}</span></div>
-            <div class="lineData">
+
+
+            <div class="lineData" v-if="showLine">
+              <div>{{interval === 'year' ? showYear : showMonth}}(本位币：CNY)</div>
+              <div><span>总计</span><span>{{interval === 'year' ? yearTotal : monthTotal}}</span></div>
               <div v-for="record in recordByTagTime" :key="record.name">
                 <div>
                   <Icon :name="record.icon"></Icon>
@@ -44,17 +46,20 @@
               </div>
             </div>
 
-            <!--        <div class="result" v-for="result in RecordSameTagListResult" :key="result.name">-->
-            <!--          <div class="result-show" v-if="result.name===text">-->
-            <!--            <div>-->
-            <!--              <Icon :name="result.icon"></Icon>-->
-            <!--              <span>{{result.name}}</span><span>{{recordByTagTotalPercent(result.total)}}</span><span>{{result.total}}</span>-->
-            <!--            </div>-->
-            <!--            <div v-for="item in result.recordList" :key="item.num">-->
-            <!--              {{item.name}}{{item.num}}-->
-            <!--            </div>-->
-            <!--          </div>-->
-            <!--        </div>-->
+            <div class="circleData" v-else>
+              <div class="result" v-for="result in RecordSameTagListResult" :key="result.name" >
+                <div class="result-show" v-if="result.name===text">
+                  <div>
+                    <Icon :name="result.icon"></Icon>
+                    <span>{{result.name}}</span><span>{{recordByTagTotalPercent(result.total)}}</span><span>{{result.total}}</span>
+                  </div>
+                  <div v-for="item in result.recordList" :key="item.num">
+                    {{item.name}}{{item.num}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
           <div class="noResult" v-else>-{{interval === 'year' ? showYear+'年' :
             showMonth.slice(5)+'月'}}暂无{{showvalue}}-
@@ -95,7 +100,7 @@
     text = '';
     chooseYear = this.$store.state.record.createdAt;
     chooseMonth = this.$store.state.record.createdAt;
-    showLine = true;
+    showLine = false;
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
@@ -392,7 +397,8 @@
       return {
         tooltip: {
           trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)'
+          formatter: '{a} <br/>{b}: {c} ({d}%)',
+          alwaysShowContent: true,
         },
         legend: {
           type: 'scroll',
@@ -400,7 +406,7 @@
           left: 10,
           data: tag,
           top: 'middle',
-          selectedMode: false
+          // selectedMode: true
         },
         series: [
           {
