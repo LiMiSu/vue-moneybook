@@ -16,18 +16,18 @@
     @Prop() getInitShowTag?: Function;
     chart?: ECharts;
 
-    initChart(value: EChartOption){
+    initChart(value: EChartOption) {
       this.chart = echarts.init(this.$refs.container as HTMLDivElement);
-      this.chart.clear()
-      this.chart.showLoading()
+      this.chart.clear();
+      this.chart.showLoading();
       this.chart.setOption(value, true);
-      this.chart.hideLoading()
-      this.chart.resize()
-      this.chart.off('mouseover')
-      this.chart.off('touchstart')
+      this.chart.hideLoading();
+      this.chart.off('mouseover');
+      this.chart.off('touchstart');
     }
-    ChartStart(value: EChartOption){
-      this.initChart(value)
+
+    ChartStart(value: EChartOption) {
+      this.initChart(value);
       if (this.getInitShowTag) {
         this.getInitShowTag(this.initShowTag);
         this.initAction();
@@ -38,13 +38,23 @@
       if (this.option === undefined) {
         return console.error('options 为空');
       }
-      this.ChartStart(this.option)
+      this.ChartStart(this.option);
     }
 
     @Watch('option')
     onOptionChange(newValue: EChartOption) {
-      this.ChartStart(newValue)
+      this.ChartStart(newValue);
     }
+
+
+    get maxtag() {
+      return Math.max(...((this.option?.series as any)[0].data as any).map((item: any) => +item.value));
+    }
+
+    get initShowTag() {
+      return ((this.option?.series as any)[0].data as any).filter((item: any) => item.value === this.maxtag)[0].name;
+    }
+
 
     initAction() {
       if (this.getInitShowTag) {
@@ -60,7 +70,6 @@
         });
         // PC端
         this.chart?.on('mouseover', (value: any) => {
-          console.log(1);
           if (value.name != this.initShowTag) {
             this.chart?.dispatchAction({
               type: 'hideTip',
@@ -75,7 +84,7 @@
           }
           if ((this.chart as any)._dom.innerText) {
             if (this.getInitShowTag) {
-              this.getInitShowTag((this.chart as any)._dom.innerText.slice(5).split(':')[0]);
+              this.getInitShowTag(value.name);
             }
           }
         });
@@ -108,7 +117,7 @@
           }
           if ((this.chart as any)._dom.innerText) {
             if (this.getInitShowTag) {
-              this.getInitShowTag((this.chart as any)._dom.innerText.slice(5).split(':')[0]);
+              this.getInitShowTag(value.name);
             }
           }
         });
@@ -126,26 +135,6 @@
         });
       }
     }
-
-
-    transferInitShowTag() {
-      if ((this.chart as any)._dom.innerText) {
-        if (this.getInitShowTag) {
-          this.getInitShowTag((this.chart as any)._dom.innerText.slice(5).split(':')[0]);
-        }
-      }
-    }
-
-    get maxtag() {
-      return Math.max(...((this.option?.series as any)[0].data as any).map((item: any) => +item.value));
-    }
-
-
-    get initShowTag() {
-      return ((this.option?.series as any)[0].data as any).filter((item: any) => item.value === this.maxtag)[0].name;
-    }
-
-
   }
 </script>
 

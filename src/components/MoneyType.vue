@@ -54,7 +54,7 @@
     /*font-size: 24px;*/
     &-type {
       width: 50%;
-      min-height: 30px;
+      height: 4vh;
       display: flex;
       justify-content: center;
       align-items: center;

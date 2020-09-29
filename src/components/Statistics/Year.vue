@@ -31,7 +31,7 @@
     getShowDate() {
       const year = parseFloat(dayjs(this.chooseDate).format('YYYY'));
       const month = parseFloat(dayjs(this.chooseDate).format('M'));
-      const day = parseFloat(dayjs(this.chooseDate).format('D'));
+      const day = parseFloat(dayjs(this.chooseDate).format('DD'));
       this.showData = {year, month, day};
     }
 

@@ -135,7 +135,7 @@ const store = new Vuex.Store({
       }
       const dayResult: DayResult[] = [{
         show: true,
-        title: dayjs(newRecordList[0].createdAt).format('YYYY-M-D'),
+        title: dayjs(newRecordList[0].createdAt).format('YYYY-M-DD'),
         items: [newRecordList[0]]
       }];
       for (let i = 1; i < newRecordList.length; i++) {
@@ -144,7 +144,7 @@ const store = new Vuex.Store({
         if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {
           last.items.push(current);
         } else {
-          dayResult.push({show: true, title: dayjs(current.createdAt).format('YYYY-M-D'), items: [current]});
+          dayResult.push({show: true, title: dayjs(current.createdAt).format('YYYY-M-DD'), items: [current]});
         }
       }
       dayResult.forEach(group => {

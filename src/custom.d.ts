@@ -60,6 +60,8 @@ type RecordByTag = {
   recordList: RecordSameTagList[];
 }
 type RecordSameTagList = {
+  id: string;
+  date: string;
   name: string;
   num: number;
 }

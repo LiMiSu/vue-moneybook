@@ -48,12 +48,6 @@
     height: 100%;
   }
 
-  .main {
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    flex: 1;
-  }
 
   .header, {
     display: flex;
@@ -90,6 +84,13 @@
 
     }
   }
+  .main {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex: 1;
+  }
+
 
   .footer {
   }

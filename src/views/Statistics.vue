@@ -15,59 +15,67 @@
       </div>
       <div class="echarts-wrapper">
         <div class="echarts" v-if="dayRecordList.length>0">
-          <MoneyType class-prefix="statistics" :data-source="intervalList" :value.sync="interval"/>
-          <div class="nav-wrapper">
-            <div class="around"></div>
-            <div>
-              <Year :chooseDate.sync="chooseYear" v-if="interval==='year'"></Year>
-              <Month :chooseMonth.sync="chooseMonth" v-if="interval==='month'"></Month>
-            </div>
-            <div class="iconlist around">
-              <Icon name="yuan" v-if="showLine" @click="showLine=!showLine"></Icon>
-              <Icon name="line" v-else @click="showLine=!showLine"></Icon>
+          <div class="top-wrapper">
+            <MoneyType class="s-type" class-prefix="statistics" :data-source="intervalList" :value.sync="interval"/>
+            <div class="nav-wrapper">
+              <div class="around"></div>
+              <div>
+                <Year :chooseDate.sync="chooseYear" v-if="interval==='year'"></Year>
+                <Month :chooseMonth.sync="chooseMonth" v-if="interval==='month'"></Month>
+              </div>
+              <div class="iconlist around">
+                <Icon name="yuan" v-if="showLine" @click="showLine=!showLine"></Icon>
+                <Icon name="line" v-else @click="showLine=!showLine"></Icon>
 
+              </div>
             </div>
+            <div v-if="recordByTagTime.length>0">
+              <Echarts :option="lineOption" v-if="showLine"/>
+              <Echarts :option="circleOption" :getInitShowTag="getInitShowTag" v-else/>
+            </div>
+            <div v-if="recordByTagTime.length>0" class="head"><span>{{interval === 'year' ? showYear : showMonth}} (本位币：CNY)</span><span
+              v-if="showLine">总计：{{interval === 'year' ? yearTotal : monthTotal}}</span></div>
           </div>
-          <Echarts :option="lineOption" v-if="showLine"/>
-          <Echarts :option="circleOption" :getInitShowTag="getInitShowTag" v-else-if="recordByTagTime.length>0"/>
-
 
           <div class="data-wrapper" v-if="recordByTagTime.length>0">
-
-            <div class="lineData" v-if="showLine">
-              <div>{{interval === 'year' ? showYear : showMonth}}(本位币：CNY)</div>
-              <div><span>总计</span><span>{{interval === 'year' ? yearTotal : monthTotal}}</span></div>
+            <div class="lineData list-wrapper" v-if="showLine">
               <div v-for="record in recordByTagTime" :key="record.id">
-                <div>
-                  <Icon :name="record.icon"></Icon>
-                  <span>{{record.name}}</span><span>{{recordByTagTotalPercent(record.num)}}</span><span>{{record.num}}</span>
+                <div class="list">
+                  <div>
+                    <Icon :name="record.icon"></Icon>
+                    <span class="name">{{record.name}}</span>
+                  </div>
+                  <span>{{recordByTagTotalPercent(record.num)}}</span>
+                  <span>{{record.num}}</span>
                 </div>
               </div>
             </div>
-
-
-
-
-
-
-            <div class="circleData" v-else>
-              <div class="result" v-for="result in recordByTagTime" :key="result.name" >
+            <div class="circleData list-wrapper" v-else>
+              <div v-for="result in recordByTagTime" :key="result.name">
                 <div class="result-show" v-if="result.name===initShowTag">
-                  <div>
-                    <Icon :name="result.icon"></Icon>
-                    <span>{{result.name}}</span><span>{{recordByTagTotalPercent(result.num)}}</span><span>{{result.num}}</span>
+                  <div class="list">
+                    <div>
+                      <Icon :name="result.icon"></Icon>
+                      <span class="name">{{result.name}}</span>
+                    </div>
+                    <span>{{recordByTagTotalPercent(result.num)}}</span>
+                    <span>{{result.num}}</span>
                   </div>
-<!--                  <div v-for="item in result.recordList" :key="item.num">-->
-<!--                    {{item.name}}{{item.num}}-->
-<!--                  </div>-->
+                  <div class="list" v-for="item in result.recordList" :key="item.id">
+
+                    <span>{{item.date}}</span>
+                    <span>{{item.name}}</span>
+                    <span>{{item.num}}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="noResult" v-else>-{{interval === 'year' ? showYear+'年' :
+
+
+          <div class="noResult" v-else-if="recordByTagTime.length===0">-{{interval === 'year' ? showYear+'年' :
             showMonth.slice(5)+'月'}}暂无{{showvalue}}-
           </div>
-
         </div>
         <div class="noResult" v-else>- 暂无{{showvalue}}记录，去
           <router-link to="/addmoney"><span class="add">记一笔</span></router-link>
@@ -91,6 +99,7 @@
   import Year from '@/components/Statistics/Year.vue';
   import Month from '@/components/Statistics/Month.vue';
   import createDateilId from '@/lib/createDateilId';
+
   @Component({
     components: {Month, Year, Button, Echarts, MoneyType},
   })
@@ -103,7 +112,8 @@
     initShowTag = '';
     chooseYear = this.$store.state.record.createdAt;
     chooseMonth = this.$store.state.record.createdAt;
-    showLine = false;
+    showLine = true;
+    a = '';
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
@@ -176,13 +186,18 @@
             icon: item.items[i].tag.tagicon,
             name: item.items[i].tag.name,
             num: item.items[i].amount,
-            recordList: [{name: item.items[i].tag.name, num: item.items[i].amount}]
+            recordList: [{
+              id,
+              date: dayjs(item.items[i].createdAt).format('DD日'),
+              name: item.items[i].tag.name,
+              num: item.items[i].amount
+            }]
           };
           result.push(current);
         }
         for (let i = 0; i < result.length; i++) {
           for (let f = i + 1; f < result.length; f++) {
-            if (result[f].name === result[i].name&&result[f].title === result[i].title) {
+            if (result[f].name === result[i].name && result[f].title === result[i].title) {
               result[i].recordList.push(result[f].recordList[0]);
               result[i].num += result[f].num;
               result.splice(f, 1);
@@ -191,9 +206,11 @@
           }
         }
       });
+
       return result;
     }
-    get recordByTagOnYear(){
+
+    get recordByTagOnYear() {
       const result: RecordByTag[] = [];
       this.dayRecordList.map(item => {
 
@@ -205,13 +222,18 @@
             icon: item.items[i].tag.tagicon,
             name: item.items[i].tag.name,
             num: item.items[i].amount,
-            recordList: [{name: item.items[i].tag.name, num: item.items[i].amount}]
+            recordList: [{
+              id,
+              date: dayjs(item.items[i].createdAt).format('M月DD日'),
+              name: item.items[i].tag.name,
+              num: item.items[i].amount
+            }]
           };
           result.push(current);
         }
         for (let i = 0; i < result.length; i++) {
           for (let f = i + 1; f < result.length; f++) {
-            if (result[f].name === result[i].name&&result[f].title === result[i].title) {
+            if (result[f].name === result[i].name && result[f].title === result[i].title) {
               result[i].recordList.push(result[f].recordList[0]);
               result[i].num += result[f].num;
               result.splice(f, 1);
@@ -220,34 +242,7 @@
           }
         }
       });
-      return result;
-    }
-    get RecordSameTagListResult() {
-      const result: RecordSameTagListResult[] = [];
-      this.dayRecordList.map(item => {
-        // console.log(item);
-        for (let i = 0; i < item.items.length; i++) {
-          const current: RecordSameTagListResult = {
-            title: item.title,
-            total: item.items[i].amount,
-            icon: item.items[i].tag.tagicon,
-            name: item.items[i].tag.name,
-            recordList: [{name: item.items[i].tag.name, num: item.items[i].amount}]
-          };
-          result.push(current);
-          for (let i = 0; i < result.length; i++) {
-            for (let f = i + 1; f < result.length; f++) {
-              // console.log(result);
-              if (result[f].name === result[i].name) {
-                result[i].recordList.push(result[f].recordList[0]);
-                result[i].total += result[f].recordList[0].num;
-                result.splice(f, 1);
-                f--;
-              }
-            }
-          }
-        }
-      });
+
       return result;
     }
 
@@ -258,10 +253,9 @@
     }
 
     recordByTagTotalPercent(value: number) {
-      // console.log(this.recordByTagTime);
       return this.interval === 'year' ?
-        parseFloat((Math.abs(value) / this.yearTotal * 100).toFixed(2)) + '%'
-        : parseFloat((Math.abs(value) / this.monthTotal * 100).toFixed(2)) + '%';
+        parseFloat(Math.abs(value / this.yearTotal * 100).toFixed(2)) + '%'
+        : parseFloat(Math.abs(value / this.monthTotal * 100).toFixed(2)) + '%';
     }
 
     get keyValueListOfMonth() {
@@ -269,8 +263,8 @@
       const monthLength = dayjs(today).daysInMonth();
       const array = [];
       for (let i = 1; i <= monthLength; i++) {
-        const date = dayjs(today).date(i).format('YYYY-M-D');
-        const found = (this.dayRecordList as DayResult[]).filter(item => dayjs(item.title).format('YYYY-M-D') === date);
+        const date = dayjs(today).date(i).format('YYYY-M-DD');
+        const found = (this.dayRecordList as DayResult[]).filter(item => dayjs(item.title).format('YYYY-M-DD') === date);
         let value = found.reduce((sum, item) => {
           return sum + item.total!;
         }, 0);
@@ -278,9 +272,9 @@
         array.push({date: date, value: value ? value : 0});
       }
       array.sort((a, b) => {
-        if (a.date > b.date) {
+        if (dayjs(a.date).unix() > dayjs(b.date).unix()) {
           return 1;
-        } else if (a.date === b.date) {
+        } else if (dayjs(a.date).unix() === dayjs(b.date).unix()) {
           return 0;
         } else {
           return -1;
@@ -295,8 +289,6 @@
       for (let i = 0; i < 12; i++) {
         const date = dayjs(today).month(i).format('YYYY-M');
         const found = (this.monthRecordList as MonthResult[]).filter(item => dayjs(item.title).format('YYYY-M') === date);
-
-
         let value = found.reduce((sum, item) => {
           return sum + item.total!;
         }, 0);
@@ -305,9 +297,9 @@
         array.push({date: date, value: value ? value : 0});
       }
       array.sort((a, b) => {
-        if (a.date > b.date) {
+        if (dayjs(a.date).unix() > dayjs(b.date).unix()) {
           return 1;
-        } else if (a.date === b.date) {
+        } else if (dayjs(a.date).unix() === dayjs(b.date).unix()) {
           return 0;
         } else {
           return -1;
@@ -329,7 +321,7 @@
           data: interval === 'year' ? yearKeys : monthKeys,
           axisLabel: {
             formatter: function (value: string) {
-              return interval === 'year' ? value.substr(5) : value.substr(8);
+              return interval === 'year' ? value.substr(5) : value.substr(7);
             },
             fontSize: 10,
             color: '#999999'
@@ -400,7 +392,7 @@
             }
           },
           formatter: function (value: any) {
-            const time = interval === 'year' ? dayjs(value[0].name).format('M') + '月' : dayjs(value[0].name).format('D') + '日';
+            const time = interval === 'year' ? dayjs(value[0].name).format('M') + '月' : dayjs(value[0].name).format('DD') + '日';
             const amount = type === '-' ? '支出：' + `${value[0].value}` + '元' : '收入：' + `${value[0].value}` + '元';
             return `${time}<br />${amount}`;
           },
@@ -422,12 +414,6 @@
 
     //饼状
 
-
-    get recordByTagTotal() {
-      return this.recordByTagOnMonth.reduce((sum, item) => {
-        return sum + Math.abs(item.num);
-      }, 0);
-    }
 
     get circleOption() {
       const monthTag = this.recordByTagTime.map(item => item.name);
@@ -476,6 +462,7 @@
 
     getInitShowTag(value: string) {
       this.initShowTag = value;
+      this.a = value;
     }
 
 
@@ -531,7 +518,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      border: 1px solid red;
 
       .icon {
         width: 30px;
@@ -545,8 +531,91 @@
   }
 
   .echarts-wrapper {
-    /*overflow: auto;*/
-    /*height: 70vh;*/
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .echarts {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .top-wrapper {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .head {
+        height: 4vh;
+        line-height: 4vh;
+        padding: 2px 16px;
+        color: #b5b5b5;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #b5b5b5;
+      }
+
+      .data-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        overflow-y: auto;
+        .list-wrapper {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+  }
+
+  .list-wrapper {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .lineData {
+
+    .list {
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+
+      .icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .name {
+        padding-left: 5px;
+      }
+    }
+  }
+
+  .circleData {
+    .head {
+      height: 4vh;
+      line-height: 4vh;
+      padding: 2px 16px;
+      color: #b5b5b5;
+      border-bottom: 1px solid #b5b5b5;
+    }
+
+    .list {
+      display: flex;
+      justify-content: space-between;
+      padding: 16px;
+
+      .icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .name {
+        padding-left: 5px;
+      }
+    }
   }
 
   .noResult {
