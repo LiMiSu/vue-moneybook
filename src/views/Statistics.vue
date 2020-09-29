@@ -29,16 +29,15 @@
             </div>
           </div>
           <Echarts :option="lineOption" v-if="showLine"/>
-          <Echarts :option="circleOption" :getText="getText" v-else/>
+          <Echarts :option="circleOption" :getInitShowTag="getInitShowTag" v-else-if="recordByTagTime.length>0"/>
 
 
           <div class="data-wrapper" v-if="recordByTagTime.length>0">
 
-
             <div class="lineData" v-if="showLine">
               <div>{{interval === 'year' ? showYear : showMonth}}(本位币：CNY)</div>
               <div><span>总计</span><span>{{interval === 'year' ? yearTotal : monthTotal}}</span></div>
-              <div v-for="record in recordByTagTime" :key="record.name">
+              <div v-for="record in recordByTagTime" :key="record.id">
                 <div>
                   <Icon :name="record.icon"></Icon>
                   <span>{{record.name}}</span><span>{{recordByTagTotalPercent(record.num)}}</span><span>{{record.num}}</span>
@@ -46,20 +45,24 @@
               </div>
             </div>
 
+
+
+
+
+
             <div class="circleData" v-else>
-              <div class="result" v-for="result in RecordSameTagListResult" :key="result.name" >
-                <div class="result-show" v-if="result.name===text">
+              <div class="result" v-for="result in recordByTagTime" :key="result.name" >
+                <div class="result-show" v-if="result.name===initShowTag">
                   <div>
                     <Icon :name="result.icon"></Icon>
-                    <span>{{result.name}}</span><span>{{recordByTagTotalPercent(result.total)}}</span><span>{{result.total}}</span>
+                    <span>{{result.name}}</span><span>{{recordByTagTotalPercent(result.num)}}</span><span>{{result.num}}</span>
                   </div>
-                  <div v-for="item in result.recordList" :key="item.num">
-                    {{item.name}}{{item.num}}
-                  </div>
+<!--                  <div v-for="item in result.recordList" :key="item.num">-->
+<!--                    {{item.name}}{{item.num}}-->
+<!--                  </div>-->
                 </div>
               </div>
             </div>
-
           </div>
           <div class="noResult" v-else>-{{interval === 'year' ? showYear+'年' :
             showMonth.slice(5)+'月'}}暂无{{showvalue}}-
@@ -87,7 +90,7 @@
   import dayjs from 'dayjs';
   import Year from '@/components/Statistics/Year.vue';
   import Month from '@/components/Statistics/Month.vue';
-
+  import createDateilId from '@/lib/createDateilId';
   @Component({
     components: {Month, Year, Button, Echarts, MoneyType},
   })
@@ -97,7 +100,7 @@
     interval = 'month';
     intervalList = intervalList;
     typeList = typeList;
-    text = '';
+    initShowTag = '';
     chooseYear = this.$store.state.record.createdAt;
     chooseMonth = this.$store.state.record.createdAt;
     showLine = false;
@@ -146,6 +149,7 @@
     //线形
     get showYear() {
       return dayjs(this.chooseYear).format('YYYY');
+
     }
 
     get showMonth() {
@@ -160,24 +164,26 @@
       return this.yearRecordList.filter((item: YearResult) => item.title === this.showYear).reduce((sum: number, item: MonthResult) => {return sum += item.total!;}, 0);
     }
 
-    get recordByTag() {
-
+    get recordByTagOnMonth() {
       const result: RecordByTag[] = [];
       this.dayRecordList.map(item => {
 
         for (let i = 0; i < item.items.length; i++) {
-
+          const id = createDateilId().toString();
           const current = {
-            title: item.title,
+            id,
+            title: dayjs(item.title).format('YYYY-M'),
             icon: item.items[i].tag.tagicon,
             name: item.items[i].tag.name,
-            num: item.items[i].amount
+            num: item.items[i].amount,
+            recordList: [{name: item.items[i].tag.name, num: item.items[i].amount}]
           };
           result.push(current);
         }
         for (let i = 0; i < result.length; i++) {
           for (let f = i + 1; f < result.length; f++) {
-            if (result[f].name === result[i].name) {
+            if (result[f].name === result[i].name&&result[f].title === result[i].title) {
+              result[i].recordList.push(result[f].recordList[0]);
               result[i].num += result[f].num;
               result.splice(f, 1);
               f--;
@@ -187,14 +193,72 @@
       });
       return result;
     }
+    get recordByTagOnYear(){
+      const result: RecordByTag[] = [];
+      this.dayRecordList.map(item => {
+
+        for (let i = 0; i < item.items.length; i++) {
+          const id = createDateilId().toString();
+          const current = {
+            id,
+            title: dayjs(item.title).format('YYYY'),
+            icon: item.items[i].tag.tagicon,
+            name: item.items[i].tag.name,
+            num: item.items[i].amount,
+            recordList: [{name: item.items[i].tag.name, num: item.items[i].amount}]
+          };
+          result.push(current);
+        }
+        for (let i = 0; i < result.length; i++) {
+          for (let f = i + 1; f < result.length; f++) {
+            if (result[f].name === result[i].name&&result[f].title === result[i].title) {
+              result[i].recordList.push(result[f].recordList[0]);
+              result[i].num += result[f].num;
+              result.splice(f, 1);
+              f--;
+            }
+          }
+        }
+      });
+      return result;
+    }
+    get RecordSameTagListResult() {
+      const result: RecordSameTagListResult[] = [];
+      this.dayRecordList.map(item => {
+        // console.log(item);
+        for (let i = 0; i < item.items.length; i++) {
+          const current: RecordSameTagListResult = {
+            title: item.title,
+            total: item.items[i].amount,
+            icon: item.items[i].tag.tagicon,
+            name: item.items[i].tag.name,
+            recordList: [{name: item.items[i].tag.name, num: item.items[i].amount}]
+          };
+          result.push(current);
+          for (let i = 0; i < result.length; i++) {
+            for (let f = i + 1; f < result.length; f++) {
+              // console.log(result);
+              if (result[f].name === result[i].name) {
+                result[i].recordList.push(result[f].recordList[0]);
+                result[i].total += result[f].recordList[0].num;
+                result.splice(f, 1);
+                f--;
+              }
+            }
+          }
+        }
+      });
+      return result;
+    }
 
     get recordByTagTime() {
       return this.interval === 'year' ?
-        this.recordByTag.filter(item => dayjs(item.title).format('YYYY') === this.showYear)
-        : this.recordByTag.filter(item => dayjs(item.title).format('YYYY-M') === this.showMonth);
+        this.recordByTagOnYear.filter(item => dayjs(item.title).format('YYYY') === this.showYear)
+        : this.recordByTagOnMonth.filter(item => dayjs(item.title).format('YYYY-M') === this.showMonth);
     }
 
     recordByTagTotalPercent(value: number) {
+      // console.log(this.recordByTagTime);
       return this.interval === 'year' ?
         parseFloat((Math.abs(value) / this.yearTotal * 100).toFixed(2)) + '%'
         : parseFloat((Math.abs(value) / this.monthTotal * 100).toFixed(2)) + '%';
@@ -357,63 +421,39 @@
 
 
     //饼状
-    get RecordSameTagListResult() {
-      const result: RecordSameTagListResult[] = [];
-      this.dayRecordList.map(item => {
-        for (let i = 0; i < item.items.length; i++) {
-          const current: RecordSameTagListResult = {
-            total: item.items[i].amount,
-            icon: item.items[i].tag.tagicon,
-            name: item.items[i].tag.name,
-            recordList: [{name: item.items[i].tag.name, num: item.items[i].amount}]
-          };
-          result.push(current);
-          for (let i = 0; i < result.length; i++) {
-            for (let f = i + 1; f < result.length; f++) {
-              if (result[f].name === result[i].name) {
-                result[i].recordList.push(result[f].recordList[0]);
-                result[i].total += result[f].recordList[0].num;
-                result.splice(f, 1);
-                f--;
-              }
-            }
-          }
-        }
-      });
-      return result;
-    }
+
 
     get recordByTagTotal() {
-      return this.recordByTag.reduce((sum, item) => {
+      return this.recordByTagOnMonth.reduce((sum, item) => {
         return sum + Math.abs(item.num);
       }, 0);
     }
 
     get circleOption() {
-      const tag = this.recordByTag.map(item => item.name);
-      const record = this.recordByTag.map(item => {
+      const monthTag = this.recordByTagTime.map(item => item.name);
+      const monthRecord = this.recordByTagTime.map(item => {
         return {value: Math.abs(item.num), name: item.name};
       });
       return {
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b}: {c} ({d}%)',
-          alwaysShowContent: true,
+          alwaysShowContent: false,
         },
         legend: {
           type: 'scroll',
           orient: 'vertical',
           left: 10,
-          data: tag,
+          data: monthTag,
           top: 'middle',
-          // selectedMode: true
+          selectedMode: false
         },
         series: [
           {
             name: this.type === '-' ? '支出金额' : '收入金额',
             type: 'pie',
             radius: ['50%', '70%'],
-            avoidLabelOverlap: false,
+            // avoidLabelOverlap: false,
             label: {
               show: false,
               position: 'center'
@@ -428,14 +468,14 @@
             labelLine: {
               show: false
             },
-            data: record
+            data: monthRecord,
           }
         ]
       };
     }
 
-    getText(value: string) {
-      this.text = value;
+    getInitShowTag(value: string) {
+      this.initShowTag = value;
     }
 
 

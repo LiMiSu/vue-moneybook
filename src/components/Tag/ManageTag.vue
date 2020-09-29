@@ -51,14 +51,13 @@
   import TagHelper from '@/mixins/TagHelper';
   import Days from '@/components/Calender.vue';
   import clone from '@/lib/clone';
-  import {NavigationGuardNext, Route} from 'vue-router';
-  import Vue from 'vue';
 
   @Component({
     components: {Days, Button},
   })
   export default class Labels extends mixins(TagHelper) {
     currenttag = '';
+
 
     created() {
       this.$store.commit('fetchTags');

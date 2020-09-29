@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div ref="container" class="content" v-if="getText" @click="transferText"></div>
+    <div ref="container" class="content" v-if="getInitShowTag"></div>
     <div ref="container" class="content" v-else></div>
   </div>
 </template>
@@ -13,121 +13,139 @@
   @Component
   export default class Echarts extends Vue {
     @Prop() option?: EChartOption;
-    @Prop() getText?: Function;
+    @Prop() getInitShowTag?: Function;
     chart?: ECharts;
+
+    initChart(value: EChartOption){
+      this.chart = echarts.init(this.$refs.container as HTMLDivElement);
+      this.chart.clear()
+      this.chart.showLoading()
+      this.chart.setOption(value, true);
+      this.chart.hideLoading()
+      this.chart.resize()
+      this.chart.off('mouseover')
+      this.chart.off('touchstart')
+    }
+    ChartStart(value: EChartOption){
+      this.initChart(value)
+      if (this.getInitShowTag) {
+        this.getInitShowTag(this.initShowTag);
+        this.initAction();
+      }
+    }
 
     mounted() {
       if (this.option === undefined) {
         return console.error('options 为空');
       }
-      this.chart = echarts.init(this.$refs.container as HTMLDivElement);
-      this.chart.setOption(this.option);
-      if (this.getText) {
-        this.getText(this.tag);
-        this.initAction()
-      }
+      this.ChartStart(this.option)
     }
 
-    initAction(){
-      if (this.getText) {
+    @Watch('option')
+    onOptionChange(newValue: EChartOption) {
+      this.ChartStart(newValue)
+    }
+
+    initAction() {
+      if (this.getInitShowTag) {
         this.chart?.dispatchAction({
           type: 'showTip',
           seriesIndex: 0,
-          name: this.tag
+          name: this.initShowTag,
         });
         this.chart?.dispatchAction({
           type: 'highlight',
           seriesIndex: 0,
-          name: this.tag
+          name: this.initShowTag,
         });
-
-        //PC端
+        // PC端
         this.chart?.on('mouseover', (value: any) => {
-          if (value.name != this.tag) {
+          console.log(1);
+          if (value.name != this.initShowTag) {
             this.chart?.dispatchAction({
               type: 'hideTip',
               seriesIndex: 0,
-              name: this.tag
+              name: this.initShowTag
             });
             this.chart?.dispatchAction({
               type: 'downplay',
               seriesIndex: 0,
-              name: this.tag
+              name: this.initShowTag
             });
+          }
+          if ((this.chart as any)._dom.innerText) {
+            if (this.getInitShowTag) {
+              this.getInitShowTag((this.chart as any)._dom.innerText.slice(5).split(':')[0]);
+            }
           }
         });
         this.chart?.on('mouseout', () => {
           this.chart?.dispatchAction({
             type: 'showTip',
             seriesIndex: 0,
-            name: this.tag
+            name: this.initShowTag
           });
           this.chart?.dispatchAction({
             type: 'highlight',
             seriesIndex: 0,
-            name: this.tag
+            name: this.initShowTag
           });
         });
 
         //移动端
         this.chart?.on('touchstart', (value: any) => {
-          if (value.name != this.tag) {
+          if (value.name != this.initShowTag) {
             this.chart?.dispatchAction({
               type: 'hideTip',
               seriesIndex: 0,
-              name: this.tag
+              name: this.initShowTag
             });
             this.chart?.dispatchAction({
               type: 'downplay',
               seriesIndex: 0,
-              name: this.tag
+              name: this.initShowTag
             });
+          }
+          if ((this.chart as any)._dom.innerText) {
+            if (this.getInitShowTag) {
+              this.getInitShowTag((this.chart as any)._dom.innerText.slice(5).split(':')[0]);
+            }
           }
         });
         this.chart?.on('touchend', () => {
           this.chart?.dispatchAction({
             type: 'showTip',
             seriesIndex: 0,
-            name: this.tag
+            name: this.initShowTag
           });
           this.chart?.dispatchAction({
             type: 'highlight',
             seriesIndex: 0,
-            name: this.tag
+            name: this.initShowTag
           });
         });
       }
     }
 
-    @Watch('option')
-    onOptionChange(newValue: EChartOption) {
-      this.chart?.setOption(newValue, true);
-      if (this.getText) {
-        this.getText(this.tag);
-        this.initAction()
-      }
-    }
 
-
-    transferText() {
+    transferInitShowTag() {
       if ((this.chart as any)._dom.innerText) {
-        if (this.getText) {
-          this.getText((this.chart as any)._dom.innerText.slice(5).split(':')[0]);
+        if (this.getInitShowTag) {
+          this.getInitShowTag((this.chart as any)._dom.innerText.slice(5).split(':')[0]);
         }
       }
     }
 
-    get max() {
+    get maxtag() {
       return Math.max(...((this.option?.series as any)[0].data as any).map((item: any) => +item.value));
     }
 
-    get tag() {
-      return ((this.option?.series as any)[0].data as any).filter((item: any, index: number) => item.value === this.max)[0].name;
+
+    get initShowTag() {
+      return ((this.option?.series as any)[0].data as any).filter((item: any) => item.value === this.maxtag)[0].name;
     }
 
-    get index() {
-      return this.tag.indexOf((this.option?.series as any)[0].data);
-    }
+
   }
 </script>
 

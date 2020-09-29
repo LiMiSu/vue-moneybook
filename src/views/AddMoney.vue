@@ -9,7 +9,7 @@
         <span class="icon off"></span>
       </div>
       <div class="type">
-        <MoneyType class-prefix="add" :data-source="typeList" :value.sync="type"/>
+        <MoneyType class-prefix="add" :data-source="typeList" :value.sync="$store.state.record.type"/>
       </div>
     </header>
     <main class="addmain">
@@ -58,20 +58,21 @@
     components: {Calender, MoneyType, Button, ShowTags, Input, NumberPad},
   })
   export default class Money extends Vue {
-    type='-'
     typeList = typeList;
 
     created() {
       this.$store.commit('fetchRecords');
       this.$store.state.currentTag = '';
     }
+
+
     saveRecord() {
       this.$store.commit('createRecord', this.$store.state.record);
       this.$store.state.record.notes = '';
     }
 
     goBack() {
-      this.$router.back();
+      this.$router.replace('/main');
     }
   }
 </script>

@@ -52,16 +52,19 @@ type YearResult = {
   items: MonthResult[];
 }
 type RecordByTag = {
+  id: string;
   title: string;
   icon: string;
   name: string;
   num: number;
+  recordList: RecordSameTagList[];
 }
 type RecordSameTagList = {
   name: string;
   num: number;
 }
 type RecordSameTagListResult = {
+  title: string;
   total: number;
   icon: string;
   name: string;
