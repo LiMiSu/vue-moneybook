@@ -1,8 +1,6 @@
 <template>
   <div>
     <div class="inputNumber">
-      <DayBook v-if="!$store.state.showBody" class="book"></DayBook>
-
       <div class="num"><span class="text">{{this.$store.state.record.type==='-'?'支出':'收入'}}：</span><span
         class="num-intpu" :class="[{first:one},{second:two}]">{{output}}</span></div>
     </div>
@@ -56,7 +54,6 @@
     created() {
       this.output = '0';
     }
-
     get recordList() {
       return this.$store.state.recordList;
     }
@@ -282,7 +279,7 @@
     padding: 16px;
     height: 60px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     word-break: break-all;
     overflow: hidden;
@@ -307,11 +304,6 @@
         }
       }
     }
-
-    .book {
-      margin-left: 10px;
-    }
-
   }
 
   .numberPad {

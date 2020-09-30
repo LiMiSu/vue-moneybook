@@ -35,7 +35,7 @@
 .notes{
   width: 34px;
   height: 34px;
-  margin-right: 16px;
+  margin-right: 6px;
 }
     .name {
       padding: 0 16px 0 10px;
@@ -44,7 +44,7 @@
     input {
       height: 40px;
       flex-grow: 1;
-      /*background: #ffffff;*/
+      min-width: 80px;
     }
   }
 </style>

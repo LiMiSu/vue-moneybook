@@ -7,7 +7,7 @@
       <div class="main-header">
         <div class="day-result">
           <div class="day" @click="$store.state.showBody=!$store.state.showBody">
-            <div class="day-year">{{year}}</div>
+            <div class="day-year">{{year}}年</div>
             <div class="day-month">{{month}}月</div>
           </div>
           <div class="result">
@@ -31,8 +31,7 @@
         </div>
       </div>
       <div class="main-body">
-        最新记账
-        <router-link to='/addmoney'>去记一笔吧！</router-link>
+        <router-link to='/addmoney'></router-link>
       </div>
     </template>
   </NavStyle>
@@ -80,15 +79,19 @@
       display: flex;
 
       .day {
+        border-right: 1px dashed blue;
         width: 100px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        font-size: 30px;
 
-        .day-year, .day-month {
+        .day-year {
           padding: 10px;
+        }
+        .day-month {
+          padding: 10px;
+          font-size: 30px;
         }
 
         ::v-deep {

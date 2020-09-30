@@ -32,9 +32,11 @@
   export default class Note extends mixins(TagHelper) {
     created() {
       this.$store.commit('fetchTags');
+      this.$store.state.record.notes = '';
     }
 
     beforeUpdate() {
+      this.$store.state.record.notes = '';
       if (this.currentTag.type&&this.$store.state.record.type === this.currentTag.type) {
         this.$emit('update:value', this.currentTag);
       } else {

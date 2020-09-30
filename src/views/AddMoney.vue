@@ -29,12 +29,16 @@
       </div>
       <div v-if="$store.state.currentTag">
         <div class="notes">
-          <Icon :name="$store.state.currentTag.tagicon" class="item"></Icon>
-          <span class="item">{{$store.state.currentTag.name}}</span>
-          <label>
-            <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="写点备注..." class="item"
-                   />
-          </label>
+          <div class="left">
+            <div class="icon-tag">
+              <Icon :name="$store.state.currentTag.tagicon" class="item"></Icon>
+              <span class="item">{{$store.state.currentTag.name}}</span>
+            </div>
+            <label>
+              <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="写点备注..." class="item"/>
+            </label>
+          </div>
+          <DayBook v-if="!$store.state.showBody" class="book"></DayBook>
         </div>
         <NumberPad :value.sync="$store.state.record.amount" @submit="saveRecord"></NumberPad>
       </div>
@@ -53,9 +57,10 @@
   import typeList from '@/constants/typeList';
   import MoneyType from '@/components/MoneyType.vue';
   import Calender from '@/components/Calender.vue';
+  import DayBook from '@/components/AddMoney/DayBook.vue';
 
   @Component({
-    components: {Calender, MoneyType, Button, ShowTags, Input, NumberPad},
+    components: {DayBook, Calender, MoneyType, Button, ShowTags, Input, NumberPad},
   })
   export default class Money extends Vue {
     typeList = typeList;
@@ -152,13 +157,37 @@
     .notes {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       font-size: 16px;
       padding: 10px 16px;
       background: rgb(246, 234, 212);
       border-bottom: 1px solid #d9d9d9;
+      width: 100%;
+      .left {
+        display: flex;
+        align-items: center;
 
-      .item {
-        margin-right: 5px;
+      }
+
+      label {
+        width: 42vw;
+        flex: 1;
+      }
+
+      .icon-tag {
+        display: flex;
+        align-items: center;
+        /*flex-wrap: wrap;*/
+        width: 27vw;
+        .icon {
+          margin-right: 5px;
+        }
+      }
+
+
+
+      .book {
+
       }
     }
   }

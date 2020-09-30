@@ -177,7 +177,6 @@
       }
 
       .date-days {
-        border: 1px solid red;
         display: flex;
         justify-content: space-around;
         align-items: center;
