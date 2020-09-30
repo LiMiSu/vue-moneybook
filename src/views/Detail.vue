@@ -2,7 +2,10 @@
   <NavStyle>
     <template #header>
       <div @click="$store.state.showtype=!$store.state.showtype" class="nav-wrapper">
-        <span>明细</span><span class="value">({{showvalue}}</span><Icon name="up" v-if="$store.state.showtype"></Icon><Icon name="down" v-else></Icon>)
+        <span>明细</span><span class="value">({{showvalue}}</span>
+        <Icon name="up" v-if="$store.state.showtype"></Icon>
+        <Icon name="down" v-else></Icon>
+        )
       </div>
     </template>
     <template #main>
@@ -11,29 +14,58 @@
       </div>
       <div class="statisticsList">
         <div v-if="yearRecordList.length>0">
-          <h1 v-if="yearRecordList.length>=2" class="total">{{allTotal}}</h1>
           <div v-for="year in yearRecordList" :key="year.title">
-            <h2 @click="year.show=!year.show" class="year-title">
-              <span>{{year.title}}</span>
-<!--              <span v-if="type==='1'">+</span>-->
-<!--              <span v-if="type==='1'">-</span>-->
-<!--              <span>{{type==='+'?type:''}}{{year.total}}</span>-->
+            <h2 @click="year.show=!year.show" class="title-wrapper">
+              <div class="year-title">
+                <span class="year">{{year.title}}<span class="text">年</span></span>
+                <div class="list" v-if="type==='1'">
+                  <span class="text">支出：</span>
+                  <span class="num">{{yearTotal(year,'支出')}}</span>
+                </div>
+                <div class="list" v-if="type==='1'">
+                  <span class="text">收入：</span>
+                  <span class="num">{{yearTotal(year,'收入')}}</span>
+                </div>
+                <div class="list">
+                  <span class="text" v-if="type==='1'">结余：</span>
+                  <span class="text" v-else>合计：</span>
+                  <span class="num">{{year.total}}</span>
+                </div>
+              </div>
+              <Icon name="xia" v-if="year.show"></Icon>
+              <Icon name="shang" v-else></Icon>
             </h2>
             <div v-if="year.show">
               <div v-for="month in year.items" :key="month.title">
-                <h3 @click="month.show=!month.show" class="month-title">
-                  <span>{{beautifyMonth(month.title)}}</span>
-<!--                  <span v-if="type==='1'">+</span>-->
-<!--                  <span v-if="type==='1'">-</span>-->
-<!--                  <span>{{type==='+'?type:''}}{{month.total}}</span>-->
+                <h3 @click="month.show=!month.show" class="title-wrapper">
+                  <div class="month-title">
+                    <span class="month">{{beautifyMonth(month.title)}}<span class="text">月</span></span>
+                    <div class="list" v-if="type==='1'"><span class="text">支出：</span><span class="num">{{monthTotal(month,'支出')}}</span>
+                    </div>
+                    <div class="list" v-if="type==='1'"><span class="text">收入：</span><span class="num">{{monthTotal(month,'收入')}}</span>
+                    </div>
+                    <div class="list"><span class="text" v-if="type==='1'">结余：</span><span class="text"
+                                                                                           v-else>合计：</span><span
+                      class="num">{{month.total}}</span></div>
+                  </div>
+                  <Icon name="xia" v-if="month.show"></Icon>
+                  <Icon name="shang" v-else></Icon>
                 </h3>
                 <div v-if="month.show">
                   <div v-for="day in month.items" :key="day.title">
-                    <div class="day-title" @click="day.show=!day.show">
-                      <span>{{beautifyDay(day.title)}}</span>
-<!--                      <span v-if="type==='1'">+</span>-->
-<!--                      <span v-if="type==='1'">-</span>-->
-                      <span>{{type==='+'?type:''}}{{day.total}}</span>
+                    <div class="title-wrapper" @click="day.show=!day.show">
+                      <div class="day-title">
+                        <span class="day">{{beautifyDay(day.title)}}<span class="text">日</span></span>
+                        <div class="list" v-if="type==='1'"><span class="text">支出：</span><span class="num">{{dayTotal(day,'支出')}}</span>
+                        </div>
+                        <div class="list" v-if="type==='1'"><span class="text">收入：</span><span class="num">{{dayTotal(day,'收入')}}</span>
+                        </div>
+                        <div class="list"><span class="text" v-if="type==='1'">结余：</span><span class="text"
+                                                                                               v-else>合计：</span><span
+                          class="num">{{day.total}}</span></div>
+                      </div>
+                      <Icon name="xia" v-if="day.show"></Icon>
+                      <Icon name="shang" v-else></Icon>
                     </div>
                     <div v-if="day.show">
                       <div v-for="(item,index) in day.items" :key="index"
@@ -51,8 +83,28 @@
               </div>
             </div>
           </div>
+          <div class="head">
+            <div class="totalN">
+              <span class="t">(单位：元)</span>
+            </div>
+            <div class="totalN" v-if="type==='1'">
+              <span class="t">总支出：</span>
+              <span class="num">{{allTotal('支出')}}</span>
+            </div>
+            <div class="totalN" v-if="type==='1'">
+              <span class="t">总收入：</span>
+              <span class="num">{{allTotal('收入')}}</span>
+            </div>
+            <div class="totalN">
+              <span class="t">总结余：</span>
+              <span class="num">{{allTotal('总计')}}</span>
+            </div>
+          </div>
         </div>
-        <div class="noResult" v-else>- 暂无{{showvalue==='全部'?'记账':showvalue}}记录，去<router-link to="/addmoney"><span class="add">记一笔</span></router-link>吧~ -</div>
+        <div class="noResult" v-else>- 暂无{{showvalue==='全部'?'记账':showvalue}}记录，去
+          <router-link to="/addmoney"><span class="add">记一笔</span></router-link>
+          吧~ -
+        </div>
       </div>
     </template>
   </NavStyle>
@@ -73,7 +125,7 @@
   export default class Detail extends Vue {
     type = '1';
     detailList = detail;
-    showvalue='全部'
+    showvalue = '全部';
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
@@ -98,13 +150,6 @@
       return this.$store.state.yearRecordList.filter((item: YearResult) => item.items[0].items[0].items[0].type === this.type);
     }
 
-    get allTotal() {
-      const total = (this.yearRecordList as YearResult[]).reduce((sum, group: YearResult) => {
-        return sum + group.total!;
-      }, 0);
-      return this.yearRecordList.length >= 2 ? (this.type === '+' ? this.type : '') + total : '';
-    }
-
 
     showType(item: RecordItem) {
       if (item.type === '+') {
@@ -116,70 +161,175 @@
 
 
     beautifyDay(title: string) {
-      return dayjs(title).format('D日');
+      return dayjs(title).format('D');
     }
 
     beautifyMonth(title: string) {
-      return dayjs(title).format('M月');
+      return dayjs(title).format('M');
+    }
+
+    allTotal(text: string) {
+      const typeRecord1 = (this.$store.state.recordList as RecordItem[]).filter(item => {
+        return item.type === '-';
+      });
+      const total1 = typeRecord1.reduce((sum, item) => {
+        return sum + item.amount;
+      }, 0);
+      const typeRecord2 = (this.$store.state.recordList as RecordItem[]).filter(item => {
+        return item.type === '+';
+      });
+      const total2 = typeRecord2.reduce((sum, item) => {
+        return sum + item.amount;
+      }, 0);
+      if (text === '支出') {
+        return total1;
+      } else if (text === '收入') {
+        return total2;
+      } else if (text === '总计') {
+        return total1 + total2;
+      }
+    }
+
+    yearTotal(value: MonthResult, text: string) {
+      const typeRecord = (this.$store.state.recordList as RecordItem[]).filter(item => {
+        return text === '支出' ?
+          item.type === '-' && dayjs(item.createdAt).format('YYYY') === value.title
+          : item.type === '+' && dayjs(item.createdAt).format('YYYY') === value.title;
+      });
+      return typeRecord.reduce((sum, item) => {
+        return sum + item.amount;
+      }, 0);
+    }
+
+    monthTotal(value: MonthResult, text: string) {
+      const typeRecord = (this.$store.state.recordList as RecordItem[]).filter(item => {
+        return text === '支出' ?
+          item.type === '-' && dayjs(item.createdAt).format('YYYY-M') === value.title
+          : item.type === '+' && dayjs(item.createdAt).format('YYYY-M') === value.title;
+      });
+      return typeRecord.reduce((sum, item) => {
+        return sum + item.amount;
+      }, 0);
+    }
+
+    dayTotal(value: MonthResult, text: string) {
+      const typeRecord = (this.$store.state.recordList as RecordItem[]).filter(item => {
+        return text === '支出' ?
+          item.type === '-' && dayjs(item.createdAt).format('YYYY-M-DD') === value.title
+          : item.type === '+' && dayjs(item.createdAt).format('YYYY-M-DD') === value.title;
+      });
+      return typeRecord.reduce((sum, item) => {
+        return sum + item.amount;
+      }, 0);
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .nav-wrapper{
+  .nav-wrapper {
     display: flex;
     align-items: center;
-    .value{
+
+    .value {
       margin: 0 3px 0 6px;
     }
-    .icon{
+
+    .icon {
       width: 11px;
       height: 12px;
-      /*font-size: 16px;*/
     }
   }
-  .type-wrapper{
+
+  .type-wrapper {
     position: absolute;
     top: 6vh;
     left: 0;
     width: 100%;
     height: 94vh;
-    background: rgba(205,205,205,0.5);
+    background: rgba(205, 205, 205, 0.5);
   }
-  ::v-deep .detail-tabs{
+
+  ::v-deep .detail-tabs {
     flex-direction: column;
     align-items: center;
     background: #fff;
-    .tabs-type{
+
+    .tabs-type {
       width: 100%;
     }
   }
+
+
   %title {
     width: 100%;
     min-height: 16px;
     display: flex;
-
     align-items: center;
     padding: 3px;
     color: #999;
     font-size: 14px;
   }
 
-  .year-title {
-    @extend %title;
-    background: rgb(246,234,212);
-    justify-content: center;
+  .title-wrapper {
+    background: rgb(246, 234, 212);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 10vh;
+    padding-right: 16px;
+    color: #999;
+
+
+    .year-title, .month-title, .day-title {
+      @extend %title;
+      flex: 1;
+      justify-content: space-between;
+
+      .year, .month, .day {
+        min-width: 25vw;
+        text-align: center;
+        font-size: 22px;
+        border-right: 1px solid #b5b5b5;
+
+        .text {
+          font-size: 16px;
+          margin-left: 2px;
+        }
+      }
+
+      .day {
+        font-size: 16px;
+
+        .text {
+          font-size: 14px;
+        }
+      }
+
+      .list {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: 10px;
+
+        .text {
+          font-size: 12px;
+          margin-left: 2px;
+        }
+
+        .num {
+          word-break: break-all;
+        }
+      }
+    }
   }
+
 
   .month-title {
     @extend %title;
-    background: rgb(246,234,212);
     justify-content: center;
   }
 
   .day-title {
     @extend %title;
-    background: rgb(246,234,212);
     justify-content: space-between;
 
   }
@@ -189,31 +339,26 @@
     min-height: 40px;
     display: flex;
     justify-content: space-between;
-    /*align-items: center;*/
   }
 
   .statisticsList {
     overflow-y: auto;
 
     .day-title {
-      background: rgb(246,234,212);
       @extend %title;
     }
 
     .total {
       @extend %title;
-      background: darkviolet;
     }
 
     .record {
       @extend %item;
       background: white;
       padding-top: 10px;
-      border-bottom: 1px solid rgb(224, 224, 224);
 
       .left {
         display: flex;
-        /*align-items: center;*/
         max-width: 105px;
 
         .icon {
@@ -232,7 +377,6 @@
       }
 
       .amount {
-        /*color: #999;*/
         font-size: 18px;
       }
     }
@@ -241,11 +385,33 @@
       padding: 16px;
       text-align: center;
       color: #999;
-      .add{
+
+      .add {
         color: blue;
       }
     }
   }
 
+  .head {
+    line-height: 4vh;
+    padding: 5px;
+    color: #b5b5b5;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+
+    .totalN {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      font-size: 12px;
+
+      .num {
+        word-break: break-all;
+      }
+    }
+  }
 
 </style>

@@ -19,8 +19,7 @@ const store = new Vuex.Store({
         type: ''
       },
       notes: '',
-      type: '' +
-        '-',
+      type: '' + '-',
       amount: 0,
       createdAt: new Date().toISOString()
     },

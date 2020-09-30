@@ -86,7 +86,7 @@
         this.one = true;
       } else if (this.output.length === 12) {
         this.two = true;
-      } else if (this.output.length === 19) {
+      } else if (this.output.length === 14) {
         window.alert('输入金额过长');
         return;
       }  //输入过长
@@ -296,11 +296,11 @@
         font-size: 36px;
 
         &.first {
-          font-size: 24px;
+          font-size: 32px;
         }
 
         &.second {
-          font-size: 18px;
+          font-size: 28px;
         }
       }
     }

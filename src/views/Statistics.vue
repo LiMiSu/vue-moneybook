@@ -33,8 +33,10 @@
               <Echarts :option="lineOption" v-if="showLine"/>
               <Echarts :option="circleOption" :getInitShowTag="getInitShowTag" v-else/>
             </div>
-            <div v-if="recordByTagTime.length>0" class="head"><span>{{interval === 'year' ? showYear : showMonth}} (本位币：CNY)</span><span
-              v-if="showLine">总计：{{interval === 'year' ? yearTotal : monthTotal}}</span></div>
+            <div v-if="recordByTagTime.length>0" class="head">
+              <span>{{interval === 'year' ? showYear : showMonth}} (单位：元)</span>
+              <div class="total" v-if="showLine"><span>总计：</span><span class="num">{{interval === 'year' ? yearTotal : monthTotal}}</span></div>
+            </div>
           </div>
 
           <div class="data-wrapper" v-if="recordByTagTime.length>0">
@@ -547,13 +549,24 @@
       }
 
       .head {
-        height: 4vh;
+        /*height: 4vh;*/
         line-height: 4vh;
         padding: 2px 16px;
         color: #b5b5b5;
         display: flex;
+        align-items: flex-end;
         justify-content: space-between;
         border-bottom: 1px solid #b5b5b5;
+        .total{
+          display: flex;
+          /*align-items: center;*/
+          /*justify-content: center;*/
+          flex-wrap: wrap;
+          max-width: 50vw;
+          .num{
+            word-break: break-all
+          }
+        }
       }
 
       .data-wrapper {

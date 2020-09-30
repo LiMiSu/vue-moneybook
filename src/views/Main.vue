@@ -32,6 +32,7 @@
       </div>
       <div class="main-body">
         <router-link to='/addmoney'></router-link>
+        <router-link to="/addmoney"><span class="add">记一笔</span></router-link>
       </div>
     </template>
   </NavStyle>
