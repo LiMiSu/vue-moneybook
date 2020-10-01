@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
-    ? '/moneybookwebsite/'
+    ? '/moneybook-website/'
     : '/',
   lintOnSave: false,
   chainWebpack: config => {
