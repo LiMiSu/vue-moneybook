@@ -162,7 +162,7 @@
 
 
     beautifyDay(title: string) {
-      return dayjs(title).format('D');
+      return dayjs(title).format('DD');
     }
 
     beautifyMonth(title: string) {
@@ -267,18 +267,17 @@
     display: flex;
     align-items: center;
     padding: 3px;
-    color: #999;
     font-size: 14px;
   }
 
   .title-wrapper {
-    background: rgb(246, 234, 212);
+    background: rgb(243,243,243);
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 10vh;
     padding-right: 16px;
-    color: #999;
+    /*color: #999;*/
 
 
     .year-title, .month-title, .day-title {

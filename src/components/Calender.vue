@@ -197,13 +197,13 @@
           text-align: center;
 
           &.is-today {
-            color: #409eff;
+            color:  #DE7873;
             font-weight: 700;
           }
 
           &.is-select {
             border-radius: 50%;
-            background: #409eff;
+            background:  #DE7873;
             font-weight: 700;
             color: #fff;
           }

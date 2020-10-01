@@ -98,8 +98,6 @@
       align-items: center;
 
       .tagIcon {
-        $bg: rgb(246, 234, 212);
-        background: $bg;
         $h: 36px;
         border-radius: $h/2;
         height: 36px;
@@ -140,8 +138,6 @@
     align-items: center;
 
     .addTag {
-      $bg: rgb(246, 234, 212);
-      background: $bg;
       $h: 36px;
       border-radius: $h/2;
       height: 36px;

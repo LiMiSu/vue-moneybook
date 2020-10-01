@@ -93,6 +93,7 @@
 
       if (this.output && this.output === '0') {
         if ('0123456789'.indexOf(input) >= 0) {
+          this.output = '';
           this.output = input;
         } else {
           this.output += input;
@@ -268,13 +269,9 @@
 <style lang="scss" scoped>
   @import "~@/assets/style/helper.scss";
 
-  %addMoneyStyle {
-    background: rgb(246, 234, 212);
-  }
 
   .inputNumber {
-    //@extend %innerShadow;
-    @extend %addMoneyStyle;
+    background: rgb(243,243,243);
     font-family: Consolas, monospace;
     padding: 16px;
     height: 60px;
@@ -309,13 +306,11 @@
   .numberPad {
     @extend %clearFix;
     font-size: 22px;
-
+    background: rgb(243,243,243);
     button {
-      @extend %addMoneyStyle;
       width: 25%;
       height: 42px;
       float: left;
-
       &.ok,
       &.equal {
         height: 42*2px;

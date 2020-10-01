@@ -154,15 +154,11 @@
 </script>
 
 <style lang="scss" scoped>
-  .rewrite {
-    background: papayawhip;
-  }
-
   .navBar {
     text-align: center;
     font-size: 16px;
     padding: 12px 16px;
-    background: palevioletred;
+    background: rgb(243,243,243);
     display: flex;
     justify-content: space-between;
     align-items: center;

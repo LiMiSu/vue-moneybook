@@ -158,8 +158,6 @@
     }
 
     .tagIcon, .addTag {
-      $bg: #d9d9d9;
-      background: $bg;
       $h: 36px;
       border-radius: $h/2;
       height: 36px;
@@ -186,8 +184,8 @@
     }
 
     .text {
-      padding: 0 16px;
-      background: #d9d9d9;
+      padding: 16px 16px 0 16px;
+      border-bottom: 1px solid #d9d9d9;
     }
   }
 

@@ -61,8 +61,8 @@
       /*position: relative;*/
 
       &.selected{
-        background: rgb(246,234,212);
-        color: black;
+        background: #DE7873;
+        color: white;
       }
       .icon{
         width: 24px;

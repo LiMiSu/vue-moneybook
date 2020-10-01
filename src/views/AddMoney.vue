@@ -139,7 +139,7 @@
 
       .daychoose {
         position: relative;
-
+        background: #fff;
         .cancel {
           position: absolute;
           right: 2px;
@@ -155,13 +155,12 @@
 
 
     .notes {
+      background: rgb(243,243,243);
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-size: 16px;
       padding: 10px 16px;
-      background: rgb(246, 234, 212);
-      border-bottom: 1px solid #d9d9d9;
       width: 100%;
       .left {
         display: flex;
@@ -177,7 +176,6 @@
       .icon-tag {
         display: flex;
         align-items: center;
-        /*flex-wrap: wrap;*/
         width: 27vw;
         .icon {
           margin-right: 5px;

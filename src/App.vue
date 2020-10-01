@@ -16,7 +16,6 @@
     font-family: $font-heiti;
     color: #000000;
     font-size: 16px;
-    /*background: rgba(244,222,198,0.3);*/
   }
 
 

@@ -17,18 +17,14 @@
       return dayjs(this.$store.state.record.createdAt).isSame(dayjs(new Date()), 'year') ?
         dayjs(this.$store.state.record.createdAt).format('M-D')
         : dayjs(this.$store.state.record.createdAt).format('YYYY-M-D');
-      // return new Date(this.$store.state.record.createdAt).getDate();
     }
   }
 </script>
 
 <style lang="scss" scoped>
   .dayBook {
-    /*height: 22px;*/
-    /*width: 33px;*/
     border: 1px solid #5a5a5a;
     border-radius: 3px 3px 3px 3px;
-    /*<!--box-shadow: 0px -3px 0px 0px #333333;-->*/
     background: white;
     position: relative;
     font-size: 12px;
