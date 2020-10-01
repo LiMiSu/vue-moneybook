@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
-import store from './store';
+import store from './store/store';
 import Nav from '@/components/Nav.vue';
 import NavStyle from '@/components/NavStyle.vue';
 import Icon from '@/components/Icon.vue';
