@@ -4,37 +4,21 @@
       记账
     </template>
     <template #main>
-      <div class="main-header">
-        <div class="day-result">
-          <div class="day" @click="$store.state.showBody=!$store.state.showBody">
-            <div class="day-year">{{year}}年</div>
-            <div class="day-month">{{month}}月</div>
+      <div class="main-wrapper">
+        <Calender class-prefix="main"></Calender>
+        <div class="record-list">
+          <div v-if="dayRecordList.length>0">
+            <div class="recordlist" v-for="record in dayRecordList" :key="record.id">
+              <span><Icon :name="record.tag.tagicon"></Icon>{{record.tag.name}}</span><span>{{record.amount}}</span>
+            </div>
+            <div class="noResult">恭喜您养成了记账好习惯！再去记一笔吧~</div>
           </div>
-          <div class="result">
-            <span></span>
-            <span>-￥3000</span>
-          </div>
+          <div class="noResult" v-else><span>--这天暂无记账，点击 <Icon name="add"></Icon> 去记一笔吧--</span></div>
         </div>
-        <div class="type">
-          <div class="in">
-            <span class="in-text">
-              <Icon name="money"></Icon>+
-            </span>
-            <span class="in-money">￥900</span>
-          </div>
-          <div class="pay">
-            <span class="pay-text">
-              <Icon name="money"></Icon>-
-            </span>
-            <span class="pay-money">￥200</span>
-          </div>
-        </div>
-      </div>
-      <div class="main-body">
-        <router-link to='/addmoney'></router-link>
-        <router-link to="/addmoney"><span class="add">记一笔</span></router-link>
+
       </div>
     </template>
+
   </NavStyle>
 </template>
 
@@ -43,6 +27,7 @@
   import {Component} from 'vue-property-decorator';
   import Calender from '@/components/Calender.vue';
   import DayBook from '@/components/AddMoney/DayBook.vue';
+  import dayjs from 'dayjs';
 
 
   @Component({
@@ -50,104 +35,93 @@
   })
   export default class Nav extends Vue {
 
-    // beforeCreate() {
-    //   this.$store.commit('fetchDayRecordList');
-    // }
-    get dayValue() {
-      return new Date(this.$store.state.record.createdAt);
+    beforeCreate() {
+      this.$store.commit('fetchRecords');
+      this.$store.state.record.createdAt = new Date().toISOString();
     }
 
-    get year() {
-      return this.dayValue.getFullYear();
+    get showDay() {
+      return dayjs(this.$store.state.record.createdAt).format('YYYY年M月DD日');
     }
 
-    get month() {
-      return this.dayValue.getMonth() + 1;
+    get recordList() {
+      return this.$store.state.recordList;
     }
 
-    // get count(){
-    //   return this.$store.state.monthRecordList
-    // }
+    get dayRecordList() {
+      return (this.recordList as RecordItem[]).filter(item => {
+        return dayjs(item.createdAt).isSame(dayjs(this.$store.state.record.createdAt), 'day');
+      });
+    }
   }
 </script>
 <style lang="scss" scoped>
-  .main-header {
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
+  ::v-deep .main-datebody {
+    height: 220px;
 
-    .day-result {
-      display: flex;
-
-      .day {
-        border-right: 1px dashed blue;
-        width: 100px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        .day-year {
-          padding: 10px;
-        }
-        .day-month {
-          padding: 10px;
-          font-size: 30px;
-        }
-
-        ::v-deep {
-          .main-datebody {
-
-          }
-        }
-      }
-
-      .result {
-        /*background: #DE7873;*/
-        height: 100px;
-        flex: 1;
-        font-size: 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        /*color: rgb(250, 250, 250);*/
+    .date-nav {
+      .date-btn {
+        font-size: 24px;
       }
     }
 
+    .data-list {
 
-    .type {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 10px;
-
-      %payin {
-        height: 30px;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .pay {
-        width: 50%;
-        @extend %payin;
-
-        .pay-money {
-          color: #DE7873;
-        }
-      }
-      .in {
-        width: 50%;
-        @extend %payin;
-
-        .in-money {
-          color: rgb(43, 162, 69);
-        }
-      }
-      .icon {
-        width: 24px;
+      .date-weeks {
         height: 24px;
+
+        th {
+          line-height: 24px;
+        }
+      }
+
+      .date-days {
+
+        td {
+          height: 24px;
+          line-height: 24px;
+
+        }
       }
     }
   }
+
+  .main-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+    .record-list {
+      overflow-y: auto;
+      flex: 1;
+    }
+  }
+
+  .recordlist {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 16px;
+
+    .icon {
+      width: 21px;
+      height: 21px;
+      margin-right: 5px;
+    }
+  }
+
+  .noResult {
+    display: flex;
+    padding: 16px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: #999;
+
+    span {
+      padding: 16px 0;
+    }
+  }
+
 </style>

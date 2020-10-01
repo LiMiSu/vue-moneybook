@@ -45,9 +45,6 @@ const store = new Vuex.Store({
         record.amount = -record.amount;
       }
       const recordDeep: RecordItem = clone(record);
-      // if (!recordDeep.tags || recordDeep.tags.length === 0) {
-      //   return window.alert('选择一项标签会更好分类哦');
-      // }
       if (!recordDeep.amount || recordDeep.amount === 0) {
         return window.alert('请输入金额');
       }

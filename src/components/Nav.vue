@@ -1,10 +1,15 @@
 <template>
   <nav>
     <router-link to="/detail" class="item" active-class="selected">
-<Icon name="detail"></Icon>
+      <Icon name="detail"></Icon>
     </router-link>
     <router-link to="/main" class="item" active-class="selected">
-      <Icon name="write"></Icon>
+      <router-link v-if="addMoneyShow" to="/addmoney">
+        <Icon name="add" class="addMoney"/>
+      </router-link>
+      <div v-else>
+        <Icon name="home"/>
+      </div>
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
       <Icon name="statil"></Icon>
@@ -18,6 +23,9 @@
 
   @Component
   export default class Nav extends Vue {
+    get addMoneyShow() {
+      return (this.$router as any).history.current.fullPath === '/main';
+    }
 
   }
 </script>
@@ -31,6 +39,7 @@
     align-items: center;
     font-size: 30px;
     margin: 10px;
+
     .item {
       display: flex;
       justify-content: center;
@@ -39,6 +48,12 @@
       min-width: 25vw;
       margin: 10px;
       padding: 6px;
+
+      .icon {
+        width: 30px;
+        height: 30px;
+      }
+
       &.selected {
         color: #FC6468;
       }

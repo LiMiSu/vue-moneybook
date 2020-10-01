@@ -44,8 +44,7 @@
                     </div>
                     <div class="list" v-if="type==='1'"><span class="text">收入：</span><span class="num">{{monthTotal(month,'收入')}}</span>
                     </div>
-                    <div class="list"><span class="text" v-if="type==='1'">结余：</span><span class="text"
-                                                                                           v-else>合计：</span><span
+                    <div class="list"><span class="text" v-if="type==='1'">结余：</span><span class="text" v-else>合计：</span><span
                       class="num">{{month.total}}</span></div>
                   </div>
                   <Icon name="xia" v-if="month.show"></Icon>
@@ -60,8 +59,7 @@
                         </div>
                         <div class="list" v-if="type==='1'"><span class="text">收入：</span><span class="num">{{dayTotal(day,'收入')}}</span>
                         </div>
-                        <div class="list"><span class="text" v-if="type==='1'">结余：</span><span class="text"
-                                                                                               v-else>合计：</span><span
+                        <div class="list"><span class="text" v-if="type==='1'">结余：</span><span class="text" v-else>合计：</span><span
                           class="num">{{day.total}}</span></div>
                       </div>
                       <Icon name="xia" v-if="day.show"></Icon>
@@ -85,19 +83,22 @@
           </div>
           <div class="head">
             <div class="totalN">
-              <span class="t">(单位：元)</span>
+              <span class="text">(单位：元)</span>
             </div>
             <div class="totalN" v-if="type==='1'">
-              <span class="t">总支出：</span>
+              <span class="text">总支出：</span>
               <span class="num">{{allTotal('支出')}}</span>
             </div>
             <div class="totalN" v-if="type==='1'">
               <span class="t">总收入：</span>
               <span class="num">{{allTotal('收入')}}</span>
             </div>
-            <div class="totalN">
-              <span class="t">总结余：</span>
-              <span class="num">{{allTotal('总计')}}</span>
+            <div class="totalN" v-if="type==='1'">
+              <span class="text" >总结余：</span>
+              <span class="num" >{{allTotal('总计')}}</span>
+            </div>
+            <div class="totalN" v-else>
+              <span class="text">总合计：{{type==='-'?allTotal('支出'):allTotal('收入')}}</span>
             </div>
           </div>
         </div>
@@ -362,8 +363,8 @@
         max-width: 105px;
 
         .icon {
-          width: 24px;
-          height: 24px;
+          width: 21px;
+          height: 21px;
           margin-right: 5px;
           margin-bottom: 5px;
         }

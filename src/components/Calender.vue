@@ -3,7 +3,7 @@
     <div class="date-nav">
       <Icon name="yearleft" class="date-btn icon-left-nav" @click="onChangYear('last')"></Icon>
       <Icon name="monthleft" class="date-btn icon-zuo" @click="onChangMonth('last')"></Icon>
-      <span>{{showData.year}}年{{showData.month+1}}月{{showData.day}}日</span>
+      <span @click="today">{{showData.year}}年{{showData.month+1}}月{{showData.day}}日</span>
       <Icon name="monthright" class="date-btn icon-you" @click="onChangMonth('next')"></Icon>
       <Icon name="yearrigth" class="date-btn icon-right-nav" @click="onChangYear('next')"></Icon>
     </div>
@@ -46,6 +46,14 @@
       month: 0,
       day: 0
     };
+    beforeCreate() {
+      this.$store.commit('fetchRecords');
+    }
+
+    today() {
+      this.getShowDate(new Date())
+      this.onSelectDay(new Date())
+    }
 
     getYearMonthDay(date: Date) {  //获取时间函数，时间初始化函数，拿到具体天
       const year = date.getFullYear();
@@ -86,7 +94,7 @@
 
 
     onSelectDay(date: Date) { //选择的日期变成点击的日期
-      this.$store.state.record.createdAt = date.toISOString();
+      this.$store.state.record.createdAt = new Date(+date + 8 * 3600 * 1000).toISOString();
       this.$store.state.showBody = false;
       this.getShowDate(date);
     }
@@ -135,7 +143,7 @@
 <style lang="scss" scoped>
 
   .date-body {
-    min-width: 100vw;
+    width: 100vw;
     height: 330px;
     position: relative;
     overflow: hidden;
@@ -152,7 +160,7 @@
       .date-btn {
         margin-left: 5px;
         margin-right: 5px;
-        color: #000;
+        color: #b5b5b5;
         font-size: 20px;
       }
     }
@@ -185,7 +193,7 @@
         td {
           width: 13.2vw;
           height: 40px;
-          line-height: 30px;
+          line-height: 40px;
           text-align: center;
 
           &.is-today {

@@ -434,13 +434,14 @@
           left: 10,
           data: monthTag,
           top: 'middle',
-          selectedMode: false
+          selectedMode: false,
         },
         series: [
           {
             name: this.type === '-' ? '支出金额' : '收入金额',
             type: 'pie',
             radius: ['50%', '70%'],
+
             // avoidLabelOverlap: false,
             label: {
               show: false,
@@ -483,7 +484,6 @@
     .icon {
       width: 11px;
       height: 12px;
-      /*font-size: 16px;*/
     }
   }
 
@@ -526,10 +526,6 @@
         height: 30px;
       }
     }
-
-    /*::v-deep .statistics-tabs {*/
-    /*  width: 40%;*/
-    /*}*/
   }
 
   .echarts-wrapper {
@@ -621,8 +617,8 @@
       padding: 16px;
 
       .icon {
-        width: 20px;
-        height: 20px;
+        width: 21px;
+        height: 21px;
       }
 
       .name {
