@@ -40,9 +40,6 @@
       this.$store.state.record.createdAt = new Date().toISOString();
     }
 
-    get showDay() {
-      return dayjs(this.$store.state.record.createdAt).format('YYYY年M月DD日');
-    }
 
     get recordList() {
       return this.$store.state.recordList;

@@ -53,6 +53,7 @@
 
     created() {
       this.output = '0';
+      this.$store.state.record.createdAt = new Date().toISOString();
     }
     get recordList() {
       return this.$store.state.recordList;

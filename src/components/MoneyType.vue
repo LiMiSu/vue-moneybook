@@ -51,14 +51,12 @@
     background: rgb(243,243,243);
     color: #767676;
     display: flex;
-    /*font-size: 24px;*/
     &-type {
       width: 50%;
       height: 4vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      /*position: relative;*/
 
       &.selected{
         background: #DE7873;
