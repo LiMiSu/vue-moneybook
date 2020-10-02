@@ -35,16 +35,14 @@ const routes: Array<RouteConfig> = [
   {
     path: '/managetag',
     component: ManageTag,
-    children:[
-      {
-        path: '/addrewrite',
-        component: AddRewriteTag
-      },
-      {
-        path: '/addrewrite/:id',
-        component: AddRewriteTag
-      }
-    ]
+  },
+  {
+    path: '/addrewrite',
+    component: AddRewriteTag
+  },
+  {
+    path: '/addrewrite/:id',
+    component: AddRewriteTag
   },
   {
     path: '/statistics',
@@ -58,6 +56,10 @@ const routes: Array<RouteConfig> = [
     path: '/addmoney',
     component: AddMoney,
 
+  },
+  {
+    path: '/addmoney/:id',
+    component: AddMoney
   },
   {
     path: '/detail',

@@ -1,5 +1,6 @@
 type RecordItem = {
   tag: Tag;
+  id: string;
   notes: string;
   type: string;
   amount: number;
@@ -19,6 +20,7 @@ type RootState = {
   monthRecordList: MonthResult[];
   yearRecordList: YearResult[];
   currentTag?: Tag | string;
+  currentRecord: RecordItem;
   isHave: boolean;
   showBody: boolean;
   showAdd: boolean;

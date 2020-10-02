@@ -14,9 +14,16 @@
   @Component
   export default class DayBook extends Vue {
     get dayValue() {
-      return dayjs(this.$store.state.record.createdAt).isSame(dayjs(new Date()), 'year') ?
-        dayjs(this.$store.state.record.createdAt).format('M-D')
-        : dayjs(this.$store.state.record.createdAt).format('YYYY-M-D');
+      if (this.$route.params.id) {
+        return dayjs(this.$store.state.currentRecord.createdAt).isSame(dayjs(new Date()), 'year') ?
+          dayjs(this.$store.state.currentRecord.createdAt).format('M-D')
+          : dayjs(this.$store.state.currentRecord.createdAt).format('YYYY-M-D');
+
+      } else {
+        return dayjs(this.$store.state.record.createdAt).isSame(dayjs(new Date()), 'year') ?
+          dayjs(this.$store.state.record.createdAt).format('M-D')
+          : dayjs(this.$store.state.record.createdAt).format('YYYY-M-D');
+      }
     }
   }
 </script>

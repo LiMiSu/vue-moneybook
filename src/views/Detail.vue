@@ -44,7 +44,8 @@
                     </div>
                     <div class="list" v-if="type==='1'"><span class="text">收入：</span><span class="num">{{monthTotal(month,'收入')}}</span>
                     </div>
-                    <div class="list"><span class="text" v-if="type==='1'">结余：</span><span class="text" v-else>合计：</span><span
+                    <div class="list"><span class="text" v-if="type==='1'">结余：</span><span class="text"
+                                                                                           v-else>合计：</span><span
                       class="num">{{month.total}}</span></div>
                   </div>
                   <Icon name="xia" v-if="month.show"></Icon>
@@ -59,7 +60,8 @@
                         </div>
                         <div class="list" v-if="type==='1'"><span class="text">收入：</span><span class="num">{{dayTotal(day,'收入')}}</span>
                         </div>
-                        <div class="list"><span class="text" v-if="type==='1'">结余：</span><span class="text" v-else>合计：</span><span
+                        <div class="list"><span class="text" v-if="type==='1'">结余：</span><span class="text"
+                                                                                               v-else>合计：</span><span
                           class="num">{{day.total}}</span></div>
                       </div>
                       <Icon name="xia" v-if="day.show"></Icon>
@@ -67,13 +69,16 @@
                     </div>
                     <div v-if="day.show">
                       <div v-for="(item,index) in day.items" :key="index"
-                           class="record">
+                           class="record" @click="recordDetail(item)">
                         <div class="left">
-                          <Icon :name="item.tag.tagicon"></Icon>
-                          <span class="name">{{item.tag.name}}</span>
+                          <div class="iconWarpper">
+                            <Icon :name="item.tag.tagicon"></Icon>
+                          </div>
+                          <div class="name">{{item.tag.name}}</div>
                         </div>
                         <span class="notes">{{item.notes}}</span>
                         <span class="amount">{{showType(item)}}{{item.amount}}</span>
+                        <Icon name="zuo" class="rewrite"></Icon>
                       </div>
                     </div>
                   </div>
@@ -94,8 +99,8 @@
               <span class="num">{{allTotal('收入')}}</span>
             </div>
             <div class="totalN" v-if="type==='1'">
-              <span class="text" >总结余：</span>
-              <span class="num" >{{allTotal('总计')}}</span>
+              <span class="text">总结余：</span>
+              <span class="num">{{allTotal('总计')}}</span>
             </div>
             <div class="totalN" v-else>
               <span class="text">总合计：{{type==='-'?allTotal('支出'):allTotal('收入')}}</span>
@@ -223,6 +228,10 @@
         return sum + item.amount;
       }, 0);
     }
+
+    recordDetail(item: RecordItem) {
+      this.$router.replace('/addmoney/' + item.id);
+    }
   }
 </script>
 
@@ -271,19 +280,22 @@
   }
 
   .title-wrapper {
-    background: rgb(243,243,243);
+    width: 98vw;
+    background: rgb(243, 243, 243);
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 10vh;
     padding-right: 16px;
-    /*color: #999;*/
+    box-shadow: 0 3px 11px -9px #999;
+    margin: 5px 0;
 
 
     .year-title, .month-title, .day-title {
       @extend %title;
       flex: 1;
       justify-content: space-between;
+
 
       .year, .month, .day {
         min-width: 25vw;
@@ -309,9 +321,10 @@
         display: flex;
         flex-wrap: wrap;
         margin-left: 10px;
+        color: #999;
+        font-size: 12px;
 
         .text {
-          font-size: 12px;
           margin-left: 2px;
         }
 
@@ -320,8 +333,15 @@
         }
       }
     }
+
+    .icon {
+      color: #999999;
+    }
   }
 
+  .title-wrapper:first-child {
+    margin-top: 0;
+  }
 
   .month-title {
     @extend %title;
@@ -339,11 +359,14 @@
     min-height: 40px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 
   .statisticsList {
     overflow-y: auto;
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     .day-title {
       @extend %title;
     }
@@ -355,18 +378,35 @@
     .record {
       @extend %item;
       background: white;
-      padding-top: 10px;
+      padding: 10px;
 
       .left {
         display: flex;
         max-width: 105px;
 
-        .icon {
-          width: 21px;
-          height: 21px;
+        .iconWarpper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: #DE7873;
+          color: white;
           margin-right: 5px;
-          margin-bottom: 5px;
+          border-radius: 10px;
+          width: 30px;
+          height: 30px;
+
+          .icon {
+            width: 20px;
+            height: 20px;
+          }
         }
+
+        .name {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
       }
 
       .notes {
@@ -379,6 +419,10 @@
       .amount {
         font-size: 18px;
       }
+      .rewrite{
+        color: #999999;
+        margin-left: 10px;
+      }
     }
 
     .noResult {
@@ -388,13 +432,14 @@
 
       .add {
         color: blue;
+
       }
     }
   }
 
   .head {
     line-height: 4vh;
-    padding: 5px;
+    padding: 5px 10px;
     color: #b5b5b5;
     display: flex;
     align-items: flex-end;

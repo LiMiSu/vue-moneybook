@@ -4,12 +4,13 @@
       <div class="addheader">
         <Icon name="left" class="left" @click="goBack"></Icon>
         <div class="header">
-          记一笔
+          {{$route.params.id?'编辑账单':'记一笔'}}
         </div>
         <span class="icon off"></span>
       </div>
       <div class="type">
-        <MoneyType class-prefix="add" :data-source="typeList" :value.sync="$store.state.record.type"/>
+        <MoneyType class-prefix="add" :data-source="typeList"
+                   :value.sync="$route.params.id?$store.state.currentRecord.type:$store.state.record.type"/>
       </div>
     </header>
     <main class="addmain">
@@ -32,15 +33,17 @@
           <div class="left">
             <div class="icon-tag">
               <Icon :name="$store.state.currentTag.tagicon" class="item"></Icon>
-              <span class="item">{{$store.state.currentTag.name}}</span>
+              <span class="item">{{currentTag.name}}</span>
             </div>
             <label>
-              <Input :value.sync="$store.state.record.notes" field-name="备注" placeholder="写点备注..." class="item"/>
+              <Input :value.sync="showNotes"
+                     field-name="备注" placeholder="写点备注..." class="item"/>
             </label>
           </div>
           <DayBook v-if="!$store.state.showBody" class="book"></DayBook>
         </div>
-        <NumberPad :value.sync="$store.state.record.amount" @submit="saveRecord"></NumberPad>
+        <NumberPad :value.sync="thisRecordAmount"
+                   @submit="saveRecord"></NumberPad>
       </div>
     </footer>
   </div>
@@ -67,9 +70,51 @@
 
     created() {
       this.$store.commit('fetchRecords');
-      this.$store.state.currentTag = '';
+      if (this.$route.params.id) {
+        this.$store.commit('setCurrentRecord', this.$route.params.id);
+      } else {
+        this.$store.state.record.notes = '';
+      }
+    }
+    get currentTag(){
+      if (this.$store.state.currentTag){
+        return this.$store.state.currentTag
+      }else {
+        return '无'
+      }
     }
 
+    get showNotes() {
+      if (this.$route.params.id) {
+        return this.$store.state.currentRecord.notes;
+      } else {
+        return this.$store.state.record.notes;
+      }
+    }
+
+    set showNotes(value) {
+      if (this.$route.params.id) {
+        this.$store.state.currentRecord.notes = value;
+      } else {
+        this.$store.state.record.notes = value;
+      }
+    }
+
+    get thisRecordAmount() {
+      if (this.$route.params.id) {
+        return this.$store.state.currentRecord.amount;
+      } else {
+        return this.$store.state.record.amount;
+      }
+    }
+
+    set thisRecordAmount(value: number) {
+      if (this.$route.params.id) {
+        this.$store.state.currentRecord.amount=value;
+      } else {
+        this.$store.state.record.amount=value;
+      }
+    }
 
     saveRecord() {
       this.$store.commit('createRecord', this.$store.state.record);
@@ -77,7 +122,11 @@
     }
 
     goBack() {
-      this.$router.replace('/main');
+      if (this.$route.params.id) {
+        this.$router.replace('/detail');
+      } else {
+        this.$router.replace('/main');
+      }
     }
   }
 </script>
@@ -140,6 +189,7 @@
       .daychoose {
         position: relative;
         background: #fff;
+
         .cancel {
           position: absolute;
           right: 2px;
@@ -155,13 +205,14 @@
 
 
     .notes {
-      background: rgb(243,243,243);
+      background: rgb(243, 243, 243);
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-size: 16px;
       padding: 10px 16px;
       width: 100%;
+
       .left {
         display: flex;
         align-items: center;
@@ -177,11 +228,11 @@
         display: flex;
         align-items: center;
         width: 27vw;
+
         .icon {
           margin-right: 5px;
         }
       }
-
 
 
       .book {

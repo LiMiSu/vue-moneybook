@@ -46,13 +46,10 @@
       month: 0,
       day: 0
     };
-    beforeCreate() {
-      this.$store.commit('fetchRecords');
-    }
 
     today() {
-      this.getShowDate(new Date())
-      this.onSelectDay(new Date())
+      this.onSelectDay((dayjs(new Date()).add(-8 * 3600 * 1000,'millisecond') as any).$d)
+      this.getShowDate(new Date());
     }
 
     getYearMonthDay(date: Date) {  //获取时间函数，时间初始化函数，拿到具体天
@@ -76,7 +73,13 @@
     }
 
     created() { //让初识值等于今天
-      this.getShowDate(new Date(this.$store.state.record.createdAt));
+      this.$store.commit('setCurrentRecord', this.$route.params.id);
+      if (this.$route.params.id){
+        this.$store.state.record.createdAt=this.$store.state.currentRecord.createdAt
+        this.getShowDate(new Date(this.$store.state.record.createdAt));
+      }else {
+        this.getShowDate(new Date(this.$store.state.record.createdAt));
+      }
     }
 
 
@@ -94,7 +97,12 @@
 
 
     onSelectDay(date: Date) { //选择的日期变成点击的日期
-      this.$store.state.record.createdAt = new Date(+date + 8 * 3600 * 1000).toISOString();
+
+      if (this.$route.params.id){
+        this.$store.state.currentRecord.createdAt = new Date(+date + 8 * 3600 * 1000).toISOString();
+      }else {
+        this.$store.state.record.createdAt = new Date(+date + 8 * 3600 * 1000).toISOString();
+      }
       this.$store.state.showBody = false;
       this.getShowDate(date);
     }

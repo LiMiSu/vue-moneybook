@@ -50,7 +50,6 @@
   import Input from '@/components/Input.vue';
   import Button from '@/components/Button.vue';
   import addTag from '@/constants/addTag';
-  import {NavigationGuardNext, Route} from 'vue-router';
 
   @Component({
     components: {Button, Input},
@@ -180,7 +179,6 @@
   }
 
   .form-wrapper {
-    /*background: palevioletred;*/
     margin-top: 8px;
 
     .icon-choose {
