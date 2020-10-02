@@ -26,7 +26,7 @@
               v-if="isCount&&lock">=
       </button>
       <button @click="ok" class="ok"
-              v-else>OK
+              v-else>{{$route.params.id?'修改':'OK'}}
       </button>
       <button @click="inputContent" class="zero">0</button>
       <button @click="inputContent">.</button>
@@ -52,9 +52,10 @@
     lock = true;
 
     created() {
-      this.output = '0';
-      this.$store.state.record.createdAt = new Date().toISOString();
+      !this.$route.params.id ? this.output = '0' : this.output = Math.abs(+this.output).toString();
+      // this.$store.state.record.createdAt = new Date().toISOString();
     }
+
     get recordList() {
       return this.$store.state.recordList;
     }
@@ -260,9 +261,23 @@
         window.alert('选择一项标签会更好分类哦');
         return;
       }
+      if (this.$route.params.id) {
+        let amount
+        if (this.$store.state.currentRecord.type==='-') {
+          amount=-moneyValue
+        }else {
+          amount=moneyValue
+        }
+        this.$emit('update:value', amount);
+        this.$store.commit('saveRecords');
+        window.alert('成功');
+        this.$router.replace('/detail');
+        return;
+      }
       this.$emit('update:value', moneyValue);//把输入的字符串变成数字记入账单
       this.$emit('submit', moneyValue);
       this.output = '0';
+      this.$router.back();
     }
   }
 </script>
@@ -272,7 +287,7 @@
 
 
   .inputNumber {
-    background: rgb(243,243,243);
+    background: rgb(243, 243, 243);
     font-family: Consolas, monospace;
     padding: 16px;
     height: 60px;
@@ -307,11 +322,13 @@
   .numberPad {
     @extend %clearFix;
     font-size: 22px;
-    background: rgb(243,243,243);
+    background: rgb(243, 243, 243);
+
     button {
       width: 25%;
       height: 42px;
       float: left;
+
       &.ok,
       &.equal {
         height: 42*2px;

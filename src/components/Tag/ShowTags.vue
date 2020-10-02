@@ -12,7 +12,7 @@
            v-for="tag in newTagList"
            :key="tag.id">
         <Icon class="tagIcon" :name=tag.tagicon
-              :class="{selected: currentTag===tag}"
+              :class="{selected: currentTag.id===tag.id}"
               @click="toggle(tag)">
         </Icon>
         <span :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
@@ -32,17 +32,22 @@
   export default class Note extends mixins(TagHelper) {
     created() {
       this.$store.commit('fetchTags');
-      this.$store.state.record.notes = '';
+      this.$store.commit('setCurrentRecord', this.$route.params.id);
+      if (this.$route.params.id && this.$store.state.currentRecord.tag.tagicon) {
+        this.$store.state.currentTag = this.$store.state.currentRecord.tag;
+      } else {
+        this.$store.state.record.notes = '';
+      }
     }
+
 
     beforeUpdate() {
       this.$store.state.record.notes = '';
-      if (this.currentTag.type&&this.$store.state.record.type === this.currentTag.type) {
+      if (this.currentTag.type && this.$store.state.record.type === this.currentTag.type) {
         this.$emit('update:value', this.currentTag);
-      } else {
+      } else if(!this.$route.params.id){
         this.currentTag = '';
         this.$emit('update:value', []);
-
       }
     }
 
@@ -52,7 +57,11 @@
 
     get newTagList() {
       const {tagList} = this;
-      return clone(tagList).filter((item: Tag) => item.type === this.$store.state.record.type);
+      if (this.$route.params.id) {
+        return clone(tagList).filter((item: Tag) => item.type === this.$store.state.currentRecord.type);
+      } else {
+        return clone(tagList).filter((item: Tag) => item.type === this.$store.state.record.type);
+      }
     }
 
     get currentTag() {
@@ -65,11 +74,12 @@
 
 
     toggle(tag: Tag) {
-      if (this.currentTag === tag) {
+      if (this.currentTag === tag && !this.$route.params.id) {
         this.currentTag = '';
         this.$emit('update:value', []);
       } else {
         this.currentTag = tag;
+        this.$route.params.id?this.$store.state.currentRecord.tag = tag:''
       }
     }
 

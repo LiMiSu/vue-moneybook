@@ -16,7 +16,6 @@
   import {Component, Prop} from 'vue-property-decorator';
 
 
-
   @Component
   export default class Tabs extends Vue {
     @Prop({required: true, type: Array})
@@ -24,23 +23,30 @@
 
     @Prop(String)
     readonly value!: string;
-    // value: $store.state.record.type  也就是'+'/'-'
+
 
     @Prop(String)
     classPrefix?: string;
+
     liClass(tab: DataSourceItem) {
       return {
         [this.classPrefix + '-type']: this.classPrefix, selected: tab.value === this.value
       };
     }
+
     @Prop(String)
     readonly showvalue!: string;
 
     select(tab: DataSourceItem) {
-      this.$emit('update:value', tab.value);
-      this.$emit('update:showvalue', tab.text);
-      if (this.$store.state.showtype){
-        this.$store.state.showtype=!this.$store.state.showtype
+      if (this.$route.params.id) {
+        this.$store.state.currentRecord.type !== tab.value?this.$store.state.currentTag='':''
+        this.$store.state.currentRecord.type = tab.value;
+      } else {
+        this.$emit('update:value', tab.value);
+        this.$emit('update:showvalue', tab.text);
+      }
+      if (this.$store.state.showtype) {
+        this.$store.state.showtype = !this.$store.state.showtype;
       }
     }
   }
@@ -48,9 +54,10 @@
 
 <style lang="scss" scoped>
   .tabs {
-    background: rgb(243,243,243);
+    background: rgb(243, 243, 243);
     color: #767676;
     display: flex;
+
     &-type {
       width: 50%;
       height: 4vh;
@@ -58,11 +65,12 @@
       justify-content: center;
       align-items: center;
 
-      &.selected{
+      &.selected {
         background: #DE7873;
         color: white;
       }
-      .icon{
+
+      .icon {
         width: 24px;
         height: 24px;
       }

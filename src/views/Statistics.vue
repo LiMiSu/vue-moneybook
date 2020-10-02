@@ -34,8 +34,8 @@
               <Echarts :option="circleOption" :getInitShowTag="getInitShowTag" v-else/>
             </div>
             <div v-if="recordByTagTime.length>0" class="head">
-              <span>{{interval === 'year' ? showYear : showMonth}} (单位：元)</span>
-              <div class="total" v-if="showLine"><span>总计：</span><span class="num">{{interval === 'year' ? yearTotal : monthTotal}}</span></div>
+              <div>{{interval === 'year' ? showYear : showMonth}}<span class="text-s">(单位：元)</span></div>
+              <div class="total" v-if="showLine"><span class="text-s">总计：</span><span class="num">{{interval === 'year' ? yearTotal : monthTotal}}</span></div>
             </div>
           </div>
 
@@ -43,12 +43,12 @@
             <div class="lineData list-wrapper" v-if="showLine">
               <div v-for="record in recordByTagTime" :key="record.id">
                 <div class="list">
-                  <div>
-                    <Icon :name="record.icon"></Icon>
-                    <span class="name">{{record.name}}</span>
+                  <div class="left">
+                    <div class="iconWarpper"><Icon :name="record.icon"></Icon></div>
+                    <div class="name">{{record.name}}</div>
                   </div>
-                  <span>{{recordByTagTotalPercent(record.num)}}</span>
-                  <span>{{record.num}}</span>
+                  <span class="amount">{{recordByTagTotalPercent(record.num)}}</span>
+                  <span class="amount">{{record.num}}</span>
                 </div>
               </div>
             </div>
@@ -56,18 +56,17 @@
               <div v-for="result in recordByTagTime" :key="result.name">
                 <div class="result-show" v-if="result.name===initShowTag">
                   <div class="list">
-                    <div>
-                      <Icon :name="result.icon"></Icon>
-                      <span class="name">{{result.name}}</span>
+                    <div class="left">
+                      <div class="iconWarpper"><Icon :name="result.icon"></Icon></div>
+                      <div class="name">{{result.name}}</div>
                     </div>
-                    <span>{{recordByTagTotalPercent(result.num)}}</span>
-                    <span>{{result.num}}</span>
+                    <span class="amount">{{recordByTagTotalPercent(result.num)}}</span>
+                    <span class="amount">{{result.num}}</span>
                   </div>
-                  <div class="list" v-for="item in result.recordList" :key="item.id">
-
-                    <span>{{item.date}}</span>
-                    <span>{{item.name}}</span>
-                    <span>{{item.num}}</span>
+                  <div class="list detail" v-for="item in result.recordList" :key="item.id">
+                    <div class="item">{{item.date}}</div>
+                    <div class="item">{{item.name}}</div>
+                    <div class="item">{{item.num}}</div>
                   </div>
                 </div>
               </div>
@@ -542,6 +541,8 @@
       .top-wrapper {
         display: flex;
         flex-direction: column;
+        background: rgb(243, 243, 243);
+        box-shadow: 0px 3px 11px -9px #999;
       }
 
       .head {
@@ -552,15 +553,22 @@
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
-        border-bottom: 1px solid #b5b5b5;
+        .text-s{
+          font-size: 12px;
+        }
+        .text-s:first-child{
+          margin-left: 5px;
+        }
         .total{
           display: flex;
           /*align-items: center;*/
           /*justify-content: center;*/
           flex-wrap: wrap;
           max-width: 50vw;
+
           .num{
-            word-break: break-all
+            word-break: break-all;
+            font-size: 12px;
           }
         }
       }
@@ -590,14 +598,34 @@
       padding: 16px;
       display: flex;
       justify-content: space-between;
+      .left {
+        display: flex;
+        max-width: 105px;
 
-      .icon {
-        width: 20px;
-        height: 20px;
-      }
+        .iconWarpper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: #DE7873;
+          color: white;
+          margin-right: 5px;
+          border-radius: 10px;
+          width: 30px;
+          height: 30px;
 
-      .name {
-        padding-left: 5px;
+          .icon {
+            width: 20px;
+            height: 20px;
+          }
+        }
+
+        .name {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding-left: 5px;
+        }
+
       }
     }
   }
@@ -616,13 +644,46 @@
       justify-content: space-between;
       padding: 16px;
 
-      .icon {
-        width: 21px;
-        height: 21px;
-      }
+      .left {
+        display: flex;
+        max-width: 105px;
 
-      .name {
-        padding-left: 5px;
+        .iconWarpper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: #DE7873;
+          color: white;
+          margin-right: 5px;
+          border-radius: 10px;
+          width: 30px;
+          height: 30px;
+
+          .icon {
+            width: 20px;
+            height: 20px;
+          }
+        }
+
+        .name {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding-left: 5px;
+        }
+
+      }
+    }
+    .detail{
+      .item{
+        width: 33.33%;
+      }
+      .item:nth-child(2){
+        text-align: center;
+      }
+      .item:last-child{
+        text-align: end;
+        word-break: break-all
       }
     }
   }

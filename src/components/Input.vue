@@ -7,7 +7,7 @@
         :type="type || 'text'"
         :value="tagName||value"
         :placeholder="placeholder"
-        @input="$emit('update:value', $event.target.value)"
+        @input="updateNotes($event.target.value)"
       >
     </label>
   </div>
@@ -15,15 +15,20 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component,Prop} from 'vue-property-decorator';
+  import {Component, Prop} from 'vue-property-decorator';
 
   @Component
   export default class FormItem extends Vue {
     @Prop({default: ''}) readonly value!: string;
     @Prop({required: true}) fieldName!: string;
-    @Prop() placeholder?: string
+    @Prop() placeholder?: string;
     @Prop({default: ''}) readonly tagName!: string;
     @Prop() type?: string;
+
+
+    updateNotes(value: string) {
+      this.$emit('update:value', value);
+    }
   }
 </script>
 
@@ -32,11 +37,13 @@
     font-size: 14px;
     display: flex;
     align-items: center;
-.notes{
-  width: 34px;
-  height: 34px;
-  margin-right: 6px;
-}
+
+    .notes {
+      width: 34px;
+      height: 34px;
+      margin-right: 6px;
+    }
+
     .name {
       padding: 0 16px 0 10px;
     }

@@ -6,10 +6,22 @@
     <template #main>
       <div class="main-wrapper">
         <Calender class-prefix="main"></Calender>
+        <div v-if="dayRecordList.length>0" class="head">
+          <div class="top"><span class="date">{{date}}</span><span class="text">(单位：元)</span></div>
+          <div class="list"><span class="text">支出：</span><span class="num">{{dayTotal('支出')}}</span></div>
+          <div class="list"><span class="text">收入：</span><span class="num">{{'+'+dayTotal('收入')}}</span></div>
+          <div class="list"><span class="text" >结余：</span><span class="num">{{dayTotal('结余')}}</span></div>
+        </div>
         <div class="record-list">
           <div v-if="dayRecordList.length>0">
             <div class="recordlist" v-for="record in dayRecordList" :key="record.id">
-              <span><Icon :name="record.tag.tagicon"></Icon>{{record.tag.name}}</span><span>{{record.amount}}</span>
+              <div class="left">
+                <div class="iconWarpper">
+                  <Icon :name="record.tag.tagicon"></Icon>
+                </div>
+                <div class="name">{{record.tag.name}}</div>
+              </div>
+              <span class="amount">{{record.amount}}</span>
             </div>
             <div class="noResult">恭喜您养成了记账好习惯！再去记一笔吧~</div>
           </div>
@@ -40,6 +52,9 @@
       this.$store.state.record.createdAt = new Date().toISOString();
     }
 
+    get date() {
+      return dayjs(this.$store.state.record.createdAt).format('M-DD');
+    }
 
     get recordList() {
       return this.$store.state.recordList;
@@ -50,12 +65,64 @@
         return dayjs(item.createdAt).isSame(dayjs(this.$store.state.record.createdAt), 'day');
       });
     }
+
+    dayTotal(value: string) {
+      if (value==='支出'){
+        return this.dayRecordList.filter(item=>item.type==='-').reduce((sum,item)=>{
+          return sum+item.amount
+        },0)
+      }else if (value==='收入'){
+        return this.dayRecordList.filter(item=>item.type==='+').reduce((sum,item)=>{
+          return sum+item.amount
+        },0)
+      }else if (value==='结余'){
+        return this.dayRecordList.reduce((sum,item)=>{
+          return sum+item.amount
+        },0)
+      }
+
+    }
   }
 </script>
 <style lang="scss" scoped>
-  ::v-deep .main-datebody {
-    height: 220px;
+  .head {
 
+    background: rgb(243, 243, 243);
+    box-shadow: 0 3px 11px -9px #999;
+    line-height: 4vh;
+    padding: 5px 16px 0 16px;
+    color: #b5b5b5;
+    width: 98vw;
+    display: flex;
+    margin-top: 5px;
+    z-index: 1;
+    justify-content: space-between;
+    .top{
+      min-width: 110px;
+    }
+    .date{
+      margin-right: 5px;
+    }
+    .list{
+      display: flex;
+      flex-wrap: wrap;
+      margin-left: 5px;
+      min-width: 37px;
+      font-size: 12px;
+
+      .num{
+        word-break: break-all
+      }
+    }
+    .text{
+      font-size: 12px;
+    }
+  }
+  ::v-deep .main-datebody {
+    width: 98vw;
+    height: 220px;
+    background: rgb(243, 243, 243);
+    box-shadow: 0 3px 11px -9px #999;
     .date-nav {
       .date-btn {
         font-size: 24px;
@@ -86,11 +153,13 @@
   .main-wrapper {
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 100%;
     height: 100%;
 
     .record-list {
       overflow-y: auto;
+      width: 100vw;
       flex: 1;
     }
   }
@@ -101,10 +170,37 @@
     justify-content: space-between;
     padding: 16px;
 
-    .icon {
-      width: 21px;
-      height: 21px;
-      margin-right: 5px;
+    .left {
+      display: flex;
+      max-width: 105px;
+
+      .iconWarpper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #DE7873;
+        color: white;
+        margin-right: 5px;
+        border-radius: 10px;
+        width: 30px;
+        height: 30px;
+
+        .icon {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .name {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+    }
+
+    .amount {
+      font-size: 18px;
     }
   }
 

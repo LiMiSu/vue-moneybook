@@ -5,6 +5,7 @@ import createId from '@/lib/createId';
 import router from '@/router';
 import tagInit from '@/constants/tagInit';
 import dayjs from 'dayjs';
+import createRecordId from '@/lib/createRecordId';
 
 Vue.use(Vuex);
 
@@ -18,6 +19,7 @@ const store = new Vuex.Store({
         tagicon: '',
         type: ''
       },
+      id:'',
       notes: '',
       type: '' + '-',
       amount: 0,
@@ -29,6 +31,19 @@ const store = new Vuex.Store({
     monthRecordList: [],
     yearRecordList: [],
     currentTag: '',
+    currentRecord: {
+      tag: {
+        id: '',
+        name: '',
+        tagicon: '',
+        type: ''
+      },
+      id: '',
+      notes: '',
+      type: '' + '-',
+      amount: 0,
+      createdAt: new Date().toISOString()
+    },
     isHave: true,
     showBody: false,
     showAdd: false,
@@ -41,11 +56,13 @@ const store = new Vuex.Store({
       state.recordList = JSON.parse(window.localStorage.getItem('recordList') || '[]') as RecordItem[];
     },
     createRecord(state, record: RecordItem) {
+      const id= createRecordId().toString()
+      record.id=id
       if (record.type === '-') {
         record.amount = -record.amount;
       }
       const recordDeep: RecordItem = clone(record);
-      if (!recordDeep.amount || recordDeep.amount === 0) {
+      if (!recordDeep.amount&&!state.currentRecord.amount|| recordDeep.amount === 0&&state.currentRecord.amount===0) {
         return window.alert('请输入金额');
       }
       state.recordList.push(recordDeep);
@@ -59,6 +76,9 @@ const store = new Vuex.Store({
 
     setCurrentTag(state, id: string) {
       state.currentTag = state.tagList.filter(t => t.id === id)[0];
+    },
+    setCurrentRecord(state,id: string){
+      state.currentRecord = state.recordList.filter(t => t.id === id)[0];
     },
     fetchTags(state) {
 

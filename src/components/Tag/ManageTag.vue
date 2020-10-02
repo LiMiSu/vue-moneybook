@@ -97,7 +97,6 @@
         this.$router.replace('/managetag');
       } else {
         this.currenttag = tag;
-        // this.$router.replace('/addrewrite');
         this.$router.replace('/addrewrite/' + tag.id);
       }
     }
