@@ -1,20 +1,14 @@
 <template>
   <div>
     <div class="metagList" @click="goAdd">
-      <Icon name="manage" class="addTag"></Icon>
-      管理
+      <Icon name="manage" class="addTag"></Icon>管理
     </div>
     <div>
       <div class="choosetag">请选择{{this.$store.state.record.type==='-'?'支出':'收入'}}标签：</div>
     </div>
     <div class="tags">
-      <div class="tagList"
-           v-for="tag in newTagList"
-           :key="tag.id">
-        <Icon class="tagIcon" :name=tag.tagicon
-              :class="{selected: currentTag.id===tag.id}"
-              @click="toggle(tag)">
-        </Icon>
+      <div class="tagList" v-for="tag in newTagList" :key="tag.id">
+        <Icon class="tagIcon" :name=tag.tagicon :class="{selected: currentTag.id===tag.id}" @click="toggle(tag)"></Icon>
         <span :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
       </div>
     </div>
@@ -36,10 +30,10 @@
       if (this.$route.params.id && this.$store.state.currentRecord.tag.tagicon) {
         this.$store.state.currentTag = this.$store.state.currentRecord.tag;
       } else {
+        this.$store.state.currentTag=''
         this.$store.state.record.notes = '';
       }
     }
-
 
     beforeUpdate() {
       this.$store.state.record.notes = '';

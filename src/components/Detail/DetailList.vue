@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <div v-for="year in yearRecordList" :key="year.title">
       <DetailItem :date.sync="year" :type.sync="type"></DetailItem>
       <div v-if="year.show">

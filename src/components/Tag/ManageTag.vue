@@ -3,9 +3,7 @@
     <header>
       <div class="addheader">
         <Icon name="left" class="left" @click="goBack"></Icon>
-        <div class="header">
-          编辑与新增
-        </div>
+        <div class="header">编辑与新增</div>
         <span class="icon off"></span>
       </div>
     </header>
@@ -19,27 +17,16 @@
         </div>
       </div>
       <div class="text">点击编辑{{this.$store.state.record.type==='-'?'支出':'收入'}}标签：</div>
-
-
       <div class="tags">
-        <div class="tagList"
-             v-for="tag in newTagList"
-             :key="tag.id"
-        >
-          <Icon :name=tag.tagicon
-                class="tagIcon"
-                :class="{selected: currenttag===tag}"
-                @click="tagChang(tag)"
-          ></Icon>
+        <div class="tagList" v-for="tag in newTagList" :key="tag.id">
+          <Icon :name=tag.tagicon class="tagIcon" :class="{selected: currenttag===tag}" @click="tagChang(tag)"></Icon>
           <span :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
         </div>
       </div>
-
-
     </main>
 
     <footer>
-      <router-view :key="key"></router-view>
+<!--      <router-view :key="key"></router-view>-->
     </footer>
   </div>
 </template>
@@ -65,6 +52,9 @@
       this.$store.state.showAdd = false;
     }
 
+    // get key() {
+    //   return this.$route.path + Math.random();
+    // }
 
     get tagList() {
       return this.$store.state.tagList;
@@ -74,10 +64,6 @@
       const {tagList} = this;
       return clone(tagList).filter((item: Tag) => item.type === this.$store.state.record.type);
 
-    }
-
-    get key() {
-      return this.$route.path + Math.random();
     }
 
     goAdd() {
@@ -100,7 +86,6 @@
         this.$router.replace('/addrewrite/' + tag.id);
       }
     }
-
 
     goBack() {
       this.$router.replace('/addmoney');

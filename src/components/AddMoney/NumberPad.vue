@@ -22,12 +22,8 @@
       <button @click="inputContent">1</button>
       <button @click="inputContent">2</button>
       <button @click="inputContent">3</button>
-      <button @click="equal" class="equal"
-              v-if="isCount&&lock">=
-      </button>
-      <button @click="ok" class="ok"
-              v-else>{{$route.params.id?'修改':'OK'}}
-      </button>
+      <button @click="equal" class="equal" v-if="isCount&&lock">=</button>
+      <button @click="ok" class="ok" v-else>{{$route.params.id?'修改':'OK'}}</button>
       <button @click="inputContent" class="zero">0</button>
       <button @click="inputContent">.</button>
     </div>
@@ -53,7 +49,6 @@
 
     created() {
       !this.$route.params.id ? this.output = '0' : this.output = Math.abs(+this.output).toString();
-      // this.$store.state.record.createdAt = new Date().toISOString();
     }
 
     get recordList() {
@@ -76,22 +71,9 @@
       return this.isHaveOperator || this.dotLast;
     }
 
-    get arr() {
-      return this.output.split('÷');
-    }
-
     inputContent(event: MouseEvent) {
       this.lock = true;
       const input = (event.target as HTMLButtonElement).textContent!;
-
-      if (this.output.length === 9) {
-        this.one = true;
-      } else if (this.output.length === 12) {
-        this.two = true;
-      } else if (this.output.length === 14) {
-        window.alert('输入金额过长');
-        return;
-      }  //输入过长
 
       if (this.output && this.output === '0') {
         if ('0123456789'.indexOf(input) >= 0) {
@@ -120,7 +102,11 @@
           const arr = this.output.split('.');
           if (arr.length === 3 && (arr[1].includes('÷') || arr[1].includes('×') || arr[1].includes('+') || arr[1].includes('-'))) {
             return;
-          } else if (arr.length === 2 && (arr[0].includes('÷') || arr[0].includes('×') || arr[0].includes('+') || arr[0].includes('-'))) {
+          } else if (arr.length === 2 && (arr[0].includes('÷') || arr[0].includes('×') || arr[0].includes('+') || arr[0].includes('-')) && !(arr[1].includes('÷') || arr[1].includes('×') || arr[1].includes('+') || arr[1].includes('-'))) {
+            if (!this.isOver && input === '.') {
+              this.output = '0' + input;
+              this.isOver = !this.isOver;
+            }
             return;
           }
         } else {
@@ -146,6 +132,15 @@
         this.output += 0; //这个试出来的
       }   // //在加减乘除号后面输入【.】时
 
+      if (this.output.length === 9) {
+        this.one = true;
+      } else if (this.output.length === 12) {
+        this.two = true;
+      } else if (this.output.length === 14) {
+        window.alert('输入金额过长');
+        return;
+      }  //输入过长
+
       if (!this.isOver) {
         if ('÷×+-'.indexOf(input) >= 0) {
           this.output += input;
@@ -158,27 +153,20 @@
         }
         this.output = '';
         this.isOver = true;
-      }
-      if (this.output.length < 12) {
-        this.two = false;
-      }
-      if (this.output.length < 9) {
-        this.one = false;
-      }
+      } //运算完输入时
       this.output += input;
     }
 
     remove() {
-      if (this.output.length === 1) {
-        this.output = '0';
-      } else {
-        this.output = this.output.slice(0, -1);
-      }
-      if (this.output.length < 12) {
+      this.output = this.output.slice(0, -1);
+      if (this.output.length <= 12) {
         this.two = false;
       }
-      if (this.output.length < 9) {
+      if (this.output.length <= 9) {
         this.one = false;
+      }
+      if (this.output.length === 0) {
+        this.output = '0';
       }
     }
 
@@ -262,12 +250,17 @@
         return;
       }
       if (this.$route.params.id) {
-        let amount
-        if (this.$store.state.currentRecord.type==='-') {
-          amount=-moneyValue
-        }else {
-          amount=moneyValue
+        if (moneyValue === 0) {
+          return window.alert('请输入金额');
         }
+        let amount;
+
+        if (this.$store.state.currentRecord.type === '-') {
+          amount = -moneyValue;
+        } else {
+          amount = moneyValue;
+        }
+
         this.$emit('update:value', amount);
         this.$store.commit('saveRecords');
         window.alert('成功');
@@ -277,7 +270,6 @@
       this.$emit('update:value', moneyValue);//把输入的字符串变成数字记入账单
       this.$emit('submit', moneyValue);
       this.output = '0';
-      this.$router.back();
     }
   }
 </script>

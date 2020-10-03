@@ -30,9 +30,8 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import MoneyType from '@/components/MoneyType.vue';
-  import dayjs from 'dayjs';
   import Button from '@/components/Button.vue';
-  import Echarts from '@/components/Echarts.vue';
+  import Echarts from '@/components/Statistics/Echarts.vue';
   import detail from '@/constants/detail';
   import DetailList from '@/components/Detail/DetailList.vue';
   import DetailBottom from '@/components/Detail/DetailBottom.vue';
@@ -44,11 +43,11 @@
     type = '1';
     detailList = detail;
     showvalue = '全部';
+    key = 0;
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
     }
-
 
     get dayRecordList() {
       this.$store.commit('createdDayRecordList', {recordList: this.$store.state.recordList, type: this.type});

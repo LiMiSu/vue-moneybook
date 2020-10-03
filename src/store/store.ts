@@ -48,6 +48,7 @@ const store = new Vuex.Store({
     showBody: false,
     showAdd: false,
     showtype: false,
+    key: 0
   } as RootState,
 
   mutations: {
@@ -56,19 +57,18 @@ const store = new Vuex.Store({
       state.recordList = JSON.parse(window.localStorage.getItem('recordList') || '[]') as RecordItem[];
     },
     createRecord(state, record: RecordItem) {
-      const id= createRecordId().toString()
-      record.id=id
+      record.id=createRecordId().toString()
       if (record.type === '-') {
         record.amount = -record.amount;
       }
       const recordDeep: RecordItem = clone(record);
-      if (!recordDeep.amount&&!state.currentRecord.amount|| recordDeep.amount === 0&&state.currentRecord.amount===0) {
+      if (!recordDeep.amount||recordDeep.amount === 0) {
         return window.alert('请输入金额');
       }
       state.recordList.push(recordDeep);
       store.commit('saveRecords');
       window.alert('记账成功');
-      // state.record.createdAt = new Date().toISOString();
+      router.back()
     },
     saveRecords(state) {
       window.localStorage.setItem('recordList', JSON.stringify(state.recordList));

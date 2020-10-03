@@ -138,9 +138,8 @@
       const index=this.$store.state.recordList.indexOf(record)
       this.$store.state.recordList.splice(index,1)
       this.$store.commit('saveRecords');
-      this.$store.state.key+=1
       window.alert('成功');
-      this.$router.push('/detail');
+      this.$router.replace('/detail');
     }
   }
 </script>
