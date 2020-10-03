@@ -19,7 +19,7 @@ const store = new Vuex.Store({
         tagicon: '',
         type: ''
       },
-      id:'',
+      id: '',
       notes: '',
       type: '' + '-',
       amount: 0,
@@ -48,7 +48,10 @@ const store = new Vuex.Store({
     showBody: false,
     showAdd: false,
     showtype: false,
-    key: 0
+    key: 0,
+    chooseYear: '',
+    chooseMonth: '',
+    interval:'month'
   } as RootState,
 
   mutations: {
@@ -57,18 +60,18 @@ const store = new Vuex.Store({
       state.recordList = JSON.parse(window.localStorage.getItem('recordList') || '[]') as RecordItem[];
     },
     createRecord(state, record: RecordItem) {
-      record.id=createRecordId().toString()
+      record.id = createRecordId().toString();
       if (record.type === '-') {
         record.amount = -record.amount;
       }
       const recordDeep: RecordItem = clone(record);
-      if (!recordDeep.amount||recordDeep.amount === 0) {
+      if (!recordDeep.amount || recordDeep.amount === 0) {
         return window.alert('请输入金额');
       }
       state.recordList.push(recordDeep);
       store.commit('saveRecords');
       window.alert('记账成功');
-      router.back()
+      router.back();
     },
     saveRecords(state) {
       window.localStorage.setItem('recordList', JSON.stringify(state.recordList));
@@ -77,7 +80,7 @@ const store = new Vuex.Store({
     setCurrentTag(state, id: string) {
       state.currentTag = state.tagList.filter(t => t.id === id)[0];
     },
-    setCurrentRecord(state,id: string){
+    setCurrentRecord(state, id: string) {
       state.currentRecord = state.recordList.filter(t => t.id === id)[0];
     },
     fetchTags(state) {
@@ -109,7 +112,7 @@ const store = new Vuex.Store({
         state.tagList.splice(index, 1);
         store.commit('saveTags', id);
         window.alert('删除成功');
-        router.replace('/managetag').then(r => '')
+        router.replace('/managetag').then(r => '');
       } else {
         window.alert('删除失败');
       }
@@ -150,7 +153,7 @@ const store = new Vuex.Store({
         return [];
       }
       const dayResult: DayResult[] = [{
-        string:'day',
+        string: 'day',
         show: true,
         title: dayjs(newRecordList[0].createdAt).format('YYYY-M-DD'),
         items: [newRecordList[0]]
@@ -161,7 +164,12 @@ const store = new Vuex.Store({
         if (dayjs(last.title).isSame(dayjs(current.createdAt), 'day')) {
           last.items.push(current);
         } else {
-          dayResult.push({string:'day',show: true, title: dayjs(current.createdAt).format('YYYY-M-DD'), items: [current]});
+          dayResult.push({
+            string: 'day',
+            show: true,
+            title: dayjs(current.createdAt).format('YYYY-M-DD'),
+            items: [current]
+          });
         }
       }
       dayResult.forEach(group => {
@@ -182,7 +190,7 @@ const store = new Vuex.Store({
         return [];
       }
       const monthResult: MonthResult[] = [{
-        string:'month',
+        string: 'month',
         show: true,
         title: dayjs(newRecordList[0].title).format('YYYY-M'),
         items: [newRecordList[0]]
@@ -193,7 +201,12 @@ const store = new Vuex.Store({
         if (dayjs(last.title).isSame(dayjs(current.title), 'month')) {
           last.items.push(current);
         } else {
-          monthResult.push({string:'month',show: true, title: dayjs(current.title).format('YYYY-M'), items: [current]});
+          monthResult.push({
+            string: 'month',
+            show: true,
+            title: dayjs(current.title).format('YYYY-M'),
+            items: [current]
+          });
         }
       }
       monthResult.forEach(group => {
@@ -214,7 +227,7 @@ const store = new Vuex.Store({
         return [];
       }
       const yearResult: YearResult[] = [{
-        string:'year',
+        string: 'year',
         show: true,
         title: dayjs(newRecordList[0].title).format('YYYY'),
         items: [newRecordList[0]]
@@ -225,7 +238,7 @@ const store = new Vuex.Store({
         if (dayjs(last.title).isSame(dayjs(current.title), 'year')) {
           last.items.push(current);
         } else {
-          yearResult.push({string:'year',show: true, title: dayjs(current.title).format('YYYY'), items: [current]});
+          yearResult.push({string: 'year', show: true, title: dayjs(current.title).format('YYYY'), items: [current]});
         }
       }
       yearResult.forEach(group => {
@@ -235,6 +248,13 @@ const store = new Vuex.Store({
       });
       state.yearRecordList = yearResult;
     },
+
+    fetchChooseMonth(state) {
+      state.chooseMonth = state.record.createdAt;
+    },
+    fetchChooseYear(state) {
+      state.chooseYear = state.record.createdAt;
+    }
   }
 });
 

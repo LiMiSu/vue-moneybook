@@ -4,7 +4,7 @@ type RecordItem = {
   notes: string;
   type: string;
   amount: number;
-  createdAt?: string;
+  createdAt: string;
 }
 type Tag = {
   id: string;
@@ -26,6 +26,9 @@ type RootState = {
   showAdd: boolean;
   showtype: boolean;
   key: number;
+  chooseYear: string;
+  chooseMonth: string;
+  interval: string;
 }
 type GetDay = {
   year: number;

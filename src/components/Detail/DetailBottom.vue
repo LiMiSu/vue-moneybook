@@ -45,11 +45,11 @@
         return sum + item.amount;
       }, 0);
       if (text === '支出') {
-        return total1;
+        return parseFloat(total1.toFixed(2));
       } else if (text === '收入') {
-        return total2;
+        return parseFloat(total2.toFixed(2));
       } else if (text === '总计') {
-        return total1 + total2;
+        return parseFloat((total1 + total2).toFixed(2));
       }
     }
   }

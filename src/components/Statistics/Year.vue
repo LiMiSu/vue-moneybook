@@ -18,6 +18,8 @@
   export default class Year extends Vue {
     @Prop(String)
     chooseDate!: string;
+
+
     showData = {
       year: 0,
       month: 0,

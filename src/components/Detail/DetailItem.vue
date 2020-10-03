@@ -7,7 +7,7 @@
       <div class="list" v-if="type==='1'"><span class="text">收入：</span><span
         class="num">{{doSom(date,'收入')}}</span></div>
       <div class="list"><span class="text" v-if="type==='1'">结余：</span><span class="text" v-else>合计：</span><span
-        class="num">{{date.total}}</span></div>
+        class="num">{{parseFloat(date.total.toFixed(2))}}</span></div>
     </div>
     <Icon name="xia" v-if="date.show"></Icon>
     <Icon name="shang" v-else></Icon>
@@ -83,7 +83,7 @@
           : item.type === '+' && dayjs(item.createdAt).format('YYYY') === value.title;
       });
       return typeRecord.reduce((sum, item) => {
-        return sum + item.amount;
+        return parseFloat((sum + item.amount).toFixed(2));
       }, 0);
     }
 
@@ -94,7 +94,7 @@
           : item.type === '+' && dayjs(item.createdAt).format('YYYY-M') === value.title;
       });
       return typeRecord.reduce((sum, item) => {
-        return sum + item.amount;
+        return parseFloat((sum + item.amount).toFixed(2));
       }, 0);
     }
 
@@ -105,7 +105,7 @@
           : item.type === '+' && dayjs(item.createdAt).format('YYYY-M-DD') === value.title;
       });
       return typeRecord.reduce((sum, item) => {
-        return sum + item.amount;
+        return parseFloat((sum + item.amount).toFixed(2));
       }, 0);
     }
 
