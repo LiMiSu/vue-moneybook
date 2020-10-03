@@ -29,7 +29,7 @@
 
               </div>
             </div>
-            <div v-if="recordByTagTime.length>0">
+            <div v-if="recordByTagTime.length>0" class="echarts-item">
               <Echarts :option="lineOption" v-if="showLine"/>
               <Echarts :option="circleOption" :getInitShowTag="getInitShowTag" v-else/>
             </div>
@@ -499,7 +499,6 @@
     flex-direction: column;
     align-items: center;
     background: #fff;
-
     .tabs-type {
       width: 100%;
     }
@@ -509,7 +508,7 @@
     display: flex;
     justify-content: space-between;
     padding: 16px 16px 0 16px;
-
+    width: 100%;
     .around {
       width: 50px;
       height: 100%;
@@ -541,14 +540,28 @@
       .top-wrapper {
         display: flex;
         flex-direction: column;
-        background: rgb(243, 243, 243);
-        box-shadow: 0px 3px 11px -9px #999;
+        align-items: center;
+
+        box-shadow: 0px 3px 11px -9px #d9d9d9;
+
+        .echarts-item{
+          width: 98vw;
+          background: rgb(243, 243, 243);
+          box-shadow: 0 16px 20px -16px #d9d9d9;
+          border-radius: 10px;
+        }
+        .s-type{
+          width: 40%;
+        }
       }
 
       .head {
-        /*height: 4vh;*/
+        width: 100%;
+        background: #ffffff;
+        box-shadow: 0 3px 11px -9px #d9d9d9;
         line-height: 4vh;
         padding: 2px 16px;
+        margin-top: 5px;
         color: #b5b5b5;
         display: flex;
         align-items: flex-end;
@@ -636,7 +649,6 @@
       line-height: 4vh;
       padding: 2px 16px;
       color: #b5b5b5;
-      border-bottom: 1px solid #b5b5b5;
     }
 
     .list {

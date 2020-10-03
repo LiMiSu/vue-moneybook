@@ -140,8 +140,8 @@
 
 <style lang="scss" scoped>
   .content {
-    max-width: 100%;
+    max-width: 98vw;
     min-height: 30vh;
-
+    border-radius: 10px;
   }
 </style>

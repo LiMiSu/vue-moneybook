@@ -87,8 +87,8 @@
 <style lang="scss" scoped>
   .head {
 
-    background: rgb(243, 243, 243);
-    box-shadow: 0 3px 11px -9px #999;
+    background: #ffffff;
+    box-shadow: 0 3px 11px -9px #d9d9d9;
     line-height: 4vh;
     padding: 5px 16px 0 16px;
     color: #b5b5b5;
@@ -122,7 +122,9 @@
     width: 98vw;
     height: 220px;
     background: rgb(243, 243, 243);
-    box-shadow: 0 3px 11px -9px #999;
+    box-shadow: 0 16px 20px -16px #d9d9d9;
+    margin-top: 5px;
+    border-radius: 10px;
     .date-nav {
       .date-btn {
         font-size: 24px;
