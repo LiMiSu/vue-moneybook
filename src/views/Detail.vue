@@ -1,4 +1,4 @@
-<template v-if="isShow">
+<template>
   <NavStyle>
     <template #header>
       <div @click="$store.state.showtype=!$store.state.showtype" class="nav-wrapper">
@@ -13,31 +13,36 @@
         <MoneyType class-prefix="detail" :data-source="detailList" :value.sync="type" :showvalue.sync="showvalue"/>
       </div>
       <div class="statisticsList">
+
+
         <div v-if="yearRecordList.length>0">
+
+<!--          <DetailList :yearRecordList.sync="yearRecordList" :type="type"></DetailList>-->
           <div v-for="year in yearRecordList" :key="year.title">
+
             <h2 @click="year.show=!year.show" class="title-wrapper">
+
               <div class="year-title">
                 <span class="year">{{year.title}}<span class="text">年</span></span>
-                <div class="list" v-if="type==='1'">
-                  <span class="text">支出：</span>
-                  <span class="num">{{yearTotal(year,'支出')}}</span>
+                <div class="list" v-if="type==='1'"><span class="text">支出：</span><span class="num">{{yearTotal(year,'支出')}}</span>
                 </div>
-                <div class="list" v-if="type==='1'">
-                  <span class="text">收入：</span>
-                  <span class="num">{{yearTotal(year,'收入')}}</span>
+                <div class="list" v-if="type==='1'"><span class="text">收入：</span><span class="num">{{yearTotal(year,'收入')}}</span>
                 </div>
-                <div class="list">
-                  <span class="text" v-if="type==='1'">结余：</span>
-                  <span class="text" v-else>合计：</span>
-                  <span class="num">{{year.total}}</span>
-                </div>
+                <div class="list"><span class="text" v-if="type==='1'">结余：</span><span class="text"
+                                                                                       v-else>合计：</span><span
+                  class="num">{{year.total}}</span></div>
               </div>
               <Icon name="xia" v-if="year.show"></Icon>
               <Icon name="shang" v-else></Icon>
             </h2>
+
+
             <div v-if="year.show">
+
+
               <div v-for="month in year.items" :key="month.title">
                 <h3 @click="month.show=!month.show" class="title-wrapper">
+
                   <div class="month-title">
                     <span class="month">{{beautifyMonth(month.title)}}<span class="text">月</span></span>
                     <div class="list" v-if="type==='1'"><span class="text">支出：</span><span class="num">{{monthTotal(month,'支出')}}</span>
@@ -51,7 +56,11 @@
                   <Icon name="xia" v-if="month.show"></Icon>
                   <Icon name="shang" v-else></Icon>
                 </h3>
+
+
                 <div v-if="month.show">
+
+
                   <div v-for="day in month.items" :key="day.title">
                     <div class="title-wrapper" @click="day.show=!day.show">
                       <div class="day-title">
@@ -67,7 +76,10 @@
                       <Icon name="xia" v-if="day.show"></Icon>
                       <Icon name="shang" v-else></Icon>
                     </div>
+
                     <div v-if="day.show">
+
+
                       <div v-for="(item,index) in day.items" :key="index"
                            class="record" @click="recordDetail(item)">
                         <div class="left">
@@ -86,6 +98,8 @@
               </div>
             </div>
           </div>
+
+
           <div class="head">
             <div class="totalN">
               <span class="text">(单位：元)</span>
@@ -106,11 +120,15 @@
               <span class="text">总合计：{{type==='-'?allTotal('支出'):allTotal('收入')}}</span>
             </div>
           </div>
+
+
         </div>
         <div class="noResult" v-else>- 暂无{{showvalue==='全部'?'记账':showvalue}}记录，去
           <router-link to="/addmoney"><span class="add">记一笔</span></router-link>
           吧~ -
         </div>
+
+
       </div>
     </template>
   </NavStyle>
@@ -124,15 +142,15 @@
   import Button from '@/components/Button.vue';
   import Echarts from '@/components/Echarts.vue';
   import detail from '@/constants/detail';
+  import DetailList from '@/components/Detail/DetailList.vue';
 
   @Component({
-    components: {Button, Echarts, MoneyType},
+    components: {DetailList, Button, Echarts, MoneyType},
   })
   export default class Detail extends Vue {
     type = '1';
     detailList = detail;
     showvalue = '全部';
-    isShow = true;
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
@@ -270,77 +288,78 @@
     }
   }
 
+///////
 
-  %title {
-    width: 100%;
-    min-height: 16px;
-    display: flex;
-    align-items: center;
-    padding: 3px;
-    font-size: 14px;
-  }
+ %title {
+      width: 100%;
+      min-height: 16px;
+      display: flex;
+      align-items: center;
+      padding: 3px;
+      font-size: 14px;
+    }
 
-  .title-wrapper {
-    width: 98vw;
-    background: rgb(243, 243, 243);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 10vh;
-    padding-right: 16px;
-    box-shadow: 0 3px 11px -9px #999;
-    margin: 5px 0;
-
-
-    .year-title, .month-title, .day-title {
-      @extend %title;
-      flex: 1;
-      justify-content: space-between;
+    .title-wrapper {
+      width: 98vw;
+      background: rgb(243, 243, 243);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 10vh;
+      padding-right: 16px;
+      box-shadow: 0 3px 11px -9px #999;
+      margin: 5px 0;
 
 
-      .year, .month, .day {
-        min-width: 25vw;
-        text-align: center;
-        font-size: 22px;
-        border-right: 1px solid #b5b5b5;
+      .year-title, .month-title, .day-title {
+        @extend %title;
+        flex: 1;
+        justify-content: space-between;
 
-        .text {
+
+        .year, .month, .day {
+          min-width: 25vw;
+          text-align: center;
+          font-size: 22px;
+          border-right: 1px solid #b5b5b5;
+
+          .text {
+            font-size: 16px;
+            margin-left: 2px;
+          }
+        }
+
+        .day {
           font-size: 16px;
-          margin-left: 2px;
+
+          .text {
+            font-size: 14px;
+          }
+        }
+
+        .list {
+          display: flex;
+          flex-wrap: wrap;
+          margin-left: 10px;
+          color: #999;
+          font-size: 12px;
+
+          .text {
+            margin-left: 2px;
+          }
+
+          .num {
+            word-break: break-all;
+          }
         }
       }
 
-      .day {
-        font-size: 16px;
-
-        .text {
-          font-size: 14px;
-        }
-      }
-
-      .list {
-        display: flex;
-        flex-wrap: wrap;
-        margin-left: 10px;
-        color: #999;
-        font-size: 12px;
-
-        .text {
-          margin-left: 2px;
-        }
-
-        .num {
-          word-break: break-all;
-        }
+      .icon {
+        color: #999999;
       }
     }
 
-    .icon {
-      color: #999999;
-    }
-  }
-
-  .title-wrapper:first-child {
+ .title-wrapper:first-child {
     margin-top: 0;
   }
 
@@ -352,7 +371,6 @@
   .day-title {
     @extend %title;
     justify-content: space-between;
-
   }
 
   %item {
@@ -363,19 +381,15 @@
     align-items: center;
   }
 
+
+
   .statisticsList {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    .day-title {
-      @extend %title;
-    }
 
-    .total {
-      @extend %title;
-    }
 
     .record {
       @extend %item;
