@@ -56,17 +56,13 @@
 </script>
 
 <style lang="scss" scoped>
-  %item {
+  .record {
     padding: 0 10px;
     min-height: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  .record {
-    @extend %item;
     background: white;
-    padding: 10px;
 
     .left {
       display: flex;

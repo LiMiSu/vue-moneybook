@@ -28,7 +28,6 @@
       this.$store.commit('fetchRecords');
     }
 
-
     get textString() {
       if (this.date.string === 'year') {
         return '年';
@@ -117,38 +116,27 @@
     beautifyMonth(title: string) {
       return dayjs(title).format('M');
     }
-
-
   }
 </script>
 
 <style lang="scss" scoped>
-  %title {
-    width: 100%;
-    min-height: 16px;
-    display: flex;
-    align-items: center;
-    padding: 3px;
-    font-size: 14px;
-  }
+  @import "~@/assets/style/helper.scss";
 
   .title-wrapper {
-    width: 98vw;
-    background: rgb(243, 243, 243);
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 98vw;
     min-height: 10vh;
-    padding-right: 16px;
-    box-shadow: 0 3px 11px -9px #999;
     margin: 5px 0;
-
+    padding-right: 16px;
+    background: rgb(243, 243, 243);
+    box-shadow: 0 3px 11px -9px #999;
 
     .year-title, .month-title, .day-title {
       @extend %title;
       flex: 1;
       justify-content: space-between;
-
 
       .year, .month, .day {
         min-width: 25vw;
@@ -164,7 +152,6 @@
 
       .day {
         font-size: 16px;
-
         .text {
           font-size: 14px;
         }
