@@ -7,6 +7,7 @@
       <div class="say" v-if="sayValue">
         <div class="value">此功能尚未开发，敬请期待哟</div>
       </div>
+      <Succeed class="succ" v-if="$store.state.succeedShow"></Succeed>
     </header>
     <main class="main" :class=" classPrefix && `${classPrefix}-content` ">
       <slot name="main"></slot>
@@ -20,12 +21,21 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Prop} from 'vue-property-decorator';
-
-  @Component
+  import Succeed from '@/components/Succeed.vue';
+  @Component({
+    components: {Succeed}
+  })
   export default class NavStyle extends Vue {
     @Prop() classPrefix!: string;
     @Prop() value!: string;
     sayValue = false;
+    created(){
+      if(this.$store.state.succeedShow){
+        setTimeout(() =>{
+          this.$store.state.succeedShow=!this.$store.state.succeedShow
+        },1000)
+      }
+    }
     say(){
       if(!this.sayValue){
         this.sayValue=!this.sayValue
@@ -65,6 +75,7 @@
     }
 
     .say {
+      z-index: 9;
       position: absolute;
       left: 0;
       top: 0;
@@ -81,7 +92,18 @@
         font-size: 14px;
         border-radius: 7px;
       }
-
+    }
+    .succ{
+      z-index: 9;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 30vh;
+      /*background: rgba(43,43,43, 0.4);*/
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
   .main {

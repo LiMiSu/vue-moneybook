@@ -263,7 +263,8 @@
 
         this.$emit('update:value', amount);
         this.$store.commit('saveRecords');
-        window.alert('成功');
+        // window.alert('成功');
+        this.$store.state.succeedShow=!this.$store.state.succeedShow
         this.$router.replace('/detail');
         return;
       }
