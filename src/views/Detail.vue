@@ -1,4 +1,4 @@
-<template>
+<template v-if="isShow">
   <NavStyle>
     <template #header>
       <div @click="$store.state.showtype=!$store.state.showtype" class="nav-wrapper">
@@ -132,6 +132,7 @@
     type = '1';
     detailList = detail;
     showvalue = '全部';
+    isShow = true;
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
@@ -367,6 +368,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
     .day-title {
       @extend %title;
     }
@@ -419,7 +421,8 @@
       .amount {
         font-size: 18px;
       }
-      .rewrite{
+
+      .rewrite {
         color: #999999;
         margin-left: 10px;
       }

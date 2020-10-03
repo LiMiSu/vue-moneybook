@@ -74,9 +74,10 @@
         const id = this.$route.params.id;
         this.$store.commit('fetchTags');
         this.$store.commit('setCurrentTag', id);
-        this.valueDat = this.currentTag.name;
-        if (!this.currentTag) {
+        if (!id) {
           this.$router.replace('/404');
+        }else {
+          this.valueDat = this.currentTag.name;
         }
       }
     }

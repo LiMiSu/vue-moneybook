@@ -2,11 +2,14 @@
   <div class="addMoney-wrapper">
     <header>
       <div class="addheader">
-        <Icon name="left" class="left" @click="goBack"></Icon>
+        <div class="icon left" @click="goBack">
+          <Icon name="left"></Icon>
+        </div>
         <div class="header">
           {{$route.params.id?'编辑账单':'记一笔'}}
         </div>
-        <span class="icon off"></span>
+        <span class="icon off" @click="deleteRecord($route.params.id)" v-if="$route.params.id">删除</span>
+        <span class="icon empty" v-else></span>
       </div>
       <div class="type">
         <MoneyType class-prefix="add" :data-source="typeList"
@@ -76,11 +79,12 @@
         this.$store.state.record.notes = '';
       }
     }
-    get currentTag(){
-      if (this.$store.state.currentTag){
-        return this.$store.state.currentTag
-      }else {
-        return '无'
+
+    get currentTag() {
+      if (this.$store.state.currentTag) {
+        return this.$store.state.currentTag;
+      } else {
+        return '无';
       }
     }
 
@@ -110,9 +114,9 @@
 
     set thisRecordAmount(value: number) {
       if (this.$route.params.id) {
-        this.$store.state.currentRecord.amount=value;
+        this.$store.state.currentRecord.amount = value;
       } else {
-        this.$store.state.record.amount=value;
+        this.$store.state.record.amount = value;
       }
     }
 
@@ -127,6 +131,16 @@
       } else {
         this.$router.replace('/main');
       }
+    }
+
+    deleteRecord(id: string) {
+      const record = (this.$store.state.recordList as RecordItem[]).filter(item => item.id === id)[0];
+      const index=this.$store.state.recordList.indexOf(record)
+      this.$store.state.recordList.splice(index,1)
+      this.$store.commit('saveRecords');
+      this.$store.state.key+=1
+      window.alert('成功');
+      this.$router.push('/detail');
     }
   }
 </script>
@@ -151,10 +165,22 @@
     height: 6vh;
     border-bottom: 1px solid rgb(243, 243, 243);
 
-    .icon.left, .icon.off {
-      width: 24px;
+    .icon.left, .icon.off,.icon.empty {
+      width: 42px;
       height: 24px;
       margin: 0 16px;
+
+      line-height: 24px;
+    }
+    .icon.left{
+      text-align: left;
+    }
+
+    .icon.off {
+      text-align: center;
+      background: #DE7873;
+      color: white;
+      border-radius: 6px;
     }
   }
 

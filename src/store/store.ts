@@ -109,7 +109,7 @@ const store = new Vuex.Store({
         state.tagList.splice(index, 1);
         store.commit('saveTags', id);
         window.alert('删除成功');
-        router.back();
+        router.replace('/managetag').then(r => '')
       } else {
         window.alert('删除失败');
       }
