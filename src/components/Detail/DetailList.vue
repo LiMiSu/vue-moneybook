@@ -42,6 +42,10 @@
   export default class DetailList extends Vue {
     @Prop() yearRecordList!: YearResult[];
     @Prop() readonly type!: string;
+
+    beforeCreate() {
+      this.$store.commit('fetchRecords');
+    }
     recordDetail(item: RecordItem) {
       this.$router.replace('/addmoney/' + item.id);
     }

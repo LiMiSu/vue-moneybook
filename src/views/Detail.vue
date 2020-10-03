@@ -13,40 +13,14 @@
         <MoneyType class-prefix="detail" :data-source="detailList" :value.sync="type" :showvalue.sync="showvalue"/>
       </div>
       <div class="statisticsList">
-
         <div v-if="yearRecordList.length>0">
-
           <DetailList :yearRecordList.sync="yearRecordList" :type="type"></DetailList>
-
-          <div class="head">
-            <div class="totalN">
-              <span class="text">(单位：元)</span>
-            </div>
-            <div class="totalN" v-if="type==='1'">
-              <span class="text">总支出：</span>
-              <span class="num">{{allTotal('支出')}}</span>
-            </div>
-            <div class="totalN" v-if="type==='1'">
-              <span class="t">总收入：</span>
-              <span class="num">{{allTotal('收入')}}</span>
-            </div>
-            <div class="totalN" v-if="type==='1'">
-              <span class="text">总结余：</span>
-              <span class="num">{{allTotal('总计')}}</span>
-            </div>
-            <div class="totalN" v-else>
-              <span class="text">总合计：{{type==='-'?allTotal('支出'):allTotal('收入')}}</span>
-            </div>
-          </div>
-
-
+          <DetailBottom :type="type"></DetailBottom>
         </div>
         <div class="noResult" v-else>- 暂无{{showvalue==='全部'?'记账':showvalue}}记录，去
           <router-link to="/addmoney"><span class="add">记一笔</span></router-link>
           吧~ -
         </div>
-
-
       </div>
     </template>
   </NavStyle>
@@ -61,9 +35,10 @@
   import Echarts from '@/components/Echarts.vue';
   import detail from '@/constants/detail';
   import DetailList from '@/components/Detail/DetailList.vue';
+  import DetailBottom from '@/components/Detail/DetailBottom.vue';
 
   @Component({
-    components: {DetailList, Button, Echarts, MoneyType},
+    components: {DetailBottom, DetailList, Button, Echarts, MoneyType},
   })
   export default class Detail extends Vue {
     type = '1';
@@ -93,82 +68,6 @@
       return this.$store.state.yearRecordList.filter((item: YearResult) => item.items[0].items[0].items[0].type === this.type);
     }
 
-
-    showType(item: RecordItem) {
-      if (item.type === '+') {
-        return item.type;
-      } else {
-        return '';
-      }
-    }
-
-
-    beautifyDay(title: string) {
-      return dayjs(title).format('DD');
-    }
-
-    beautifyMonth(title: string) {
-      return dayjs(title).format('M');
-    }
-
-    allTotal(text: string) {
-      const typeRecord1 = (this.$store.state.recordList as RecordItem[]).filter(item => {
-        return item.type === '-';
-      });
-      const total1 = typeRecord1.reduce((sum, item) => {
-        return sum + item.amount;
-      }, 0);
-      const typeRecord2 = (this.$store.state.recordList as RecordItem[]).filter(item => {
-        return item.type === '+';
-      });
-      const total2 = typeRecord2.reduce((sum, item) => {
-        return sum + item.amount;
-      }, 0);
-      if (text === '支出') {
-        return total1;
-      } else if (text === '收入') {
-        return total2;
-      } else if (text === '总计') {
-        return total1 + total2;
-      }
-    }
-
-    yearTotal(value: MonthResult, text: string) {
-      const typeRecord = (this.$store.state.recordList as RecordItem[]).filter(item => {
-        return text === '支出' ?
-          item.type === '-' && dayjs(item.createdAt).format('YYYY') === value.title
-          : item.type === '+' && dayjs(item.createdAt).format('YYYY') === value.title;
-      });
-      return typeRecord.reduce((sum, item) => {
-        return sum + item.amount;
-      }, 0);
-    }
-
-    monthTotal(value: MonthResult, text: string) {
-      const typeRecord = (this.$store.state.recordList as RecordItem[]).filter(item => {
-        return text === '支出' ?
-          item.type === '-' && dayjs(item.createdAt).format('YYYY-M') === value.title
-          : item.type === '+' && dayjs(item.createdAt).format('YYYY-M') === value.title;
-      });
-      return typeRecord.reduce((sum, item) => {
-        return sum + item.amount;
-      }, 0);
-    }
-
-    dayTotal(value: MonthResult, text: string) {
-      const typeRecord = (this.$store.state.recordList as RecordItem[]).filter(item => {
-        return text === '支出' ?
-          item.type === '-' && dayjs(item.createdAt).format('YYYY-M-DD') === value.title
-          : item.type === '+' && dayjs(item.createdAt).format('YYYY-M-DD') === value.title;
-      });
-      return typeRecord.reduce((sum, item) => {
-        return sum + item.amount;
-      }, 0);
-    }
-
-    recordDetail(item: RecordItem) {
-      this.$router.replace('/addmoney/' + item.id);
-    }
   }
 </script>
 
@@ -225,27 +124,4 @@
       }
     }
   }
-
-  .head {
-    line-height: 4vh;
-    padding: 5px 10px;
-    color: #b5b5b5;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-
-
-    .totalN {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      font-size: 12px;
-
-      .num {
-        word-break: break-all;
-      }
-    }
-  }
-
 </style>
