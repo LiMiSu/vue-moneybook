@@ -1,4 +1,3 @@
-<script src="../router/index.ts"></script>
 <template>
   <div class="addMoney-wrapper">
     <header>
@@ -14,7 +13,7 @@
       </div>
       <div class="type">
         <MoneyType class-prefix="add" :data-source="typeList"
-                   :value.sync="typeValue"/>
+                   :value.sync="$route.params.id?$store.state.currentRecord.type:$store.state.record.type"/>
       </div>
     </header>
     <main class="addmain">
@@ -75,7 +74,12 @@
     created() {
       this.$store.commit('fetchRecords');
       if (this.$route.params.id) {
-        this.$store.commit('setCurrentRecord', this.$route.params.id);
+        if ((this.$store.state.recordList as RecordItem[]).map(item=>item.id).indexOf(this.$route.params.id)<0){
+          this.$router.replace('/404');
+          return
+        }else {
+          this.$store.commit('setCurrentRecord', this.$route.params.id);
+        }
       } else {
         this.$store.state.record.notes = '';
       }
@@ -121,21 +125,6 @@
       }
     }
 
-    get typeValue(){
-      if (this.$route.params.id){
-        return this.$store.state.currentRecord.type
-      }else {
-        return this.$store.state.record.type
-      }
-    }
-    set typeValue(value){
-      if (this.$route.params.id){
-        this.$store.state.currentRecord.type = value
-      }else {
-        this.$store.state.record.type = value
-      }
-    }
-
     saveRecord() {
       this.$store.commit('createRecord', this.$store.state.record);
       this.$store.state.record.notes = '';
@@ -154,7 +143,6 @@
       const index=this.$store.state.recordList.indexOf(record)
       this.$store.state.recordList.splice(index,1)
       this.$store.commit('saveRecords');
-      console.log(this.$route.params.id);
       window.alert('成功');
       this.$router.replace('/detail');
     }
