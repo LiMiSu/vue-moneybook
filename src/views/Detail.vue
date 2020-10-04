@@ -43,7 +43,7 @@
     type = '1';
     detailList = detail;
     showvalue = '全部';
-    key = 0;
+
 
     beforeCreate() {
       this.$store.commit('fetchRecords');

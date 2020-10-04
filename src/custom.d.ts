@@ -25,7 +25,6 @@ type RootState = {
   showBody: boolean;
   showAdd: boolean;
   showtype: boolean;
-  key: number;
   chooseYear: string;
   chooseMonth: string;
   interval: string;

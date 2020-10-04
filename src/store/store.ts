@@ -48,7 +48,6 @@ const store = new Vuex.Store({
     showBody: false,
     showAdd: false,
     showtype: false,
-    key: 0,
     chooseYear: '',
     chooseMonth: '',
     interval:'month',

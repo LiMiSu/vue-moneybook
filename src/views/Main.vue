@@ -21,6 +21,7 @@
                 </div>
                 <div class="name">{{record.tag.name}}</div>
               </div>
+              <span class="notes">{{record.notes}}</span>
               <span class="amount">{{record.amount}}</span>
             </div>
             <div class="noResult">恭喜您养成了记账好习惯！再去记一笔吧~</div>
@@ -199,12 +200,19 @@
       overflow-y: auto;
       width: 100vw;
       flex: 1;
+      .notes {
+        flex: 1;
+        margin: 0 16px;
+        color: #999;
+        font-size: 12px;
+      }
+
     }
   }
 
   .recordlist {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
     padding: 16px;
 

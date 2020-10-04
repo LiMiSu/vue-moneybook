@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      <div v-if="!$store.state.currentTag">
+      <div v-if="$store.state.currentTag">
         <div class="notes">
           <div class="left">
             <div class="icon-tag">

@@ -9,7 +9,9 @@
       <button @click="inputContent">1</button>
       <button @click="inputContent">2</button>
       <button @click="inputContent">3</button>
-      <button @click="remove"><Icon name="remove"></Icon></button>
+      <button @click="remove">
+        <Icon name="remove"></Icon>
+      </button>
       <button @click="inputContent" class="left">-</button>
       <button @click="inputContent">4</button>
       <button @click="inputContent">5</button>
@@ -23,7 +25,7 @@
       <button @click="ok" class="ok" v-else>{{$route.params.id?'修改':'OK'}}</button>
       <button @click="inputContent" class="left">÷</button>
       <button @click="inputContent" class="zero">0</button>
-      <button @click="inputContent" class="dot">.</button>
+      <button @click="inputContent">.</button>
     </div>
   </div>
 </template>
@@ -32,10 +34,10 @@
   import Vue from 'vue';
   import {Component, Prop} from 'vue-property-decorator';
   import Days from '@/components/Calender.vue';
-  import DayBook from '@/components/AddMoney/DayBook.vue';
+  // import DayBook from '@/components/AddMoney/DayBook.vue';
 
   @Component({
-    components: {DayBook, Days}
+    components: { Days}
   })
   export default class NumberPad extends Vue {
     @Prop() readonly value!: number;
@@ -277,7 +279,6 @@
 
 
   .inputNumber {
-    /*font-family: Consolas, monospace;*/
     padding: 16px;
     height: 60px;
     display: flex;
@@ -288,6 +289,7 @@
     background: #fff;
     border-bottom: 1px solid #f3f3f3;
     box-shadow: inset 0 3px 11px -9px #999;
+
     .num {
       display: flex;
       align-items: center;
@@ -314,6 +316,7 @@
     @extend %clearFix;
     font-size: 22px;
     background: rgb(243, 243, 243);
+
     button {
       background: #fff;
       border: 1px solid #f3f3f3;
@@ -322,21 +325,23 @@
       height: 58px;
       float: left;
       margin: 0.5%;
-      &.left{
+
+      &.left {
         margin-left: 1%;
       }
+
       &.ok,
       &.equal {
         height: 60*2px;
         float: right;
       }
 
+      &.ok{
+        margin-right: 1%;
+      }
 
       &.zero {
-        width: 18.8*2%;
-      }
-      &.dot{
-        width: 19.8%;
+        width: 19.3*2%;
       }
     }
   }

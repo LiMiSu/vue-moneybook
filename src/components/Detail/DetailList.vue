@@ -61,7 +61,7 @@
 
 <style lang="scss" scoped>
   .record {
-    padding: 0 10px;
+    padding: 16px;
     min-height: 40px;
     display: flex;
     justify-content: space-between;
