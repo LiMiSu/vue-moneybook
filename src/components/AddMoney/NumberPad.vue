@@ -5,27 +5,25 @@
         class="num-intpu" :class="[{first:one},{second:two}]">{{output}}</span></div>
     </div>
     <div class="numberPad">
-      <button @click="inputContent">+</button>
+      <button @click="inputContent" class="left">+</button>
       <button @click="inputContent">1</button>
       <button @click="inputContent">2</button>
       <button @click="inputContent">3</button>
       <button @click="remove"><Icon name="remove"></Icon></button>
-      <button @click="inputContent">-</button>
+      <button @click="inputContent" class="left">-</button>
       <button @click="inputContent">4</button>
       <button @click="inputContent">5</button>
       <button @click="inputContent">6</button>
       <button @click="clear">C</button>
-      <button @click="inputContent">×</button>
+      <button @click="inputContent" class="left">×</button>
       <button @click="inputContent">7</button>
       <button @click="inputContent">8</button>
       <button @click="inputContent">9</button>
-
       <button @click="equal" class="equal" v-if="isCount&&lock">=</button>
       <button @click="ok" class="ok" v-else>{{$route.params.id?'修改':'OK'}}</button>
-      <button @click="inputContent">÷</button>
-
+      <button @click="inputContent" class="left">÷</button>
       <button @click="inputContent" class="zero">0</button>
-      <button @click="inputContent">.</button>
+      <button @click="inputContent" class="dot">.</button>
     </div>
   </div>
 </template>
@@ -279,7 +277,7 @@
 
 
   .inputNumber {
-    font-family: Consolas, monospace;
+    /*font-family: Consolas, monospace;*/
     padding: 16px;
     height: 60px;
     display: flex;
@@ -315,21 +313,30 @@
   .numberPad {
     @extend %clearFix;
     font-size: 22px;
-
+    background: rgb(243, 243, 243);
     button {
+      background: #fff;
       border: 1px solid #f3f3f3;
       box-shadow: inset 0 3px 10px -11px #999;
-      width: 20%;
+      width: 18.8%;
       height: 58px;
       float: left;
+      margin: 0.5%;
+      &.left{
+        margin-left: 1%;
+      }
       &.ok,
       &.equal {
-        height: 58*2px;
+        height: 60*2px;
         float: right;
       }
 
+
       &.zero {
-        width: 20*2%;
+        width: 18.8*2%;
+      }
+      &.dot{
+        width: 19.8%;
       }
     }
   }
