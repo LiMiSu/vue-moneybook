@@ -8,7 +8,6 @@ import AddRewriteTag from '@/components/Tag/AddRewriteTag.vue';
 import NumberPad from '@/components/AddMoney/NumberPad.vue';
 import AddMoney from '@/views/AddMoney.vue';
 import Detail from '@/views/Detail.vue';
-import Succeed from '@/components/Succeed.vue';
 
 Vue.use(VueRouter);
 
@@ -62,6 +61,10 @@ const routes: Array<RouteConfig> = [
     component: AddMoney
   },
   {
+    path: '/addmoney/*',
+    component: NotFound,
+  },
+  {
     path: '/detail',
     component: Detail
   },
@@ -72,6 +75,7 @@ const routes: Array<RouteConfig> = [
 ];
 
 const router = new VueRouter({
+  mode: 'history',
   routes
 });
 

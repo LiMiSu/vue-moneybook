@@ -1,3 +1,4 @@
+<script src="../router/index.ts"></script>
 <template>
   <div class="addMoney-wrapper">
     <header>
@@ -13,7 +14,7 @@
       </div>
       <div class="type">
         <MoneyType class-prefix="add" :data-source="typeList"
-                   :value.sync="$route.params.id?$store.state.currentRecord.type:$store.state.record.type"/>
+                   :value.sync="typeValue"/>
       </div>
     </header>
     <main class="addmain">
@@ -120,6 +121,21 @@
       }
     }
 
+    get typeValue(){
+      if (this.$route.params.id){
+        return this.$store.state.currentRecord.type
+      }else {
+        return this.$store.state.record.type
+      }
+    }
+    set typeValue(value){
+      if (this.$route.params.id){
+        this.$store.state.currentRecord.type = value
+      }else {
+        this.$store.state.record.type = value
+      }
+    }
+
     saveRecord() {
       this.$store.commit('createRecord', this.$store.state.record);
       this.$store.state.record.notes = '';
@@ -138,6 +154,7 @@
       const index=this.$store.state.recordList.indexOf(record)
       this.$store.state.recordList.splice(index,1)
       this.$store.commit('saveRecords');
+      console.log(this.$route.params.id);
       window.alert('成功');
       this.$router.replace('/detail');
     }

@@ -46,7 +46,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component} from 'vue-property-decorator';
+  import {Component,Watch} from 'vue-property-decorator';
   import Input from '@/components/Input.vue';
   import Button from '@/components/Button.vue';
   import addTag from '@/constants/addTag';
@@ -61,6 +61,7 @@
     currenttag = '';
     icon = '';
 
+
     get rewriteTagList() {
       return addTag.filter(item => item.type === this.$store.state.record.type);
     }
@@ -68,13 +69,15 @@
     get currentTag() {
       return this.$store.state.currentTag;
     }
-
+    beforeCreate() {
+      this.$store.commit('fetchTags');
+    }
     created() {
       if (this.$route.params.id) {
         const id = this.$route.params.id;
         this.$store.commit('fetchTags');
         this.$store.commit('setCurrentTag', id);
-        if (!id) {
+        if ((this.$store.state.tagList as Tag[]).map(item=>item.id).indexOf(this.$route.params.id)<0) {
           this.$router.replace('/404');
         }else {
           this.valueDat = this.currentTag.name;

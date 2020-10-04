@@ -47,7 +47,13 @@
       this.$store.commit('fetchRecords');
     }
     recordDetail(item: RecordItem) {
-      this.$router.replace('/addmoney/' + item.id);
+      console.log(item.id);
+      if (!item.id){
+        this.$router.replace('/404');
+      }else {
+        this.$router.replace('/addmoney/' + item.id);
+        console.log(item.id);
+      }
     }
     showType(item: RecordItem) {
       if (item.type === '+') {
