@@ -12,7 +12,7 @@
       <div v-if="$store.state.showtype" class="type-wrapper">
         <MoneyType class-prefix="detail" :data-source="detailList" :value.sync="type" :showvalue.sync="showvalue"/>
       </div>
-      <div class="statisticsList">
+      <div class="statisticsList" v-if="showI">
         <div v-if="yearRecordList.length>0">
           <DetailList :yearRecordList.sync="yearRecordList" :type="type"></DetailList>
           <DetailBottom :type="type"></DetailBottom>
@@ -43,10 +43,18 @@
     type = '1';
     detailList = detail;
     showvalue = '全部';
-
+    showI = true;
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
+    }
+
+
+    created() {
+      if (this.$store.state.isDeleteAll) {
+        window.location.reload()
+        this.$store.state.isDeleteAll = !this.$store.state.isDeleteAll;
+      }
     }
 
     get dayRecordList() {
@@ -66,8 +74,6 @@
       }
       return this.$store.state.yearRecordList.filter((item: YearResult) => item.items[0].items[0].items[0].type === this.type);
     }
-
-
   }
 </script>
 

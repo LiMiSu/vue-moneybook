@@ -143,6 +143,9 @@
       const index=this.$store.state.recordList.indexOf(record)
       this.$store.state.recordList.splice(index,1)
       this.$store.commit('saveRecords');
+      if (this.$store.state.recordList.length===0){
+        this.$store.state.isDeleteAll=!this.$store.state.isDeleteAll
+      }
       window.alert('成功');
       this.$router.replace('/detail');
     }

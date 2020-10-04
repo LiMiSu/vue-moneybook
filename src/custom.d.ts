@@ -28,6 +28,7 @@ type RootState = {
   chooseYear: string;
   chooseMonth: string;
   interval: string;
+  isDeleteAll: boolean;
 }
 type GetDay = {
   year: number;

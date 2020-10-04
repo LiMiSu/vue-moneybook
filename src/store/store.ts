@@ -51,6 +51,7 @@ const store = new Vuex.Store({
     chooseYear: '',
     chooseMonth: '',
     interval:'month',
+    isDeleteAll:false
   } as RootState,
 
   mutations: {
