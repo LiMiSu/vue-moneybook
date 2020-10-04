@@ -1,8 +1,8 @@
 <template>
   <div class="warpper">
     <div class="main">
-      <Icon name="succeed"></Icon>
-      <div class="succeed">{{this.$store.state.isSucceed}}</div>
+      <Icon name="error"></Icon>
+      <div class="succeed">此功能尚未开发,敬请期待!</div>
       <div class="yes" @click="hidden">确&nbsp;定</div>
     </div>
   </div>
@@ -13,22 +13,9 @@
   import {Component} from 'vue-property-decorator';
 
   @Component
-  export default class Succeed extends Vue {
-    hidden() {
-      const arr=['编辑成功！','记账成功！','删除成功！']
-      if (this.$store.state.isSucceed && arr.indexOf(this.$store.state.isSucceed)>0) {
-        this.$store.state.isSucceed = '';
-        if (this.$route.params.id){
-          this.$router.replace('/detail');
-        }else {
-          this.$router.replace('/main');
-        }
-      } else {
-        this.$store.state.isSucceed = '';
-        if (!this.$store.state.isSucceed) {
-          this.$router.go(-1);
-        }
-      }
+  export default class NoAction extends Vue {
+    hidden(){
+      this.$store.state.noAction=!this.$store.state.noAction
     }
   }
 </script>

@@ -29,6 +29,9 @@ type RootState = {
   chooseMonth: string;
   interval: string;
   isDeleteAll: boolean;
+  isSucceed: string;
+  noAction: boolean;
+  isFail: string;
 }
 type GetDay = {
   year: number;

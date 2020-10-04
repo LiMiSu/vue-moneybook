@@ -6,6 +6,8 @@
       <span class="title" v-else>新增标签</span>
       <span class="rightIcon"></span>
     </div>
+    <Succeed  v-if="$store.state.isSucceed"></Succeed>
+    <Fail v-if="$store.state.isFail"></Fail>
     <div class="form-wrapper">
       <label v-if="$route.params.id">
         <Input
@@ -46,13 +48,15 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component,Watch} from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
   import Input from '@/components/Input.vue';
   import Button from '@/components/Button.vue';
   import addTag from '@/constants/addTag';
+  import Succeed from '@/components/Succeed.vue';
+  import Fail from '@/components/Fail.vue';
 
   @Component({
-    components: {Button, Input},
+    components: {Fail, Succeed, Button, Input},
   })
 
   export default class EditLabel extends Vue {
@@ -98,7 +102,7 @@
 
     updateTag() {
       if (this.currentTag) {
-        if (this.icon && this.valueDat !== this.currentTag.name) {
+        if (this.icon && this.valueDat) {
           this.currentTag.tagicon = this.icon;
         }
         this.$store.commit('updateTag', {
@@ -125,25 +129,23 @@
 
       if (this.value) {
         if (!this.icon) {
-          window.alert('请选泽一个标签');
+          this.$store.state.isFail='请选泽一个标签';
           return;
         }
         if (this.value.length > 4) {
-          window.alert('标签名不要超过4个字哦');
+          this.$store.state.isFail='标签名不要超过4个字哦';
           return;
         }
         this.$store.commit('createTag', {name: this.value, tagicon: this.icon, type: this.$store.state.record.type});
         if (!this.$store.state.isHave) {
-          window.alert('已存在');
-          this.$router.replace('/managetag');
+          this.$store.state.isFail='已存在'
           this.$store.state.showAdd = false;
           return;
         }
-        window.alert('成功');
-        this.$router.replace('/managetag');
+        this.$store.state.isSucceed = '新增标签成功！';
         this.$store.state.showAdd = false;
       } else if (this.value === '') {
-        window.alert('标签名不能为空');
+        this.$store.state.isFail='标签名不能为空'
       }
     }
 

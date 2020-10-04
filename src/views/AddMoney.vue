@@ -15,6 +15,8 @@
         <MoneyType class-prefix="add" :data-source="typeList"
                    :value.sync="$route.params.id?$store.state.currentRecord.type:$store.state.record.type"/>
       </div>
+      <Succeed  v-if="$store.state.isSucceed"></Succeed>
+      <Fail v-if="$store.state.isFail"></Fail>
     </header>
     <main class="addmain">
 
@@ -64,9 +66,11 @@
   import MoneyType from '@/components/MoneyType.vue';
   import Calender from '@/components/Calender.vue';
   import DayBook from '@/components/AddMoney/DayBook.vue';
+  import Succeed from '@/components/Succeed.vue';
+  import Fail from '@/components/Fail.vue';
 
   @Component({
-    components: {DayBook, Calender, MoneyType, Button, ShowTags, Input, NumberPad},
+    components: {Fail, Succeed, DayBook, Calender, MoneyType, Button, ShowTags, Input, NumberPad},
   })
   export default class Money extends Vue {
     typeList = typeList;
@@ -74,10 +78,10 @@
     created() {
       this.$store.commit('fetchRecords');
       if (this.$route.params.id) {
-        if ((this.$store.state.recordList as RecordItem[]).map(item=>item.id).indexOf(this.$route.params.id)<0){
+        if ((this.$store.state.recordList as RecordItem[]).map(item => item.id).indexOf(this.$route.params.id) < 0) {
           this.$router.replace('/404');
-          return
-        }else {
+          return;
+        } else {
           this.$store.commit('setCurrentRecord', this.$route.params.id);
         }
       } else {
@@ -140,14 +144,13 @@
 
     deleteRecord(id: string) {
       const record = (this.$store.state.recordList as RecordItem[]).filter(item => item.id === id)[0];
-      const index=this.$store.state.recordList.indexOf(record)
-      this.$store.state.recordList.splice(index,1)
+      const index = this.$store.state.recordList.indexOf(record);
+      this.$store.state.recordList.splice(index, 1);
       this.$store.commit('saveRecords');
-      if (this.$store.state.recordList.length===0){
-        this.$store.state.isDeleteAll=!this.$store.state.isDeleteAll
+      if (this.$store.state.recordList.length === 0) {
+        this.$store.state.isDeleteAll = !this.$store.state.isDeleteAll;
       }
-      window.alert('成功');
-      this.$router.replace('/detail');
+      this.$store.state.isSucceed = '删除成功！';
     }
   }
 </script>
@@ -172,14 +175,15 @@
     height: 6vh;
     border-bottom: 1px solid rgb(243, 243, 243);
 
-    .icon.left, .icon.off,.icon.empty {
+    .icon.left, .icon.off, .icon.empty {
       width: 42px;
       height: 24px;
       margin: 0 16px;
 
       line-height: 24px;
     }
-    .icon.left{
+
+    .icon.left {
       text-align: left;
     }
 

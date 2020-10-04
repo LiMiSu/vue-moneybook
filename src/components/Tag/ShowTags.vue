@@ -4,7 +4,7 @@
       <Icon name="manage" class="addTag"></Icon>管理
     </div>
     <div>
-      <div class="choosetag">请选择{{this.$store.state.record.type==='-'?'支出':'收入'}}标签：</div>
+      <div class="choosetag">请选择{{$route.params.id?($store.state.currentRecord.type==='-'?'支出':'收入'):($store.state.record.type==='-'?'支出':'收入')}}标签：</div>
     </div>
     <div class="tags">
       <div class="tagList" v-for="tag in newTagList" :key="tag.id">
@@ -78,14 +78,14 @@
     }
 
     goAdd() {
-      this.$router.push('/managetag');
+      this.$router.replace('/managetag');
     }
   }
 </script>
 
 <style lang="scss" scoped>
   .choosetag {
-    padding: 5px 16px 0 16px;
+    padding: 10px 16px 0 16px;
   }
 
   .tags {

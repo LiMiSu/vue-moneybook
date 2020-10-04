@@ -51,7 +51,10 @@ const store = new Vuex.Store({
     chooseYear: '',
     chooseMonth: '',
     interval:'month',
-    isDeleteAll:false
+    isDeleteAll:false,
+    isSucceed:'',
+    noAction: false,
+    isFail: '',
   } as RootState,
 
   mutations: {
@@ -66,12 +69,12 @@ const store = new Vuex.Store({
       }
       const recordDeep: RecordItem = clone(record);
       if (!recordDeep.amount || recordDeep.amount === 0) {
-        return window.alert('请输入金额');
+        state.isFail='请输入金额';
+        return
       }
       state.recordList.push(recordDeep);
       store.commit('saveRecords');
-      window.alert('记账成功');
-      router.back();
+      state.isSucceed = '记账成功！';
     },
     saveRecords(state) {
       window.localStorage.setItem('recordList', JSON.stringify(state.recordList));
@@ -111,10 +114,9 @@ const store = new Vuex.Store({
         const index = state.tagList.indexOf(tag);
         state.tagList.splice(index, 1);
         store.commit('saveTags', id);
-        window.alert('删除成功');
-        router.replace('/managetag').then(r => '');
+        state.isSucceed = '删除成功！';
       } else {
-        window.alert('删除失败');
+        state.isFail='删除失败';
       }
     },
     updateTag(state, payload: { id: string; name: string }) {
@@ -122,16 +124,13 @@ const store = new Vuex.Store({
       const idList = state.tagList.map(item => item.id);
       if (idList.indexOf(id) >= 0) {
         const names = state.tagList.map(item => item.name);
-        if (names.indexOf(name) >= 0) {
-          window.alert('标签名未作修改');
-        } else if (name === '') {
-          window.alert('标签名不能为空，请重新编辑');
+    if (name === '') {
+      state.isFail='标签名不能为空，请重新编辑';
         } else {
           const tag = state.tagList.filter(item => item.id === id)[0];
           tag.name = name;
           store.commit('saveTags');
-          window.alert('更改成功');
-          router.replace('/managetag').then();
+          state.isSucceed = '编辑成功！';
         }
       }
     },

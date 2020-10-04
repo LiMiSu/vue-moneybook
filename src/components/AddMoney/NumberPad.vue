@@ -34,10 +34,11 @@
   import Vue from 'vue';
   import {Component, Prop} from 'vue-property-decorator';
   import Days from '@/components/Calender.vue';
+  import Fail from '@/components/Fail.vue';
   // import DayBook from '@/components/AddMoney/DayBook.vue';
 
   @Component({
-    components: { Days}
+    components: {Fail, Days}
   })
   export default class NumberPad extends Vue {
     @Prop() readonly value!: number;
@@ -137,7 +138,7 @@
       } else if (this.output.length === 12) {
         this.two = true;
       } else if (this.output.length === 14) {
-        window.alert('输入金额过长');
+        this.$store.state.isFail='输入金额过长'
         return;
       }  //输入过长
 
@@ -242,17 +243,18 @@
     ok() {
       const moneyValue = parseFloat(parseFloat(this.output).toFixed(2));
       if (moneyValue < 0) {
-        window.alert('负值不能入账哦,请重新输入呢');
+        this.$store.state.isFail='负值不能入账哦,请重新输入呢'
         return;
       }
 
       if (!this.$store.state.currentTag) {
-        window.alert('选择一项标签会更好分类哦');
+        this.$store.state.isFail='选择一项标签会更好分类哦'
         return;
       }
       if (this.$route.params.id) {
         if (moneyValue === 0) {
-          return window.alert('请输入金额');
+          this.$store.state.isFail='请输入金额';
+          return;
         }
         let amount;
         if (this.$store.state.currentRecord.type === '-') {
@@ -262,8 +264,7 @@
         }
         this.$emit('update:value', amount);
         this.$store.commit('saveRecords');
-        window.alert('成功');
-        this.$router.replace('/detail');
+        this.$store.state.isSucceed = '编辑成功！';
         return;
       }
 

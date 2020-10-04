@@ -47,7 +47,7 @@
       this.$store.commit('fetchRecords');
     }
     recordDetail(item: RecordItem) {
-        this.$router.replace('/addmoney/' + item.id);
+        this.$router.push('/addmoney/' + item.id);
     }
     showType(item: RecordItem) {
       if (item.type === '+') {

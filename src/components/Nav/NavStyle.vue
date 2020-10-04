@@ -4,9 +4,8 @@
       <Icon name="set" class="set" @click="say"></Icon>
       <div class="header"><slot name="header"></slot></div>
       <Icon name="me" class="me" @click="say"></Icon>
-      <div class="say" v-if="sayValue">
-        <div class="value">此功能尚未开发，敬请期待哟</div>
-      </div>
+      <NoAction v-if="$store.state.noAction"></NoAction>
+      <Fail v-if="$store.state.isFail"></Fail>
     </header>
     <main class="main" :class=" classPrefix && `${classPrefix}-content` ">
       <slot name="main"></slot>
@@ -21,19 +20,17 @@
   import Vue from 'vue';
   import {Component, Prop} from 'vue-property-decorator';
   import Succeed from '@/components/Succeed.vue';
+  import NoAction from '@/components/NoAction.vue';
+  import Fail from '@/components/Fail.vue';
   @Component({
-    components: {Succeed}
+    components: {Fail, NoAction, Succeed}
   })
   export default class NavStyle extends Vue {
     @Prop() classPrefix!: string;
     @Prop() value!: string;
-    sayValue = false;
     say(){
-      if(!this.sayValue){
-        this.sayValue=!this.sayValue
-        setTimeout(() =>{
-          this.sayValue=!this.sayValue
-        },1000)
+      if(!this.$store.state.noAction){
+        this.$store.state.noAction=!this.$store.state.noAction
       }
     }
   }
@@ -66,7 +63,7 @@
       margin: 0 16px;
     }
 
-    .say {
+/*    .say {
       z-index: 9;
       position: absolute;
       left: 0;
@@ -78,13 +75,13 @@
       justify-content: center;
       align-items: center;
       .value{
-        /*background: rgba(243,243,243,0.8);*/
+        !*background: rgba(243,243,243,0.8);*!
         text-align: center;
         padding: 0 6px;
         font-size: 14px;
         border-radius: 7px;
       }
-    }
+    }*/
   }
   .main {
     display: flex;

@@ -48,13 +48,10 @@
 
     created() {
       this.$store.commit('fetchTags');
-      this.$router.replace('/managetag');
+      this.$router.push('/managetag');
       this.$store.state.showAdd = false;
     }
 
-    // get key() {
-    //   return this.$route.path + Math.random();
-    // }
 
     get tagList() {
       return this.$store.state.tagList;
@@ -70,9 +67,9 @@
       this.currenttag = '';
       this.$store.state.showAdd = !this.$store.state.showAdd;
       if (this.$store.state.showAdd) {
-        this.$router.replace('/addrewrite');
+        this.$router.push('/addrewrite');
       } else {
-        this.$router.replace('/managetag');
+        this.$router.push('/managetag');
       }
     }
 
@@ -80,15 +77,15 @@
       this.$store.state.showAdd = false;
       if (this.currenttag === tag) {
         this.currenttag = '';
-        this.$router.replace('/managetag');
+        this.$router.push('/managetag');
       } else {
         this.currenttag = tag;
-        this.$router.replace('/addrewrite/' + tag.id);
+        this.$router.push('/addrewrite/' + tag.id);
       }
     }
 
     goBack() {
-      this.$router.replace('/addmoney');
+      this.$router.push('/addmoney');
     }
   }
 
