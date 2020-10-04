@@ -67,25 +67,28 @@
       this.currenttag = '';
       this.$store.state.showAdd = !this.$store.state.showAdd;
       if (this.$store.state.showAdd) {
+        this.$store.state.go++
         this.$router.push('/addrewrite');
       } else {
-        this.$router.push('/managetag');
+        // this.$router.push('/managetag');
       }
     }
 
     tagChang(tag: any) {
       this.$store.state.showAdd = false;
       if (this.currenttag === tag) {
-        this.currenttag = '';
-        this.$router.push('/managetag');
+        // this.currenttag = '';
+        // this.$router.push('/managetag');
       } else {
+        this.$store.state.go++
         this.currenttag = tag;
         this.$router.push('/addrewrite/' + tag.id);
       }
     }
 
     goBack() {
-      this.$router.push('/addmoney');
+      console.log(this.$store.state.go);
+      this.$router.go(-this.$store.state.go);
     }
   }
 

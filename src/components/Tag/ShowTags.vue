@@ -25,6 +25,7 @@
   @Component
   export default class Note extends mixins(TagHelper) {
     created() {
+      this.$store.state.go=0
       this.$store.commit('fetchTags');
       this.$store.commit('setCurrentRecord', this.$route.params.id);
       if (this.$route.params.id && this.$store.state.currentRecord.tag.tagicon) {
@@ -78,7 +79,8 @@
     }
 
     goAdd() {
-      this.$router.replace('/managetag');
+      this.$store.state.go++
+      this.$router.push('/managetag');
     }
   }
 </script>

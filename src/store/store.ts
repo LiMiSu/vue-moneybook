@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import clone from '@/lib/clone';
 import createId from '@/lib/createId';
-import router from '@/router';
 import tagInit from '@/constants/tagInit';
 import dayjs from 'dayjs';
 import createRecordId from '@/lib/createRecordId';
@@ -55,6 +54,7 @@ const store = new Vuex.Store({
     isSucceed:'',
     noAction: false,
     isFail: '',
+    go:0,
   } as RootState,
 
   mutations: {

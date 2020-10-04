@@ -32,6 +32,7 @@ type RootState = {
   isSucceed: string;
   noAction: boolean;
   isFail: string;
+  go: number;
 }
 type GetDay = {
   year: number;
