@@ -63,10 +63,10 @@
   .month {
     display: flex;
     justify-content: center;
-    align-items: center;
+    /*align-items: center;*/
 
     .icon {
-      width: 16px;
+      width: 13px;
       height: 13px;
       margin: 8px 3px;
       color: #b5b5b5;

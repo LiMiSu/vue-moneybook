@@ -18,13 +18,13 @@
         <td
           v-for="day in showDays"
           :key="day.getTime()"
-          :class="{
+          :class="{'is-have': isHaveRecordDay(day),
                 'other-month': !isThisMonthDay(day),
                 'is-select': isSelectDay(day),
                 'is-today': isToday(day)}"
           @click="onSelectDay(day)"
         >
-          {{day.getDate()}}
+          <div class="day-day">{{day.getDate()}}</div>
         </td>
       </tr>
     </table>
@@ -47,8 +47,24 @@
       day: 0
     };
 
+    beforeCreate() {
+      this.$store.commit('fetchRecords');
+    }
+
+    get recordList() {
+      return this.$store.state.recordList;
+    }
+
+    isHaveRecordDay(day: string) {
+      const result = (this.recordList as RecordItem[]).filter(item => {
+        return dayjs(item.createdAt).isSame(dayjs(day), 'day');
+      });
+      return result.length>0?dayjs(result[0].createdAt).isSame(dayjs(day), 'day'):false;
+    }
+
+
     today() {
-      this.onSelectDay((dayjs(new Date()).add(-8 * 3600 * 1000,'millisecond') as any).$d)
+      this.onSelectDay((dayjs(new Date()).add(-8 * 3600 * 1000, 'millisecond') as any).$d);
       this.getShowDate(new Date());
     }
 
@@ -74,10 +90,10 @@
 
     created() { //让初识值等于今天
       this.$store.commit('setCurrentRecord', this.$route.params.id);
-      if (this.$route.params.id){
-        this.$store.state.record.createdAt=this.$store.state.currentRecord.createdAt
+      if (this.$route.params.id) {
+        this.$store.state.record.createdAt = this.$store.state.currentRecord.createdAt;
         this.getShowDate(new Date(this.$store.state.record.createdAt));
-      }else {
+      } else {
         this.getShowDate(new Date(this.$store.state.record.createdAt));
       }
     }
@@ -98,9 +114,9 @@
 
     onSelectDay(date: Date) { //选择的日期变成点击的日期
 
-      if (this.$route.params.id){
+      if (this.$route.params.id) {
         this.$store.state.currentRecord.createdAt = new Date(+date + 8 * 3600 * 1000).toISOString();
-      }else {
+      } else {
         this.$store.state.record.createdAt = new Date(+date + 8 * 3600 * 1000).toISOString();
       }
       this.$store.state.showBody = false;
@@ -205,13 +221,13 @@
           text-align: center;
 
           &.is-today {
-            color:  #DE7873;
+            color: #DE7873;
             font-weight: 700;
           }
 
           &.is-select {
             border-radius: 50%;
-            background:  #DE7873;
+            background: #DE7873;
             font-weight: 700;
             color: #fff;
           }

@@ -26,7 +26,7 @@
     </main>
 
     <footer>
-<!--      <router-view :key="key"></router-view>-->
+      <!--      <router-view :key="key"></router-view>-->
     </footer>
   </div>
 </template>
@@ -112,6 +112,11 @@
     font-weight: bold;
     height: 6vh;
     border-bottom: 1px solid rgb(243, 243, 243);
+    background: #fff;
+
+    .header {
+      background: #fff;
+    }
 
     .icon.left, .icon.off {
       width: 24px;
@@ -143,7 +148,7 @@
 
     .tagIcon, .addTag {
       $h: 36px;
-      border-radius: $h/2;
+      border-radius: $h/12;
       height: 36px;
       width: 45px;
       line-height: $h;
@@ -168,8 +173,9 @@
     }
 
     .text {
-      padding: 16px 16px 0 16px;
-      border-bottom: 1px solid #d9d9d9;
+      background: rgb(243, 243, 243);
+      box-shadow: 0 3px 11px -9px #999;
+      padding: 10px 16px 0 16px;
     }
   }
 

@@ -139,13 +139,15 @@
       justify-content: space-between;
 
       .year, .month, .day {
+        color: #999;
         min-width: 25vw;
         text-align: center;
-        font-size: 22px;
+        font-size: 20px;
         border-right: 1px solid #b5b5b5;
 
         .text {
-          font-size: 16px;
+          color: #999;
+          font-size: 14px;
           margin-left: 2px;
         }
       }
@@ -153,6 +155,7 @@
       .day {
         font-size: 16px;
         .text {
+          color: #999;
           font-size: 14px;
         }
       }
@@ -180,7 +183,7 @@
   }
 
   .title-wrapper:first-child {
-    margin-top: 0;
+    margin-top: 2px;
   }
 
   .month-title {

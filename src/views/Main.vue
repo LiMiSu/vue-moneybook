@@ -10,7 +10,7 @@
           <div class="top"><span class="date">{{date}}</span><span class="text">(单位：元)</span></div>
           <div class="list"><span class="text">支出：</span><span class="num">{{dayTotal('支出')}}</span></div>
           <div class="list"><span class="text">收入：</span><span class="num">{{'+'+dayTotal('收入')}}</span></div>
-          <div class="list"><span class="text" >结余：</span><span class="num">{{dayTotal('结余')}}</span></div>
+          <div class="list"><span class="text">结余：</span><span class="num">{{dayTotal('结余')}}</span></div>
         </div>
         <div class="record-list">
           <div v-if="dayRecordList.length>0">
@@ -47,6 +47,7 @@
   })
   export default class Nav extends Vue {
 
+
     beforeCreate() {
       this.$store.commit('fetchRecords');
       this.$store.state.record.createdAt = new Date().toISOString();
@@ -66,19 +67,20 @@
       });
     }
 
+
     dayTotal(value: string) {
-      if (value==='支出'){
-        return this.dayRecordList.filter(item=>item.type==='-').reduce((sum,item)=>{
-          return sum+item.amount
-        },0)
-      }else if (value==='收入'){
-        return this.dayRecordList.filter(item=>item.type==='+').reduce((sum,item)=>{
-          return sum+item.amount
-        },0)
-      }else if (value==='结余'){
-        return this.dayRecordList.reduce((sum,item)=>{
-          return sum+item.amount
-        },0)
+      if (value === '支出') {
+        return this.dayRecordList.filter(item => item.type === '-').reduce((sum, item) => {
+          return sum + item.amount;
+        }, 0);
+      } else if (value === '收入') {
+        return this.dayRecordList.filter(item => item.type === '+').reduce((sum, item) => {
+          return sum + item.amount;
+        }, 0);
+      } else if (value === '结余') {
+        return this.dayRecordList.reduce((sum, item) => {
+          return sum + item.amount;
+        }, 0);
       }
 
     }
@@ -86,7 +88,6 @@
 </script>
 <style lang="scss" scoped>
   .head {
-
     background: #ffffff;
     box-shadow: 0 3px 11px -9px #d9d9d9;
     line-height: 4vh;
@@ -97,37 +98,43 @@
     margin-top: 5px;
     z-index: 1;
     justify-content: space-between;
-    .top{
+
+    .top {
       min-width: 110px;
     }
-    .date{
+
+    .date {
       margin-right: 5px;
     }
-    .list{
+
+    .list {
       display: flex;
       flex-wrap: wrap;
       margin-left: 5px;
       min-width: 37px;
       font-size: 12px;
 
-      .num{
+      .num {
         word-break: break-all
       }
     }
-    .text{
+
+    .text {
       font-size: 12px;
     }
   }
+
   ::v-deep .main-datebody {
     width: 98vw;
     height: 220px;
     background: rgb(243, 243, 243);
     box-shadow: 0 16px 20px -16px #d9d9d9;
-    margin-top: 5px;
+    margin-top: 2px;
     border-radius: 10px;
+
     .date-nav {
       .date-btn {
-        font-size: 24px;
+        font-size: 20px;
       }
     }
 
@@ -146,7 +153,36 @@
         td {
           height: 24px;
           line-height: 24px;
+          position: relative;
+          /*background: #DE7873;*/
 
+          &.is-have ::after {
+            content: "";
+            position: absolute;
+            top: 10%;
+            right: 14%;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #DE7873;
+          }
+
+          &.is-select {
+            background: rgb(243, 243, 243);
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .day-day {
+              border-radius: 15px;
+              width: 8vw;
+              background: #DE7873;
+              text-align: center;
+              line-height: 24px;
+            }
+          }
         }
       }
     }
@@ -200,15 +236,11 @@
       }
 
     }
-
-    .amount {
-      font-size: 18px;
-    }
   }
 
   .noResult {
     display: flex;
-    padding: 16px;
+    padding: 12px;
     flex-direction: column;
     align-items: center;
     text-align: center;

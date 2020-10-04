@@ -5,25 +5,25 @@
         class="num-intpu" :class="[{first:one},{second:two}]">{{output}}</span></div>
     </div>
     <div class="numberPad">
-      <button @click="inputContent">÷</button>
-      <button @click="inputContent">×</button>
       <button @click="inputContent">+</button>
+      <button @click="inputContent">1</button>
+      <button @click="inputContent">2</button>
+      <button @click="inputContent">3</button>
+      <button @click="remove"><Icon name="remove"></Icon></button>
       <button @click="inputContent">-</button>
-      <button @click="inputContent">7</button>
-      <button @click="inputContent">8</button>
-      <button @click="inputContent">9</button>
-      <button @click="remove">
-        <Icon name="remove"></Icon>
-      </button>
       <button @click="inputContent">4</button>
       <button @click="inputContent">5</button>
       <button @click="inputContent">6</button>
       <button @click="clear">C</button>
-      <button @click="inputContent">1</button>
-      <button @click="inputContent">2</button>
-      <button @click="inputContent">3</button>
+      <button @click="inputContent">×</button>
+      <button @click="inputContent">7</button>
+      <button @click="inputContent">8</button>
+      <button @click="inputContent">9</button>
+
       <button @click="equal" class="equal" v-if="isCount&&lock">=</button>
       <button @click="ok" class="ok" v-else>{{$route.params.id?'修改':'OK'}}</button>
+      <button @click="inputContent">÷</button>
+
       <button @click="inputContent" class="zero">0</button>
       <button @click="inputContent">.</button>
     </div>
@@ -245,6 +245,7 @@
         window.alert('负值不能入账哦,请重新输入呢');
         return;
       }
+
       if (!this.$store.state.currentTag) {
         window.alert('选择一项标签会更好分类哦');
         return;
@@ -254,20 +255,18 @@
           return window.alert('请输入金额');
         }
         let amount;
-
         if (this.$store.state.currentRecord.type === '-') {
           amount = -moneyValue;
         } else {
           amount = moneyValue;
         }
-
         this.$emit('update:value', amount);
         this.$store.commit('saveRecords');
-        // window.alert('成功');
-        this.$store.state.succeedShow=!this.$store.state.succeedShow
+        window.alert('成功');
         this.$router.replace('/detail');
         return;
       }
+
       this.$emit('update:value', moneyValue);//把输入的字符串变成数字记入账单
       this.$emit('submit', moneyValue);
       this.output = '0';
@@ -280,7 +279,6 @@
 
 
   .inputNumber {
-    background: rgb(243, 243, 243);
     font-family: Consolas, monospace;
     padding: 16px;
     height: 60px;
@@ -289,7 +287,9 @@
     align-items: center;
     word-break: break-all;
     overflow: hidden;
-
+    background: #fff;
+    border-bottom: 1px solid #f3f3f3;
+    box-shadow: inset 0 3px 11px -9px #999;
     .num {
       display: flex;
       align-items: center;
@@ -315,21 +315,21 @@
   .numberPad {
     @extend %clearFix;
     font-size: 22px;
-    background: rgb(243, 243, 243);
 
     button {
-      width: 25%;
-      height: 42px;
+      border: 1px solid #f3f3f3;
+      box-shadow: inset 0 3px 10px -11px #999;
+      width: 20%;
+      height: 58px;
       float: left;
-
       &.ok,
       &.equal {
-        height: 42*2px;
+        height: 58*2px;
         float: right;
       }
 
       &.zero {
-        width: 25*2%;
+        width: 20*2%;
       }
     }
   }

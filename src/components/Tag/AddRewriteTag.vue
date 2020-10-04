@@ -158,10 +158,11 @@
     text-align: center;
     font-size: 16px;
     padding: 12px 16px;
-    background: rgb(243,243,243);
+    border-bottom: 1px solid rgb(243, 243, 243);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: #fff;
 
     .leftIcon {
       width: 16px;
@@ -175,7 +176,8 @@
     }
 
     .title {
-
+      background: #fff;
+      font-weight: bold;
     }
   }
 

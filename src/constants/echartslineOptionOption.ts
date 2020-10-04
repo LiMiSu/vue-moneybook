@@ -12,7 +12,7 @@ function echartsLineOptionOption(monthKeys: string[],
       data: interval === 'year' ? yearKeys : monthKeys,
       axisLabel: {
         formatter: function (value: string) {
-          return interval === 'year' ? value.substr(5) : value.substr(7);
+          return interval === 'year' ? value.substr(5) : value.substr(8);
         },
         fontSize: 10,
         color: '#999999'

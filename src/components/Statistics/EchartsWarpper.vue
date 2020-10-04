@@ -134,6 +134,7 @@
 <style lang="scss" scoped>
   .s-type {
     width: 40%;
+    margin-top: 2px;
   }
   .nav-wrapper {
     display: flex;
@@ -168,7 +169,6 @@
     background: #ffffff;
     box-shadow: 0 3px 11px -9px #d9d9d9;
     line-height: 4vh;
-    height: 4vh;
     padding: 2px 16px;
     margin-top: 5px;
     color: #b5b5b5;

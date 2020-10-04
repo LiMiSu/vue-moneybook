@@ -29,7 +29,6 @@ type RootState = {
   chooseYear: string;
   chooseMonth: string;
   interval: string;
-  succeedShow: string;
 }
 type GetDay = {
   year: number;

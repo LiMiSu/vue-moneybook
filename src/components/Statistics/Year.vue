@@ -53,15 +53,15 @@
 .year{
   display: flex;
   justify-content: center;
-  align-items: center;
+  /*align-items: flex-end;*/
   .icon{
-    width: 16px;
+    width: 13px;
     height: 13px;
     margin: 8px 3px;
     color: #b5b5b5;
   }
   div{
-    margin: 3px 5px 0 5px;
+    margin: 3px 5px 0px 5px;
   }
 }
 </style>

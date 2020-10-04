@@ -85,7 +85,7 @@
 
 <style lang="scss" scoped>
   .choosetag {
-    padding: 10px 16px 0 16px;
+    padding: 5px 16px 0 16px;
   }
 
   .tags {
@@ -103,7 +103,7 @@
 
       .tagIcon {
         $h: 36px;
-        border-radius: $h/2;
+        border-radius: $h/4;
         height: 36px;
         width: 45px;
         line-height: $h;

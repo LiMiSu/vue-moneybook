@@ -67,6 +67,7 @@
       return this.$store.state.yearRecordList.filter((item: YearResult) => item.items[0].items[0].items[0].type === this.type);
     }
 
+
   }
 </script>
 

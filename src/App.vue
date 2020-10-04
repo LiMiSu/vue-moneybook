@@ -22,7 +22,7 @@
     -moz-osx-font-smoothing: grayscale;
     font-family: $font-heiti;
     color: #000000;
-    font-size: 16px;
+    font-size: 14px;
   }
 
 

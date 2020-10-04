@@ -104,9 +104,6 @@
       font-size: 12px;
     }
 
-    .amount {
-      font-size: 18px;
-    }
 
     .rewrite {
       color: #999999;
