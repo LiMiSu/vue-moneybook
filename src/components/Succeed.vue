@@ -42,7 +42,7 @@
 
   .warpper {
     @extend %fl;
-    z-index: 9;
+    z-index: 99;
     position: absolute;
     left: 0;
     top: 0;

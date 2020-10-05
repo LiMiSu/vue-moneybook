@@ -47,6 +47,7 @@
       this.ChartStart(newValue);
     }
 
+
     get optionType() {
       return this.option?.series && this.option?.series[0].type;
     }
@@ -117,6 +118,7 @@
             name: this.$store.state.circleShowDate
           });
         }
+
         if ((this.chart as any)._dom.innerText) {
           this.$store.state.circleShowDate = value.name;
         }
@@ -133,6 +135,39 @@
           name: this.$store.state.circleShowDate
         });
       });
+
+      // this.chart?.off('legendselectchanged');
+      //
+      // this.chart?.on('legendselectchanged', (value: any) => {
+      //   this.chart?.setOption({
+      //     legend: {selected: {[value.name]: true}}
+      //   });
+      //   if (value.name != this.$store.state.circleShowDate) {
+      //     this.chart?.dispatchAction({
+      //       type: 'hideTip',
+      //       seriesIndex: 0,
+      //       name: this.$store.state.circleShowDate
+      //     });
+      //     this.chart?.dispatchAction({
+      //       type: 'downplay',
+      //       seriesIndex: 0,
+      //       name: this.$store.state.circleShowDate
+      //     });
+      //   }
+      //   this.$store.state.circleShowDate = value.name;
+      // });
+      // (this.chart as any).getZr().on('click',(value: any)=>{
+      //   this.chart?.dispatchAction({
+      //     type: 'showTip',
+      //     seriesIndex: 0,
+      //     name: this.$store.state.circleShowDate,
+      //   });
+      //   this.chart?.dispatchAction({
+      //     type: 'highlight',
+      //     seriesIndex: 0,
+      //     name: this.$store.state.circleShowDate,
+      //   });
+      // })
     }
   }
 </script>

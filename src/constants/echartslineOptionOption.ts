@@ -64,8 +64,9 @@ function echartsLineOptionOption(monthKeys: string[],
     },
     grid: {
       left: '12%',
-      right: '10%',
-      top: '10px'
+      right: '16px',
+      top: '16px',
+      bottom: '30px',
     },
     tooltip: {
       show: true,
