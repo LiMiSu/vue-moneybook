@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div ref="container" class="content" v-if="optionType==='pie'"></div>
+    <div ref="container" class="content" v-if="optionType==='pie'" @click="a"></div>
     <div ref="container" class="content" v-else></div>
   </div>
 </template>
@@ -29,8 +29,8 @@
       this.initChart(value);
       if (this.optionType === 'pie') {
         this.$store.state.circleShowDate = this.maxName;
-      }else if(this.optionType !== 'pie'){
-        this.$store.state.circleShowDate=''
+      } else if (this.optionType !== 'pie') {
+        this.$store.state.circleShowDate = '';
       }
       this.initAction();
     }
@@ -45,6 +45,10 @@
     @Watch('option')
     onOptionChange(newValue: EChartOption) {
       this.ChartStart(newValue);
+    }
+
+    a(value: any) {
+      //
     }
 
     get optionType() {
@@ -62,60 +66,59 @@
 
 
     initAction() {
-      const date = this.$store.state.circleShowDate;
       this.chart?.dispatchAction({
         type: 'showTip',
         seriesIndex: 0,
-        name: date,
+        name: this.$store.state.circleShowDate,
       });
       this.chart?.dispatchAction({
         type: 'highlight',
         seriesIndex: 0,
-        name: date,
+        name: this.$store.state.circleShowDate,
       });
       // PC端
       this.chart?.on('mouseover', (value: any) => {
-        if (value.name != date) {
+        if (value.name != this.$store.state.circleShowDate) {
           this.chart?.dispatchAction({
             type: 'hideTip',
             seriesIndex: 0,
-            name: date
+            name: this.$store.state.circleShowDate
           });
           this.chart?.dispatchAction({
             type: 'downplay',
             seriesIndex: 0,
-            name: date
+            name: this.$store.state.circleShowDate
           });
         }
         if ((this.chart as any)._dom.innerText) {
           this.$store.state.circleShowDate = value.name;
+
         }
       });
       this.chart?.on('mouseout', (value: any) => {
         this.chart?.dispatchAction({
           type: 'showTip',
           seriesIndex: 0,
-          name: date
+          name: this.$store.state.circleShowDate
         });
         this.chart?.dispatchAction({
           type: 'highlight',
           seriesIndex: 0,
-          name: date
+          name: this.$store.state.circleShowDate
         });
       });
-
       //移动端
       this.chart?.on('touchstart', (value: any) => {
-        if (value.name != date) {
+        if (value.name != this.$store.state.circleShowDate) {
           this.chart?.dispatchAction({
             type: 'hideTip',
             seriesIndex: 0,
-            name: date
+            name: this.$store.state.circleShowDate
           });
           this.chart?.dispatchAction({
             type: 'downplay',
             seriesIndex: 0,
-            name: date
+            name: this.$store.state.circleShowDate
           });
         }
         if ((this.chart as any)._dom.innerText) {
@@ -126,12 +129,12 @@
         this.chart?.dispatchAction({
           type: 'showTip',
           seriesIndex: 0,
-          name: date
+          name: this.$store.state.circleShowDate
         });
         this.chart?.dispatchAction({
           type: 'highlight',
           seriesIndex: 0,
-          name: date
+          name: this.$store.state.circleShowDate
         });
       });
     }

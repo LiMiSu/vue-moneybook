@@ -150,7 +150,7 @@
       if (this.$store.state.recordList.length === 0) {
         this.$store.state.isDeleteAll = !this.$store.state.isDeleteAll;
       }
-      this.$store.state.isSucceed = '删除成功！';
+      this.$store.state.isSucceed = '账单删除成功！';
     }
   }
 </script>

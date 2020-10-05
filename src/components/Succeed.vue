@@ -15,7 +15,7 @@
   @Component
   export default class Succeed extends Vue {
     hidden() {
-      const arr=['编辑成功！','记账成功！','删除成功！']
+      const arr=['账单编辑成功！','记账成功！','账单删除成功！']
       if (this.$store.state.isSucceed && arr.indexOf(this.$store.state.isSucceed)>0) {
         this.$store.state.isSucceed = '';
         if (this.$route.params.id){

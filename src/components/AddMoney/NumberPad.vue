@@ -264,7 +264,7 @@
         }
         this.$emit('update:value', amount);
         this.$store.commit('saveRecords');
-        this.$store.state.isSucceed = '编辑成功！';
+        this.$store.state.isSucceed = '账单编辑成功！';
         return;
       }
 

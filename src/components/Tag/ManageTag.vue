@@ -48,10 +48,8 @@
 
     created() {
       this.$store.commit('fetchTags');
-      this.$router.push('/managetag');
       this.$store.state.showAdd = false;
     }
-
 
     get tagList() {
       return this.$store.state.tagList;
@@ -87,8 +85,13 @@
     }
 
     goBack() {
-      console.log(this.$store.state.go);
-      this.$router.go(-this.$store.state.go);
+      console.log(this.$store.state.go,555);
+      if (this.$store.state.go===0){
+        // this.$router.push('/addmoney')
+        this.$router.go(-1)
+      }else {
+        this.$router.go(-this.$store.state.go);
+      }
     }
   }
 

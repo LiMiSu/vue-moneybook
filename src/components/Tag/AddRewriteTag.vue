@@ -101,10 +101,13 @@
     }
 
     updateTag() {
+      console.log(this.valueDat);
       if (this.currentTag) {
         if (this.icon && this.valueDat) {
           this.currentTag.tagicon = this.icon;
         }
+        // console.log(this.currentTag.tagicon);
+        // console.log(this.icon);
         this.$store.commit('updateTag', {
           id: this.currentTag.id,
           name: this.valueDat,

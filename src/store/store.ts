@@ -49,12 +49,12 @@ const store = new Vuex.Store({
     showtype: false,
     chooseYear: '',
     chooseMonth: '',
-    interval:'month',
-    isDeleteAll:false,
-    isSucceed:'',
+    interval: 'month',
+    isDeleteAll: false,
+    isSucceed: '',
     noAction: false,
     isFail: '',
-    go:0,
+    go: 0,
     circleShowDate: '',
     showLineEcharts: true
   } as RootState,
@@ -71,8 +71,8 @@ const store = new Vuex.Store({
       }
       const recordDeep: RecordItem = clone(record);
       if (!recordDeep.amount || recordDeep.amount === 0) {
-        state.isFail='请输入金额';
-        return
+        state.isFail = '请输入金额';
+        return;
       }
       state.recordList.push(recordDeep);
       store.commit('saveRecords');
@@ -116,23 +116,29 @@ const store = new Vuex.Store({
         const index = state.tagList.indexOf(tag);
         state.tagList.splice(index, 1);
         store.commit('saveTags', id);
-        state.isSucceed = '删除成功！';
+        state.isSucceed = '标签删除成功！';
       } else {
-        state.isFail='删除失败';
+        state.isFail = '标签删除失败';
       }
     },
-    updateTag(state, payload: { id: string; name: string }) {
-      const {id, name} = payload;
+    updateTag(state, payload: { id: string; name: string; tagicon: string }) {
+      const {id, name, tagicon} = payload;
       const idList = state.tagList.map(item => item.id);
       if (idList.indexOf(id) >= 0) {
         const names = state.tagList.map(item => item.name);
-    if (name === '') {
-      state.isFail='标签名不能为空，请重新编辑';
+        const icon = (state.currentTag as Tag).tagicon;
+        console.log(icon, 1);
+        // console.log(tagicon, 2);
+        if (names.indexOf(name) >= 0 &&!icon) {
+          console.log(1);
+          window.alert('标签名未作修改');
+        } else if (name === '') {
+          state.isFail = '标签名不能为空，请重新编辑';
         } else {
           const tag = state.tagList.filter(item => item.id === id)[0];
           tag.name = name;
           store.commit('saveTags');
-          state.isSucceed = '编辑成功！';
+          state.isSucceed = '标签编辑成功！';
         }
       }
     },
