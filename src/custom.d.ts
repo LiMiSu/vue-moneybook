@@ -33,6 +33,8 @@ type RootState = {
   noAction: boolean;
   isFail: string;
   go: number;
+  circleShowDate: string;
+  showLineEcharts: boolean;
 }
 type GetDay = {
   year: number;

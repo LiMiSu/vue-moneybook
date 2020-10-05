@@ -9,15 +9,11 @@
                     :type.sync="type"
                     :dayRecordList.sync="dayRecordList"
                     :monthRecordList.sync="dayRecordList"
-                    :initShowTag.sync="initShowTag"
-                    :showLine.sync="showLine"
     ></EchartsWarpper>
     <RecordList class="data-wrapper" v-if="recordByTagTime.length>0"
                 :recordByTagTime.sync="recordByTagTime"
-                :showLine.sync="showLine"
                 :type.sync="type"
                 :dayRecordList.sync="dayRecordList"
-                :initShowTag.sync="initShowTag"
                 :monthTotal.sync="monthTotal"
                 :yearTotal.sync="yearTotal"
     ></RecordList>
@@ -46,8 +42,6 @@
     @Prop() dayRecordList!: DayResult[];
     @Prop() showvalue!: string;
     @Prop() type!: string;
-    initShowTag = '';
-    showLine = true;
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
@@ -79,12 +73,12 @@
     }
 
     get monthTotal() {
-      const total=this.monthRecordList.filter((item: MonthResult) => item.title === this.showMonth).reduce((sum: number, item: DayResult) => {return sum += item.total!;}, 0)
+      const total = this.monthRecordList.filter((item: MonthResult) => item.title === this.showMonth).reduce((sum: number, item: DayResult) => {return sum += item.total!;}, 0);
       return parseFloat(total.toFixed(2));
     }
 
     get yearTotal() {
-      const total=this.yearRecordList.filter((item: YearResult) => item.title === this.showYear).reduce((sum: number, item: MonthResult) => {return sum += item.total!;}, 0)
+      const total = this.yearRecordList.filter((item: YearResult) => item.title === this.showYear).reduce((sum: number, item: MonthResult) => {return sum += item.total!;}, 0);
       return parseFloat(total.toFixed(2));
     }
 
@@ -121,7 +115,14 @@
           }
         }
       });
-
+      result.map(item=>{
+        item.recordList.sort((a,b)=>{
+          return a.num - b.num
+        })
+      })
+      result.sort((a, b) => {
+        return a.num - b.num;
+      });
       return result;
     }
 
@@ -157,11 +158,21 @@
           }
         }
       });
-
+      result.map(item=>{
+        item.recordList.sort((a,b)=>{
+          return a.num - b.num
+        })
+      })
+      result.sort((a, b) => {
+        return a.num - b.num;
+      });
       return result;
     }
 
+
     get recordByTagTime() {
+
+
       return this.interval === 'year' ?
         this.recordByTagOnYear.filter(item => dayjs(item.title).format('YYYY') === this.showYear)
         : this.recordByTagOnMonth.filter(item => dayjs(item.title).format('YYYY-M') === this.showMonth);

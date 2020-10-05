@@ -8,17 +8,17 @@
         <Month :chooseMonth.sync="$store.state.chooseMonth" v-if="interval==='month'"></Month>
       </div>
       <div class="iconlist around">
-        <Icon name="yuan" v-if="showLine" @click="$emit('update:showLine',!showLine)"></Icon>
-        <Icon name="line" v-else @click="$emit('update:showLine',!showLine)"></Icon>
+        <Icon name="yuan" v-if="$store.state.showLineEcharts" @click="$store.state.showLineEcharts=!$store.state.showLineEcharts"></Icon>
+        <Icon name="line" v-else @click="$store.state.showLineEcharts=!$store.state.showLineEcharts"></Icon>
       </div>
     </div>
     <div v-if="recordByTagTime.length>0" class="echarts-item">
-      <Echarts :option="lineOption" v-if="showLine"/>
-      <Echarts :option="circleOption" :getInitShowTag="getInitShowTag" v-else/>
+      <Echarts :option="lineOption" v-if="$store.state.showLineEcharts"/>
+      <Echarts :option="circleOption" v-else/>
     </div>
     <div v-if="recordByTagTime.length>0" class="head">
       <div>{{interval === 'year' ? showYear : showMonth}}<span class="text-s">(单位：元)</span></div>
-      <div class="total" v-if="showLine"><span class="text-s">总计：</span><span class="num">{{interval === 'year' ? yearTotal : monthTotal}}</span>
+      <div class="total" v-if="$store.state.showLineEcharts"><span class="text-s">总计：</span><span class="num">{{interval === 'year' ? yearTotal : monthTotal}}</span>
       </div>
     </div>
   </div>
@@ -47,14 +47,13 @@
     @Prop() type!: string;
     @Prop() dayRecordList!: DayResult[];
     @Prop() monthRecordList!: MonthResult[];
-    @Prop() initShowTag!: string;
-    @Prop() showLine!: boolean;
     intervalList=intervalList
     beforeCreate() {
       this.$store.commit('fetchRecords');
       this.$store.commit('fetchChooseMonth');
       this.$store.commit('fetchChooseYear');
     }
+
     get interval() {
       return this.$store.state.interval;
     }
@@ -124,9 +123,8 @@
       });
       return echartsCircleOption(monthTag, monthRecord,this.type)
     }
-    getInitShowTag(value: string) {
-      this.$emit('update:initShowTag',value)
-    }
+
+
 
   }
 </script>

@@ -3,7 +3,7 @@ function echartsCircleOption(monthTag: string[],monthRecord: Record<string, any>
     tooltip: {
       trigger: 'item',
       formatter: '{a} <br/>{b}: {c} ({d}%)',
-      alwaysShowContent: false,
+      backgroundColor: 'rgba(100,100,100,0.7)'
     },
     legend: {
       type: 'scroll',

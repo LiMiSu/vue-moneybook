@@ -6,7 +6,9 @@
       <span @click="today">{{showData.year}}年{{showData.month+1}}月{{showData.day}}日</span>
       <Icon name="monthright" class="date-btn icon-you" @click="onChangMonth('next')"></Icon>
       <Icon name="yearrigth" class="date-btn icon-right-nav" @click="onChangYear('next')"></Icon>
+      <div class="ontoday" :class="{[classPrefix+'-ontoday']:classPrefix}" @click="today"><span>今天</span></div>
     </div>
+
     <table class="data-list">
       <tr class="date-weeks">
         <th v-for="week in weekDay" :key="week"
@@ -59,7 +61,7 @@
       const result = (this.recordList as RecordItem[]).filter(item => {
         return dayjs(item.createdAt).isSame(dayjs(day), 'day');
       });
-      return result.length>0?dayjs(result[0].createdAt).isSame(dayjs(day), 'day'):false;
+      return result.length > 0 ? dayjs(result[0].createdAt).isSame(dayjs(day), 'day') : false;
     }
 
 
@@ -154,11 +156,13 @@
       this.showData.year = Year;
       this.showData.month = Month;
       this.showData.day = Day;
+      this.$store.state.record.createdAt = dayjs().set('date', this.showData.day).set('month', this.showData.month).set('year', this.showData.year).toISOString();
     }
 
     onChangYear(type: string) {
       const moveYear = type === 'last' ? -1 : 1;
       this.showData.year += moveYear;
+      this.$store.state.record.createdAt = dayjs().set('date', this.showData.day).set('month', this.showData.month).set('year', this.showData.year).toISOString();
     }
 
   }
@@ -180,7 +184,18 @@
       display: flex;
       justify-content: center;
       align-items: center;
-
+      position: relative;
+      .ontoday {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 15%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #DE7873;
+      }
       .date-btn {
         margin-left: 5px;
         margin-right: 5px;
@@ -188,6 +203,8 @@
         font-size: 20px;
       }
     }
+
+
 
     .data-list {
       color: #606266;

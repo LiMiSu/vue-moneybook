@@ -229,7 +229,7 @@
 
         .cancel {
           position: absolute;
-          right: 2px;
+          left: 2px;
           top: 11px;
           width: 55px;
           height: 30px;

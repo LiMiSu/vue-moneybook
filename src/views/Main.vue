@@ -133,10 +133,10 @@
     margin-top: 2px;
     border-radius: 10px;
 
-    .date-nav {
-      .date-btn {
-        font-size: 20px;
-      }
+      .date-nav {
+        .date-btn {
+          font-size: 20px;
+        }
     }
 
     .data-list {

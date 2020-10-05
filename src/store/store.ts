@@ -55,6 +55,8 @@ const store = new Vuex.Store({
     noAction: false,
     isFail: '',
     go:0,
+    circleShowDate: '',
+    showLineEcharts: true
   } as RootState,
 
   mutations: {

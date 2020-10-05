@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div ref="container" class="content" v-if="getInitShowTag"></div>
+    <div ref="container" class="content" v-if="optionType==='pie'"></div>
     <div ref="container" class="content" v-else></div>
   </div>
 </template>
@@ -13,7 +13,6 @@
   @Component
   export default class Echarts extends Vue {
     @Prop() option?: EChartOption;
-    @Prop() getInitShowTag?: Function;
     chart?: ECharts;
 
     initChart(value: EChartOption) {
@@ -28,10 +27,12 @@
 
     ChartStart(value: EChartOption) {
       this.initChart(value);
-      if (this.getInitShowTag) {
-        this.getInitShowTag(this.initShowTag);
-        this.initAction();
+      if (this.optionType === 'pie') {
+        this.$store.state.circleShowDate = this.maxName;
+      }else if(this.optionType !== 'pie'){
+        this.$store.state.circleShowDate=''
       }
+      this.initAction();
     }
 
     mounted() {
@@ -46,94 +47,93 @@
       this.ChartStart(newValue);
     }
 
+    get optionType() {
+      return this.option?.series && this.option?.series[0].type;
+    }
 
     get maxtag() {
       return Math.max(...((this.option?.series as any)[0].data as any).map((item: any) => +item.value));
     }
 
-    get initShowTag() {
+    get maxName() {
+
       return ((this.option?.series as any)[0].data as any).filter((item: any) => item.value === this.maxtag)[0].name;
     }
 
 
     initAction() {
-      if (this.getInitShowTag) {
+      const date = this.$store.state.circleShowDate;
+      this.chart?.dispatchAction({
+        type: 'showTip',
+        seriesIndex: 0,
+        name: date,
+      });
+      this.chart?.dispatchAction({
+        type: 'highlight',
+        seriesIndex: 0,
+        name: date,
+      });
+      // PC端
+      this.chart?.on('mouseover', (value: any) => {
+        if (value.name != date) {
+          this.chart?.dispatchAction({
+            type: 'hideTip',
+            seriesIndex: 0,
+            name: date
+          });
+          this.chart?.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            name: date
+          });
+        }
+        if ((this.chart as any)._dom.innerText) {
+          this.$store.state.circleShowDate = value.name;
+        }
+      });
+      this.chart?.on('mouseout', (value: any) => {
         this.chart?.dispatchAction({
           type: 'showTip',
           seriesIndex: 0,
-          name: this.initShowTag,
+          name: date
         });
         this.chart?.dispatchAction({
           type: 'highlight',
           seriesIndex: 0,
-          name: this.initShowTag,
+          name: date
         });
-        // PC端
-        this.chart?.on('mouseover', (value: any) => {
-          if (value.name != this.initShowTag) {
-            this.chart?.dispatchAction({
-              type: 'hideTip',
-              seriesIndex: 0,
-              name: this.initShowTag
-            });
-            this.chart?.dispatchAction({
-              type: 'downplay',
-              seriesIndex: 0,
-              name: this.initShowTag
-            });
-          }
-          if ((this.chart as any)._dom.innerText) {
-            if (this.getInitShowTag) {
-              this.getInitShowTag(value.name);
-            }
-          }
-        });
-        this.chart?.on('mouseout', () => {
-          this.chart?.dispatchAction({
-            type: 'showTip',
-            seriesIndex: 0,
-            name: this.initShowTag
-          });
-          this.chart?.dispatchAction({
-            type: 'highlight',
-            seriesIndex: 0,
-            name: this.initShowTag
-          });
-        });
+      });
 
-        //移动端
-        this.chart?.on('touchstart', (value: any) => {
-          if (value.name != this.initShowTag) {
-            this.chart?.dispatchAction({
-              type: 'hideTip',
-              seriesIndex: 0,
-              name: this.initShowTag
-            });
-            this.chart?.dispatchAction({
-              type: 'downplay',
-              seriesIndex: 0,
-              name: this.initShowTag
-            });
-          }
-          if ((this.chart as any)._dom.innerText) {
-            if (this.getInitShowTag) {
-              this.getInitShowTag(value.name);
-            }
-          }
-        });
-        this.chart?.on('touchend', () => {
+      //移动端
+      this.chart?.on('touchstart', (value: any) => {
+        if (value.name != date) {
           this.chart?.dispatchAction({
-            type: 'showTip',
+            type: 'hideTip',
             seriesIndex: 0,
-            name: this.initShowTag
+            name: date
           });
           this.chart?.dispatchAction({
-            type: 'highlight',
+            type: 'downplay',
             seriesIndex: 0,
-            name: this.initShowTag
+            name: date
           });
+        }
+        if ((this.chart as any)._dom.innerText) {
+          this.$store.state.circleShowDate = value.name;
+        }
+      });
+      this.chart?.on('touchend', () => {
+        this.chart?.dispatchAction({
+          type: 'showTip',
+          seriesIndex: 0,
+          name: date
         });
-      }
+        this.chart?.dispatchAction({
+          type: 'highlight',
+          seriesIndex: 0,
+          name: date
+        });
+      });
     }
   }
 </script>

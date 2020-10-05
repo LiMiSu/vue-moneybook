@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="lineData list-wrapper" v-if="showLine">
+    <div class="lineData list-wrapper" v-if="$store.state.showLineEcharts">
       <div v-for="record in recordByTagTime" :key="record.id">
         <div class="list">
           <div class="left">
@@ -16,7 +16,7 @@
     </div>
     <div class="circleData list-wrapper" v-else>
       <div v-for="result in recordByTagTime" :key="result.id">
-        <div class="result-show" v-if="result.name===initShowTag">
+        <div class="result-show" v-if="result.name===$store.state.circleShowDate">
           <div class="list">
             <div class="left">
               <div class="iconWarpper">
@@ -45,12 +45,10 @@
   @Component
   export default class RecordList extends Vue {
     @Prop() recordByTagTime!: RecordByTag[];
-    @Prop() showLine!: boolean;
     @Prop() type!: string;
     @Prop() dayRecordList!: DayResult[];
     @Prop() monthTotal!: number;
     @Prop() yearTotal!: number;
-    @Prop() initShowTag!: string;
 
     beforeCreate() {
       this.$store.commit('fetchRecords');
