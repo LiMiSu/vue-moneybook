@@ -101,7 +101,6 @@
     }
 
     updateTag() {
-      console.log(this.valueDat);
       if (this.currentTag) {
         if (this.icon && this.valueDat) {
           this.currentTag.tagicon = this.icon;
@@ -123,6 +122,9 @@
     }
 
     goBack() {
+      if (this.$store.state.go===0){
+        this.$store.state.go++
+      }
       this.$store.state.showAdd = false;
       this.$router.replace('/managetag');
     }
