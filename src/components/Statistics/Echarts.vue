@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div ref="container" class="content" v-if="optionType==='pie'" @click="a"></div>
+    <div ref="container" class="content" v-if="optionType==='pie'"></div>
     <div ref="container" class="content" v-else></div>
   </div>
 </template>
@@ -45,10 +45,6 @@
     @Watch('option')
     onOptionChange(newValue: EChartOption) {
       this.ChartStart(newValue);
-    }
-
-    a(value: any) {
-      //
     }
 
     get optionType() {

@@ -47,6 +47,7 @@
 
 
     created() {
+      console.log(this.$store.state.go);
       this.$store.commit('fetchTags');
       this.$store.state.showAdd = false;
     }
@@ -65,7 +66,7 @@
       this.currenttag = '';
       this.$store.state.showAdd = !this.$store.state.showAdd;
       if (this.$store.state.showAdd) {
-        this.$store.state.go++
+        this.$store.state.go++;
         this.$router.push('/addrewrite');
       } else {
         // this.$router.push('/managetag');
@@ -78,20 +79,14 @@
         // this.currenttag = '';
         // this.$router.push('/managetag');
       } else {
-        this.$store.state.go++
+        this.$store.state.go++;
         this.currenttag = tag;
         this.$router.push('/addrewrite/' + tag.id);
       }
     }
 
     goBack() {
-      console.log(this.$store.state.go,555);
-      if (this.$store.state.go===0){
-        // this.$router.push('/addmoney')
-        this.$router.go(-1)
-      }else {
-        this.$router.go(-this.$store.state.go);
-      }
+      this.$router.go(-(this.$store.state.go + 1));
     }
   }
 

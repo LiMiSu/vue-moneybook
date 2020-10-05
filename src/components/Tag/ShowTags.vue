@@ -79,8 +79,7 @@
     }
 
     goAdd() {
-      console.log(9);
-      this.$store.state.go++
+      // this.$store.state.go++
       this.$router.push('/managetag');
     }
   }
