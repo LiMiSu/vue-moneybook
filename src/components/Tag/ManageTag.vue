@@ -47,6 +47,8 @@
 
 
     created() {
+      console.log(this.$store.state.isSucce);
+      // this.$store.state.isSucce=0
       this.$store.commit('fetchTags');
       this.$store.state.showAdd = false;
       this.$store.commit('fetchGo')

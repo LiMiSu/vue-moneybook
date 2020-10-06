@@ -56,7 +56,6 @@
     updateTag(value: string) {
         if (value.length>=4){
           this.maxlengthValue=4
-          this.$store.state.isFail = '标签名不要超过4个字符哦';
       }
       this.$emit('update:value', value);
     }

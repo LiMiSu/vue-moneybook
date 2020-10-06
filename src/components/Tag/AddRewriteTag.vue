@@ -106,16 +106,14 @@
     }
 
     updateTag() {
-      this.$store.commit('setGo', -1);
+
       if (this.currentTag) {
-        if (!this.icon&&this.valueDat===this.currentTag.name){
+        if (!this.icon && this.valueDat === this.currentTag.name) {
           this.$store.state.isFail = '没修改任何信息';
           return;
-        }else if (this.icon && this.valueDat) {
+        } else if (this.icon && this.valueDat) {
           this.currentTag.tagicon = this.icon;
         }
-        console.log(this.currentTag.tagicon);
-        console.log(this.icon);
         this.$store.commit('updateTag', {
           id: this.currentTag.id,
           name: this.valueDat,
@@ -138,14 +136,13 @@
 
 
     createTag() {
-      this.$store.commit('setGo', -1);
       if (this.value) {
         if (!this.icon) {
           this.$store.state.isFail = '请选泽一个标签';
           return;
         }
         if (this.value.length > 4) {
-          this.$store.state.isFail = '标签名不要超过4个字符哦';
+
           return;
         }
         this.$store.commit('createTag', {name: this.value, tagicon: this.icon, type: this.$store.state.record.type});
@@ -156,6 +153,8 @@
         }
         this.$store.state.isSucceed = '新增标签成功！';
         this.$store.state.showAdd = false;
+        this.$store.state.isSucce++
+        this.$store.commit('setGo', -1);
       } else if (this.value === '') {
         this.$store.state.isFail = '标签名不能为空';
       }

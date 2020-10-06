@@ -55,9 +55,9 @@ const store = new Vuex.Store({
     noAction: false,
     isFail: '',
     go: 0,
-
     circleShowDate: '',
-    showLineEcharts: true
+    showLineEcharts: true,
+    isSucce: 0,
   } as RootState,
 
   mutations: {
@@ -118,6 +118,7 @@ const store = new Vuex.Store({
         state.tagList.splice(index, 1);
         store.commit('saveTags', id);
         state.isSucceed = '标签删除成功！';
+        state.isSucce++
       } else {
         state.isFail = '标签删除失败';
       }
@@ -128,15 +129,15 @@ const store = new Vuex.Store({
       if (idList.indexOf(id) >= 0) {
         const names = state.tagList.map(item => item.name);
         const icon = (state.currentTag as Tag).tagicon;
-        if (names.indexOf(name)>=0){
-          state.isFail = '该标签名已存在，请重新编辑';
-        }else if (name === '') {
+       if (name === '') {
           state.isFail = '标签名不能为空，请重新编辑';
         } else {
           const tag = state.tagList.filter(item => item.id === id)[0];
           tag.name = name;
           store.commit('saveTags');
           state.isSucceed = '标签编辑成功！';
+          store.commit('setGo', -1);
+          state.isSucce++
         }
       }
     },
