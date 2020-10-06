@@ -1,15 +1,26 @@
 <template>
   <div class="wrapper">
-    {{inputValue}}
     <label class="formItem">
       <Icon v-if="fieldName==='备注'" name="notes" class="notes"></Icon>
       <span v-else class="name">{{fieldName}}</span>
 
-      <input
+
+      <input v-if="fieldName==='备注'"
+        :maxlength="maxlengthValue"
         :type="type || 'text'"
         :value="tagName||value"
         :placeholder="placeholder"
         @input="updateNotes($event.target.value)"
+      >
+
+      <input v-else
+        :maxlength="maxlengthValue"
+        :type="type || 'text'"
+        :value="tagName||value"
+        :placeholder="placeholder"
+        @input="updateTag($event.target.value)"
+        @compositionstart="compositionstartFuc()"
+        @compositionend="compositionendFuc($event.target.value)"
       >
     </label>
   </div>
@@ -26,23 +37,31 @@
     @Prop() placeholder?: string;
     @Prop({default: ''}) readonly tagName!: string;
     @Prop() type?: string;
-    inputValue = this.value.toString();
+    inputValue: boolean | string = '';
+    maxlengthValue: number | string = '';
 
-    updateNotes(value: string) {
+    compositionstartFuc() {
+      this.inputValue = false;
+    }
 
-      if (this.fieldName !== '备注') {
-        if (value.length > 4) {
-          value = value.substring(0, 4);
-          this.$store.state.isFail = '超过4个字符';
-
-          this.$emit('update:value', value);
-          // console.log(this.value);
-          return;
-        }
+    compositionendFuc(value: string) {
+      this.inputValue = true;
+      if (value.length > 4) {
+        value = value.substring(0, 4);
       }
-
       this.$emit('update:value', value);
+      this.inputValue = '';
+    }
 
+    updateTag(value: string) {
+        if (value.length>=4){
+          this.maxlengthValue=4
+          this.$store.state.isFail = '标签名不要超过4个字符哦';
+      }
+      this.$emit('update:value', value);
+    }
+    updateNotes(value: string){
+      this.$emit('update:value', value);
     }
   }
 </script>

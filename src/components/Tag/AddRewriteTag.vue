@@ -145,7 +145,7 @@
           return;
         }
         if (this.value.length > 4) {
-          this.$store.state.isFail = '标签名不要超过4个字哦';
+          this.$store.state.isFail = '标签名不要超过4个字符哦';
           return;
         }
         this.$store.commit('createTag', {name: this.value, tagicon: this.icon, type: this.$store.state.record.type});
