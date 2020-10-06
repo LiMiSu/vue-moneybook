@@ -2,8 +2,6 @@
   <div class="rewrite">
     <div class="navBar">
       <Icon class="leftIcon" name="left" @click="goBack"/>
-      {{$store.state.go}}
-      {{id}}
       <span class="title" v-if="$route.params.id">编辑标签</span>
       <span class="title" v-else>新增标签</span>
       <span class="rightIcon"></span>
@@ -77,9 +75,6 @@
     get currentTag() {
       return this.$store.state.currentTag;
     }
-    get(){
-      return window.localStorage.setItem('_idMax', this.id+1)
-    }
 
     beforeCreate() {
       this.$store.commit('fetchTags');
@@ -113,11 +108,14 @@
     updateTag() {
       this.$store.commit('setGo', -1);
       if (this.currentTag) {
-        if (this.icon && this.valueDat) {
+        if (!this.icon&&this.valueDat===this.currentTag.name){
+          this.$store.state.isFail = '没修改任何信息';
+          return;
+        }else if (this.icon && this.valueDat) {
           this.currentTag.tagicon = this.icon;
         }
-        // console.log(this.currentTag.tagicon);
-        // console.log(this.icon);
+        console.log(this.currentTag.tagicon);
+        console.log(this.icon);
         this.$store.commit('updateTag', {
           id: this.currentTag.id,
           name: this.valueDat,

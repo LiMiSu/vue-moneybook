@@ -75,6 +75,7 @@ type RecordByTag = {
   recordList: RecordSameTagList[];
 }
 type RecordSameTagList = {
+  icon: string;
   id: string;
   date: string;
   name: string;

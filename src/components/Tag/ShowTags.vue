@@ -10,8 +10,8 @@
       </div>
     </div>
     <div class="tags">
-      <div class="tagList" v-for="tag in newTagList" :key="tag.id">
-        <Icon class="tagIcon" :name=tag.tagicon :class="{selected: currentTag.id===tag.id}" @click="toggle(tag)"></Icon>
+      <div class="tagList" v-for="tag in newTagList" :key="tag.id" @click="toggle(tag)">
+        <Icon class="tagIcon" :name=tag.tagicon :class="{selected: currentTag.id===tag.id}" ></Icon>
         <span class="text" :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
       </div>
     </div>
@@ -124,8 +124,10 @@
           color: white;
         }
       }
-      .text{
+
+      .text {
         padding: 16px 0;
+        margin-bottom: 20px;
       }
 
       .small {

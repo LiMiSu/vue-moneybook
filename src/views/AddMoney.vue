@@ -77,6 +77,10 @@
     typeList = typeList;
 
     created() {
+      this.$store.commit('fetchGo')
+      this.$store.commit('setGo',-(this.$store.state.go))
+
+
       this.$store.commit('fetchRecords');
       if (this.$route.params.id) {
         if ((this.$store.state.recordList as RecordItem[]).map(item => item.id).indexOf(this.$route.params.id) < 0) {

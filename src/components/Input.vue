@@ -1,8 +1,10 @@
 <template>
   <div class="wrapper">
+    {{inputValue}}
     <label class="formItem">
       <Icon v-if="fieldName==='备注'" name="notes" class="notes"></Icon>
       <span v-else class="name">{{fieldName}}</span>
+
       <input
         :type="type || 'text'"
         :value="tagName||value"
@@ -24,10 +26,23 @@
     @Prop() placeholder?: string;
     @Prop({default: ''}) readonly tagName!: string;
     @Prop() type?: string;
-
+    inputValue = this.value.toString();
 
     updateNotes(value: string) {
+
+      if (this.fieldName !== '备注') {
+        if (value.length > 4) {
+          value = value.substring(0, 4);
+          this.$store.state.isFail = '超过4个字符';
+
+          this.$emit('update:value', value);
+          // console.log(this.value);
+          return;
+        }
+      }
+
       this.$emit('update:value', value);
+
     }
   }
 </script>

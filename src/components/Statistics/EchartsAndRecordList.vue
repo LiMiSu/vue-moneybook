@@ -96,14 +96,17 @@
             name: item.items[i].tag.name,
             num: item.items[i].amount,
             recordList: [{
+              icon: item.items[i].tag.tagicon,
               id,
-              date: dayjs(item.items[i].createdAt).format('DD日'),
+              date: dayjs(item.items[i].createdAt).format('YYYY-M-DD'),
               name: item.items[i].tag.name,
               num: item.items[i].amount
             }]
           };
           result.push(current);
         }
+
+
         for (let i = 0; i < result.length; i++) {
           for (let f = i + 1; f < result.length; f++) {
             if (result[f].name === result[i].name && result[f].title === result[i].title) {
@@ -115,6 +118,7 @@
           }
         }
       });
+
       result.map(item=>{
         item.recordList.sort((a,b)=>{
           return a.num - b.num
@@ -139,8 +143,9 @@
             name: item.items[i].tag.name,
             num: item.items[i].amount,
             recordList: [{
+              icon: item.items[i].tag.tagicon,
               id,
-              date: dayjs(item.items[i].createdAt).format('M月DD日'),
+              date: dayjs(item.items[i].createdAt).format('YYYY-M-DD'),
               name: item.items[i].tag.name,
               num: item.items[i].amount
             }]

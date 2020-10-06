@@ -3,7 +3,6 @@
     <header>
       <div class="addheader">
         <Icon name="left" class="left" @click="goBack"></Icon>
-        {{$store.state.go}}
         <div class="header">编辑与新增</div>
         <span class="icon off"></span>
       </div>
@@ -19,8 +18,8 @@
       </div>
       <div class="text">点击编辑{{this.$store.state.record.type==='-'?'支出':'收入'}}标签：</div>
       <div class="tags">
-        <div class="tagList" v-for="tag in newTagList" :key="tag.id">
-          <Icon :name=tag.tagicon class="tagIcon" :class="{selected: currenttag===tag}" @click="tagChang(tag)"></Icon>
+        <div class="tagList" v-for="tag in newTagList" :key="tag.id" @click="tagChang(tag)">
+          <Icon :name=tag.tagicon class="tagIcon" :class="{selected: currenttag===tag}" ></Icon>
           <span class="text" :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
         </div>
       </div>
@@ -88,7 +87,6 @@
 
     goBack() {
       this.$router.go(-(this.$store.state.go + 1));
-      this.$store.commit('setGo',-(this.$store.state.go))
     }
   }
 
@@ -147,6 +145,7 @@
       .text{
         padding: 16px 0;
         background: #fff;
+        margin-bottom: 20px;
       }
     }
 

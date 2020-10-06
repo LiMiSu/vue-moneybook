@@ -30,14 +30,15 @@
 
 <style lang="scss" scoped>
   .dayBook {
-    border: 1px solid #5a5a5a;
+    /*border: 1px solid #5a5a5a;*/
     border-radius: 3px 3px 3px 3px;
-    background: white;
+    background: #DE7873;
     position: relative;
     font-size: 12px;
     line-height: 22px;
     text-align: center;
     padding: 1px 5px;
+    color: white;
 
     .left {
       position: absolute;
@@ -45,7 +46,7 @@
       top: -5px;
       width: 0;
       height: 10px;
-      border: 1px solid #5a5a5a;
+      border: 1px solid #DE7873;
     }
 
     .right {
@@ -54,7 +55,7 @@
       top: -5px;
       width: 0;
       height: 10px;
-      border: 1px solid #5a5a5a;
+      border: 1px solid #DE7873;
     }
   }
 </style>

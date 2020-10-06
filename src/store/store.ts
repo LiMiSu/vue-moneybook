@@ -128,11 +128,9 @@ const store = new Vuex.Store({
       if (idList.indexOf(id) >= 0) {
         const names = state.tagList.map(item => item.name);
         const icon = (state.currentTag as Tag).tagicon;
-        // console.log(icon, 1);
-        // console.log(tagicon, 2);
-        if (names.indexOf(name) >= 0 && !icon) {
-          window.alert('标签名未作修改');
-        } else if (name === '') {
+        if (names.indexOf(name)>=0){
+          state.isFail = '该标签名已存在，请重新编辑';
+        }else if (name === '') {
           state.isFail = '标签名不能为空，请重新编辑';
         } else {
           const tag = state.tagList.filter(item => item.id === id)[0];

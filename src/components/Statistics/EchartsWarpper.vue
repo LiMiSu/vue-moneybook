@@ -18,7 +18,7 @@
     </div>
     <div v-if="recordByTagTime.length>0" class="head">
       <div>{{interval === 'year' ? showYear : showMonth}}<span class="text-s">(单位：元)</span></div>
-      <div class="total" v-if="$store.state.showLineEcharts"><span class="text-s">总计：</span><span class="num">{{interval === 'year' ? yearTotal : monthTotal}}</span>
+      <div class="total"><span class="text-s">总计：</span><span class="num">{{interval === 'year' ? yearTotal : monthTotal}}</span>
       </div>
     </div>
   </div>
@@ -137,7 +137,7 @@
   .nav-wrapper {
     display: flex;
     justify-content: space-between;
-    padding: 16px 16px 0 16px;
+    padding: 8px 16px 0 16px;
     width: 100%;
 
     .around {
@@ -149,7 +149,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-
+padding-bottom: 10px;
+      color: #DE7873;
       .icon {
         width: 30px;
         height: 30px;

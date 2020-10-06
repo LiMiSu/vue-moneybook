@@ -6,7 +6,8 @@ function echartsCircleOption(monthTag: string[],monthRecord: Record<string, any>
       backgroundColor: 'rgba(100,100,100,0.4)',
       extraCssText: 'z-index: 5',
       position: 'right',
-      confine:true
+      confine:true,
+      alwaysShowContent: true
     },
     legend: {
       type: 'scroll',
@@ -19,17 +20,16 @@ function echartsCircleOption(monthTag: string[],monthRecord: Record<string, any>
       {
         name: type === '-' ? '支出' : '收入',
         type: 'pie',
-        radius: ['50%', '89%'],
+        radius: ['60%', '89%'],
         minAngle: 30,
         label: {
-          show: true,
-          position: 'inner',
-          fontSize: '10',
+          show: false,
+          position: 'center',
         },
         emphasis: {
           label: {
             show: true,
-            fontSize: '10',
+            fontSize: '30',
             fontWeight: 'bold',
           }
         },
