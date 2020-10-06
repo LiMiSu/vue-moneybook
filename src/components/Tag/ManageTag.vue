@@ -3,6 +3,7 @@
     <header>
       <div class="addheader">
         <Icon name="left" class="left" @click="goBack"></Icon>
+        {{$store.state.go}}
         <div class="header">编辑与新增</div>
         <span class="icon off"></span>
       </div>
@@ -13,14 +14,14 @@
       <div class="add">
         <div class="tagList" @click="goAdd">
           <Icon name="add" class="addTag" :class="{selected: $store.state.showAdd}"></Icon>
-          新增
+          <span class="text">新增</span>
         </div>
       </div>
       <div class="text">点击编辑{{this.$store.state.record.type==='-'?'支出':'收入'}}标签：</div>
       <div class="tags">
         <div class="tagList" v-for="tag in newTagList" :key="tag.id">
           <Icon :name=tag.tagicon class="tagIcon" :class="{selected: currenttag===tag}" @click="tagChang(tag)"></Icon>
-          <span :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
+          <span class="text" :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
         </div>
       </div>
     </main>
@@ -49,6 +50,7 @@
     created() {
       this.$store.commit('fetchTags');
       this.$store.state.showAdd = false;
+      this.$store.commit('fetchGo')
     }
 
     get tagList() {
@@ -65,7 +67,7 @@
       this.currenttag = '';
       this.$store.state.showAdd = !this.$store.state.showAdd;
       if (this.$store.state.showAdd) {
-        this.$store.state.go++;
+        this.$store.commit('setGo',1)
         this.$router.push('/addrewrite');
       } else {
         // this.$router.push('/managetag');
@@ -78,7 +80,7 @@
         // this.currenttag = '';
         // this.$router.push('/managetag');
       } else {
-        this.$store.state.go++;
+        this.$store.commit('setGo',1)
         this.currenttag = tag;
         this.$router.push('/addrewrite/' + tag.id);
       }
@@ -86,6 +88,7 @@
 
     goBack() {
       this.$router.go(-(this.$store.state.go + 1));
+      this.$store.commit('setGo',-(this.$store.state.go))
     }
   }
 
@@ -141,13 +144,17 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      .text{
+        padding: 16px 0;
+        background: #fff;
+      }
     }
 
     .tagIcon, .addTag {
-      $h: 36px;
+      $h: 32px;
       border-radius: $h/12;
-      height: 36px;
-      width: 45px;
+      height: $h;
+      width: $h;
       line-height: $h;
       text-align: center;
 

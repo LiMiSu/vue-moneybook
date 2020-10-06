@@ -2,6 +2,7 @@
   <div class="addMoney-wrapper">
     <header>
       <div class="addheader">
+
         <div class="icon left" @click="goBack">
           <Icon name="left"></Icon>
         </div>

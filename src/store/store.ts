@@ -55,6 +55,7 @@ const store = new Vuex.Store({
     noAction: false,
     isFail: '',
     go: 0,
+
     circleShowDate: '',
     showLineEcharts: true
   } as RootState,
@@ -127,10 +128,9 @@ const store = new Vuex.Store({
       if (idList.indexOf(id) >= 0) {
         const names = state.tagList.map(item => item.name);
         const icon = (state.currentTag as Tag).tagicon;
-        console.log(icon, 1);
+        // console.log(icon, 1);
         // console.log(tagicon, 2);
-        if (names.indexOf(name) >= 0 &&!icon) {
-          console.log(1);
+        if (names.indexOf(name) >= 0 && !icon) {
           window.alert('标签名未作修改');
         } else if (name === '') {
           state.isFail = '标签名不能为空，请重新编辑';
@@ -261,6 +261,16 @@ const store = new Vuex.Store({
     },
     fetchChooseYear(state) {
       state.chooseYear = state.record.createdAt;
+    },
+    saveGo(state) {
+      window.localStorage.setItem('go', state.go.toString());
+    },
+    fetchGo(state) {
+      state.go = parseInt(window.localStorage.getItem('go') || '0');
+    },
+    setGo(state, value) {
+      state.go += value;
+      store.commit('saveGo');
     }
   }
 });

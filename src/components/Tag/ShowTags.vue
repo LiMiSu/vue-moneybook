@@ -1,15 +1,18 @@
 <template>
   <div>
     <div class="metagList" @click="goAdd">
-      <Icon name="manage" class="addTag"></Icon>管理
+      <Icon name="manage" class="addTag"></Icon>
+      管理
     </div>
     <div>
-      <div class="choosetag">请选择{{$route.params.id?($store.state.currentRecord.type==='-'?'支出':'收入'):($store.state.record.type==='-'?'支出':'收入')}}标签：</div>
+      <div class="choosetag">
+        请选择{{$route.params.id?($store.state.currentRecord.type==='-'?'支出':'收入'):($store.state.record.type==='-'?'支出':'收入')}}标签：
+      </div>
     </div>
     <div class="tags">
       <div class="tagList" v-for="tag in newTagList" :key="tag.id">
         <Icon class="tagIcon" :name=tag.tagicon :class="{selected: currentTag.id===tag.id}" @click="toggle(tag)"></Icon>
-        <span :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
+        <span class="text" :class="[tag.name.length===4?'small':'']">{{tag.name}}</span>
       </div>
     </div>
   </div>
@@ -25,13 +28,13 @@
   @Component
   export default class Note extends mixins(TagHelper) {
     created() {
-      this.$store.state.go=0
+      this.$store.state.go = 0;
       this.$store.commit('fetchTags');
       this.$store.commit('setCurrentRecord', this.$route.params.id);
       if (this.$route.params.id && this.$store.state.currentRecord.tag.tagicon) {
         this.$store.state.currentTag = this.$store.state.currentRecord.tag;
       } else {
-        this.$store.state.currentTag=''
+        this.$store.state.currentTag = '';
         this.$store.state.record.notes = '';
       }
     }
@@ -40,7 +43,7 @@
       this.$store.state.record.notes = '';
       if (this.currentTag.type && this.$store.state.record.type === this.currentTag.type) {
         this.$emit('update:value', this.currentTag);
-      } else if(!this.$route.params.id){
+      } else if (!this.$route.params.id) {
         this.currentTag = '';
         this.$emit('update:value', []);
       }
@@ -74,7 +77,7 @@
         this.$emit('update:value', []);
       } else {
         this.currentTag = tag;
-        this.$route.params.id?this.$store.state.currentRecord.tag = tag:''
+        this.$route.params.id ? this.$store.state.currentRecord.tag = tag : '';
       }
     }
 
@@ -87,7 +90,7 @@
 
 <style lang="scss" scoped>
   .choosetag {
-    padding: 10px 16px 0 16px;
+    padding: 16px;
   }
 
   .tags {
@@ -104,12 +107,13 @@
       align-items: center;
 
       .tagIcon {
-        $h: 36px;
+        $h: 32px;
         border-radius: $h/4;
-        height: 36px;
-        width: 45px;
+        height: $h;
+        width: $h;
         line-height: $h;
         text-align: center;
+
 
         .icon {
           background: transparent;
@@ -120,16 +124,13 @@
           color: white;
         }
       }
+      .text{
+        padding: 16px 0;
+      }
 
       .small {
         font-size: 12px;
       }
-    }
-
-
-    svg.icon {
-      width: 33px;
-      height: 33px;
     }
   }
 
@@ -144,12 +145,13 @@
     align-items: center;
 
     .addTag {
-      $h: 36px;
+      $h: 32px;
       border-radius: $h/2;
-      height: 36px;
-      width: 45px;
+      height: $h;
+      width: $h;
       line-height: $h;
       text-align: center;
+      margin: 10px 0;
 
       .icon {
         background: transparent;

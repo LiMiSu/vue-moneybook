@@ -2,11 +2,13 @@
   <div class="rewrite">
     <div class="navBar">
       <Icon class="leftIcon" name="left" @click="goBack"/>
+      {{$store.state.go}}
+      {{id}}
       <span class="title" v-if="$route.params.id">编辑标签</span>
       <span class="title" v-else>新增标签</span>
       <span class="rightIcon"></span>
     </div>
-    <Succeed  v-if="$store.state.isSucceed"></Succeed>
+    <Succeed v-if="$store.state.isSucceed"></Succeed>
     <Fail v-if="$store.state.isFail"></Fail>
     <div class="form-wrapper">
       <label v-if="$route.params.id">
@@ -54,6 +56,7 @@
   import addTag from '@/constants/addTag';
   import Succeed from '@/components/Succeed.vue';
   import Fail from '@/components/Fail.vue';
+  import createId from '@/lib/createId';
 
   @Component({
     components: {Fail, Succeed, Button, Input},
@@ -64,6 +67,7 @@
     valueDat!: string;
     currenttag = '';
     icon = '';
+    id = createId().toString();
 
 
     get rewriteTagList() {
@@ -73,17 +77,23 @@
     get currentTag() {
       return this.$store.state.currentTag;
     }
+    get(){
+      return window.localStorage.setItem('_idMax', this.id+1)
+    }
+
     beforeCreate() {
       this.$store.commit('fetchTags');
     }
+
     created() {
+      this.$store.commit('fetchGo');
       if (this.$route.params.id) {
         const id = this.$route.params.id;
         this.$store.commit('fetchTags');
         this.$store.commit('setCurrentTag', id);
-        if ((this.$store.state.tagList as Tag[]).map(item=>item.id).indexOf(this.$route.params.id)<0) {
+        if ((this.$store.state.tagList as Tag[]).map(item => item.id).indexOf(this.$route.params.id) < 0) {
           this.$router.replace('/404');
-        }else {
+        } else {
           this.valueDat = this.currentTag.name;
         }
       }
@@ -101,6 +111,7 @@
     }
 
     updateTag() {
+      this.$store.commit('setGo', -1);
       if (this.currentTag) {
         if (this.icon && this.valueDat) {
           this.currentTag.tagicon = this.icon;
@@ -116,41 +127,39 @@
     }
 
     removeTag() {
+      this.$store.commit('setGo', -1);
       if (this.currentTag) {
         this.$store.commit('removeTag', this.currentTag.id);
       }
     }
 
     goBack() {
-      if (this.$store.state.go===0){
-        this.$store.state.go++
-      }
       this.$store.state.showAdd = false;
       this.$router.replace('/managetag');
     }
 
 
     createTag() {
-
+      this.$store.commit('setGo', -1);
       if (this.value) {
         if (!this.icon) {
-          this.$store.state.isFail='请选泽一个标签';
+          this.$store.state.isFail = '请选泽一个标签';
           return;
         }
         if (this.value.length > 4) {
-          this.$store.state.isFail='标签名不要超过4个字哦';
+          this.$store.state.isFail = '标签名不要超过4个字哦';
           return;
         }
         this.$store.commit('createTag', {name: this.value, tagicon: this.icon, type: this.$store.state.record.type});
         if (!this.$store.state.isHave) {
-          this.$store.state.isFail='已存在'
+          this.$store.state.isFail = '已存在';
           this.$store.state.showAdd = false;
           return;
         }
         this.$store.state.isSucceed = '新增标签成功！';
         this.$store.state.showAdd = false;
       } else if (this.value === '') {
-        this.$store.state.isFail='标签名不能为空'
+        this.$store.state.isFail = '标签名不能为空';
       }
     }
 
@@ -201,7 +210,7 @@
       .icon {
         margin-right: 16px;
         padding: 2px 4px;
-        $bg: #d9d9d9;
+        $bg: rgb(243, 243, 243);
         background: $bg;
         $h: 36px;
         border-radius: $h/2;

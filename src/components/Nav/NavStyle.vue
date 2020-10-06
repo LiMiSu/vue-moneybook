@@ -1,6 +1,7 @@
 <template>
   <div class="layout-wrapper">
     <header class="header">
+
       <Icon name="set" class="set" @click="say"></Icon>
       <div class="header"><slot name="header"></slot></div>
       <Icon name="me" class="me" @click="say"></Icon>
@@ -28,6 +29,7 @@
   export default class NavStyle extends Vue {
     @Prop() classPrefix!: string;
     @Prop() value!: string;
+
     say(){
       if(!this.$store.state.noAction){
         this.$store.state.noAction=!this.$store.state.noAction
