@@ -153,7 +153,6 @@
         }
         this.$store.state.isSucceed = '新增标签成功！';
         this.$store.state.showAdd = false;
-        this.$store.state.isSucce++
         this.$store.commit('setGo', -1);
       } else if (this.value === '') {
         this.$store.state.isFail = '标签名不能为空';

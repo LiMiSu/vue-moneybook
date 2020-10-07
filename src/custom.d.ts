@@ -35,7 +35,6 @@ type RootState = {
   go: number;
   circleShowDate: string;
   showLineEcharts: boolean;
-  isSucce: number;
 }
 type GetDay = {
   year: number;

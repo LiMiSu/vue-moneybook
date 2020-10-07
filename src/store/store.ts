@@ -57,7 +57,6 @@ const store = new Vuex.Store({
     go: 0,
     circleShowDate: '',
     showLineEcharts: true,
-    isSucce: 0,
   } as RootState,
 
   mutations: {
@@ -118,7 +117,6 @@ const store = new Vuex.Store({
         state.tagList.splice(index, 1);
         store.commit('saveTags', id);
         state.isSucceed = '标签删除成功！';
-        state.isSucce++
       } else {
         state.isFail = '标签删除失败';
       }
@@ -137,7 +135,6 @@ const store = new Vuex.Store({
           store.commit('saveTags');
           state.isSucceed = '标签编辑成功！';
           store.commit('setGo', -1);
-          state.isSucce++
         }
       }
     },
