@@ -9,7 +9,7 @@
     </header>
 
     <main class="main">
-      <div class="text">点击新增{{this.$store.state.record.type==='-'?'支出':'收入'}}标签：</div>
+      <div class="text-nav">点击新增{{this.$store.state.record.type==='-'?'支出':'收入'}}标签：</div>
       <div class="add">
         <div class="tagList" @click="goAdd">
           <Icon name="add" class="addTag" :class="{selected: $store.state.showAdd}"></Icon>
