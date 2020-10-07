@@ -16,7 +16,7 @@
           <span class="text">新增</span>
         </div>
       </div>
-      <div class="text">点击编辑{{this.$store.state.record.type==='-'?'支出':'收入'}}标签：</div>
+      <div class="text-nav">点击编辑{{this.$store.state.record.type==='-'?'支出':'收入'}}标签：</div>
       <div class="tags">
         <div class="tagList" v-for="tag in newTagList" :key="tag.id" @click="tagChang(tag)">
           <Icon :name=tag.tagicon class="tagIcon" :class="{selected: currenttag===tag}" ></Icon>
@@ -175,7 +175,7 @@
       font-size: 12px;
     }
 
-    .text {
+    .text-nav {
       background: rgb(243, 243, 243);
       box-shadow: 0 3px 11px -9px #999;
       padding: 10px 16px 0 16px;
