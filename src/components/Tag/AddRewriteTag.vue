@@ -2,8 +2,8 @@
   <div class="rewrite">
     <div class="navBar">
       <Icon class="leftIcon" name="left" @click="goBack"/>
-      <span class="title" v-if="$route.params.id">编辑标签</span>
-      <span class="title" v-else>新增标签</span>
+      <span class="title" v-if="$route.params.id">编辑{{this.$store.state.record.type==='-'?'支出':'收入'}}标签</span>
+      <span class="title" v-else>新增{{this.$store.state.record.type==='-'?'支出':'收入'}}标签</span>
       <span class="rightIcon"></span>
     </div>
     <Succeed v-if="$store.state.isSucceed"></Succeed>
